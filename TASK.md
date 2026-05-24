@@ -28,6 +28,7 @@
 
 - [ ] T11. Creem 支付真实接入
 - [ ] T12. 登录/注册（邮箱+密码+Turnstile）
-- [ ] T13. GitHub 远程仓库配置
-- [ ] T14. Cloudflare Pages 部署 + Worker 路由配置
+- [x] T13. GitHub 远程仓库配置
+- [x] T14. Cloudflare Pages 部署（`compli-service.pages.dev`）
+- [ ] T14b. Worker 路由配置（`sinotradecompliance.com/compli-service/*`）
 - [ ] T15. 其他 5 个模块补充（label/ccc/nmpa/crossborder/trademark）
