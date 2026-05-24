@@ -9,7 +9,7 @@
  */
 
 interface Env {
-  CREEM_API_KEY: ***
+  CREEM_API_KEY: string;
   CREEM_PRODUCT_ID_SINGLE: string;
   CREEM_PRODUCT_ID_SUBSCRIBE: string;
   DB: any;

@@ -28,7 +28,7 @@ export default function GaccCheckPage() {
     try {
       const reportId = `GACC-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
-      const res = await fetch("/compli-service/api/checkout", {
+      const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

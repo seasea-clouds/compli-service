@@ -18,7 +18,7 @@ export default function PricingPage() {
               <li>No registration needed</li>
             </ul>
             <a
-              href="/compli-service/check/gacc"
+              href="/check/gacc"
               className="inline-block w-full border-2 border-primary-navy text-primary-navy font-semibold py-2.5 rounded-md hover:bg-primary-navy hover:text-white transition-all"
             >
               Start Free

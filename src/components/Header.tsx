@@ -4,11 +4,11 @@ export default function Header() {
   return (
     <header className="bg-primary-navy text-white">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/compli-service/" className="font-bold text-lg hover:text-gold transition-colors">
+        <Link href="/" className="font-bold text-lg hover:text-gold transition-colors">
           &#x1F50D; Compliance Self-Check
         </Link>
         <nav className="flex items-center gap-4 text-sm">
-          <Link href="/compli-service/pricing" className="hover:text-gold transition-colors">
+          <Link href="/pricing" className="hover:text-gold transition-colors">
             Pricing
           </Link>
           <a

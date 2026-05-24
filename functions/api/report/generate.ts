@@ -107,15 +107,15 @@ export async function onRequest(context: {
 
 function generateReportData(module: string, input: Record<string, unknown>) {
   // Use GACC module logic as default
-  const { checkGacc } = require("../../modules/gacc/rules");
-  const { generateGaccReport } = require("../../modules/gacc/report");
+  const { checkGacc } = require("../../../modules/gacc/rules");
+  const { generateGaccReport } = require("../../../modules/gacc/report");
 
   const result = checkGacc(input);
   const report = generateGaccReport({
-    category: input.category,
-    originCountry: input.originCountry,
-    productName: input.productName,
-    hsCode: input.hsCode,
+    category: input.category as string,
+    originCountry: input.originCountry as string,
+    productName: input.productName as string,
+    hsCode: input.hsCode as string,
   });
 
   return report;

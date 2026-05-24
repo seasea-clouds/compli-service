@@ -69,7 +69,7 @@ export default function HomePage() {
           {services.map((svc) => (
             <Link
               key={svc.id}
-              href={`/compli-service/check/${svc.id}`}
+              href={`/check/${svc.id}`}
               className="block bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-gold/50 transition-all p-6 group"
             >
               <div className="text-3xl mb-3">{svc.icon}</div>
