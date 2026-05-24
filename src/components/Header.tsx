@@ -1,20 +1,23 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const WHATSAPP_URL = 'https://wa.me/message/HPPZ5X6XZSMLM1';
 
 const serviceLinks = [
-  { key: 'GACC Food Registration', href: '/check/gacc', emoji: '📋' },
-  { key: 'Chinese Label Compliance', href: '/check/label', emoji: '🏷️' },
-  { key: 'CCC Certification', href: '/check/ccc', emoji: '✅' },
-  { key: 'Cosmetics Filing (NMPA)', href: '/check/cosmetics', emoji: '💄' },
-  { key: 'Cross-border E-commerce', href: '/check/ecommerce', emoji: '🌐' },
-  { key: 'Brand Protection', href: '/check/trademark', emoji: '🛡️' },
+  { key: 'gacc', href: '/check/gacc', emoji: '📋' },
+  { key: 'label', href: '/check/label', emoji: '🏷️' },
+  { key: 'ccc', href: '/check/ccc', emoji: '✅' },
+  { key: 'cosmetics', href: '/check/cosmetics', emoji: '💄' },
+  { key: 'ecommerce', href: '/check/ecommerce', emoji: '🌐' },
+  { key: 'brand', href: '/check/trademark', emoji: '🛡️' },
 ];
 
 export default function Header() {
+  const t = useTranslations('Navbar');
   const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
@@ -23,7 +26,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           <Link href="/" className="text-white font-bold text-lg sm:text-xl">
-            🔍 Compliance Self-Check
+            {t('logo')}
           </Link>
           <div className="flex items-center gap-2">
             <a
@@ -35,13 +38,13 @@ export default function Header() {
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.032 21.965c-1.717 0-3.396-.355-4.918-1.055l-4.835 1.567 1.586-4.73c-.712-1.517-1.072-3.196-1.072-4.918 0-5.523 4.504-10.029 10.029-10.029 2.687 0 5.207 1.044 7.103 2.942 1.896 1.896 2.94 4.418 2.94 7.106 0 5.524-4.504 10.117-10.833 10.117zm0-18.458c-4.413 0-8.029 3.614-8.029 8.029 0 1.674.496 3.294 1.431 4.666l-.925 2.759 2.848-.924c1.33.839 2.87 1.274 4.45 1.274 4.413 0 8.117-3.614 8.117-8.029 0-2.148-.835-4.165-2.356-5.686s-3.54-2.089-5.536-2.089z"/>
               </svg>
-              <span className="hidden sm:inline">WhatsApp</span>
+              <span className="hidden sm:inline">{t('whatsapp')}</span>
             </a>
             <Link
               href="/pricing"
               className="bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md"
             >
-              Pricing
+              {t('pricing')}
             </Link>
             <a
               href="https://sinotradecompliance.com"
@@ -49,7 +52,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition-colors text-xs ml-1"
             >
-              ← Main Site
+              {t('mainSite')}
             </a>
           </div>
         </div>
@@ -69,7 +72,7 @@ export default function Header() {
                 type="button"
                 className="flex items-center gap-1 text-white/80 hover:text-white transition-colors text-sm font-medium"
               >
-                Services
+                {t('services')}
                 <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M6 9l6 6 6-6"/>
                 </svg>
@@ -85,7 +88,7 @@ export default function Header() {
                       href={s.href}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-navy transition-colors"
                     >
-                      {s.emoji} {s.key}
+                      {s.emoji} {t(`servicesDropdown.${s.key}`)}
                     </Link>
                   ))}
                 </div>
@@ -93,7 +96,7 @@ export default function Header() {
             </div>
 
             <Link href="/pricing" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
-              Pricing
+              {t('pricing')}
             </Link>
 
             <a
@@ -102,7 +105,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium"
             >
-              All Services
+              {t('allServices')}
             </a>
             <a
               href="https://sinotradecompliance.com/en/about/"
@@ -110,7 +113,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium"
             >
-              About
+              {t('about')}
             </a>
             <a
               href="https://sinotradecompliance.com/en/faq/"
@@ -118,7 +121,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium"
             >
-              FAQ
+              {t('faq')}
             </a>
             <a
               href="https://sinotradecompliance.com/en/blog/"
@@ -126,27 +129,29 @@ export default function Header() {
               rel="noopener noreferrer"
               className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium"
             >
-              Blog
+              {t('blog')}
             </a>
+            <LanguageSwitcher />
           </div>
 
           {/* 手机端 */}
           <div className="md:hidden flex flex-wrap items-center justify-center gap-x-5 gap-y-1 py-2 text-sm">
             <Link href="/pricing" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-              Pricing
+              {t('pricing')}
             </Link>
             <a href="https://sinotradecompliance.com/en/services/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-              All Services
+              {t('allServices')}
             </a>
             <a href="https://sinotradecompliance.com/en/about/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-              About
+              {t('about')}
             </a>
             <a href="https://sinotradecompliance.com/en/faq/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-              FAQ
+              {t('faq')}
             </a>
             <a href="https://sinotradecompliance.com/en/blog/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-              Blog
+              {t('blog')}
             </a>
+            <LanguageSwitcher />
           </div>
         </div>
       </div>
