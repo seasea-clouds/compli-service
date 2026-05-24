@@ -1,8 +1,8 @@
 # TASK.md — Compli-Service 任务清单
 
-## 📌 当前状态（2026-05-23 18:52 CST）
+## 📌 当前状态（2026-05-24 22:04 CST）
 
-**Phase：** MVP 开发中 — 邮件 + PDF 集成 ✅
+**Phase：** MVP 部署完成 — 开发/生产环境已就绪
 
 ### ✅ 已完成
 
@@ -20,15 +20,18 @@
   - [x] 支付 Webhook（Creem 回调处理）
   - [x] 报告生成 API（PDF + 邮件 + D1 写入选定）
 - [x] T7. 报告展示组件（ReportViewer + PDF 模板）
-- [x] T8. 品牌 Header/Footer
+- [x] T8. 品牌 Header/Footer（与主站完全一致）
 - [x] T9. 定价页
 - [x] T10. 构建验证 ✅
+- [x] T13. GitHub 远程仓库配置 → `github.com/seasea-clouds/compli-service`
+- [x] T14. Cloudflare Pages 部署 → `compli-service.pages.dev`
+- [x] T14a. CF Pages 环境变量配置（密钥类型 + 生产/预览分离）
+- [x] T16. 48 语言 i18n 支持（next-intl + LanguageSwitcher）
+- [x] T17. 页头页脚与主站 Navbar/Footer 完全对齐
 
 ### ⏳ 待完成
 
 - [ ] T11. Creem 支付真实接入
 - [ ] T12. 登录/注册（邮箱+密码+Turnstile）
-- [x] T13. GitHub 远程仓库配置
-- [x] T14. Cloudflare Pages 部署（`compli-service.pages.dev`）
 - [ ] T14b. Worker 路由配置（`sinotradecompliance.com/compli-service/*`）
 - [ ] T15. 其他 5 个模块补充（label/ccc/nmpa/crossborder/trademark）
