@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from 'next-intl';
 import { API_BASE } from '@/lib/constants';
+import useClientLocale from '@/lib/useClientLocale';
 
 interface FieldConfig {
   name: string;
@@ -31,6 +32,8 @@ interface CheckFormConfig {
 
 export default function CheckForm({ config }: { config: CheckFormConfig }) {
   const t = useTranslations('Check');
+  const locale = useClientLocale();
+  const href = (path: string) => `/${locale}${path}`;
   const [step, setStep] = useState<"form" | "free-result">("form");
   const [values, setValues] = useState<Record<string, string>>({});
   const [email, setEmail] = useState("");
@@ -210,7 +213,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
               <p className="text-lg font-semibold text-[#1B365D] mb-2">{t('expertCtaTitle')}</p>
               <p className="text-sm text-gray-600 mb-4">{t('expertCtaDesc')}</p>
               <a
-                href="https://sinotradecompliance.com/en/quote/"
+                href={href('/quote/')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-semibold py-2.5 px-6 rounded-md transition-all"

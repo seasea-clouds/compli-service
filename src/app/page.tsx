@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import useSubsiteHref from '@/lib/useSubsiteHref';
 
 const services = [
   {
@@ -48,6 +48,7 @@ const services = [
 ];
 
 export default function HomePage() {
+  const subsiteHref = useSubsiteHref();
   return (
     <main className="min-h-screen bg-bg-ice">
       {/* Hero */}
@@ -67,9 +68,9 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((svc) => (
-            <Link
+            <a
               key={svc.id}
-              href={`/check/${svc.id}`}
+              href={subsiteHref(`/check/${svc.id}`)}
               className="block bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-gold/50 transition-all p-6 group"
             >
               <div className="text-3xl mb-3">{svc.icon}</div>
@@ -81,7 +82,7 @@ export default function HomePage() {
                 <span className="text-xs text-gray-400">Starts at</span>
                 <span className="font-bold text-gold">{svc.price}</span>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
       </section>

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { MessageCircle, ChevronDown, Search } from 'lucide-react';
 import { WHATSAPP_URL } from '@/lib/constants';
 import useClientLocale from '@/lib/useClientLocale';
+import useSubsiteHref from '@/lib/useSubsiteHref';
 import LanguageSwitcher from './LanguageSwitcher';
 import { industries } from '@/data/industries';
 
@@ -20,6 +21,7 @@ const serviceLinks = [
 export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
   const t = useTranslations('Navbar');
   const locale = useClientLocale();
+  const subsiteHref = useSubsiteHref();
   const [servicesOpen, setServicesOpen] = useState(false);
   const [industriesOpen, setIndustriesOpen] = useState(false);
 
@@ -55,7 +57,7 @@ export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
               {t('quote')}
             </a>
             <a
-              href="/compli-service/"
+              href={subsiteHref('/')}
               className="bg-gold hover:bg-gold/90 text-primary-navy font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md"
             >
               {t('freeCheck')}

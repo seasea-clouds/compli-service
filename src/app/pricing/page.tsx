@@ -1,11 +1,12 @@
 'use client';
 
 import useClientLocale from '@/lib/useClientLocale';
-import Link from 'next/link';
+import useSubsiteHref from '@/lib/useSubsiteHref';
 
 export default function PricingPage() {
   const locale = useClientLocale();
   const href = (path: string) => `/${locale}${path}`;
+  const subsiteHref = useSubsiteHref();
 
   return (
     <main className="min-h-screen bg-bg-ice py-16">
@@ -25,12 +26,12 @@ export default function PricingPage() {
               <li>Instant results</li>
               <li>No registration needed</li>
             </ul>
-            <Link
-              href="/check/gacc"
+            <a
+              href={subsiteHref('/check/gacc')}
               className="inline-block w-full border-2 border-primary-navy text-primary-navy font-semibold py-2.5 rounded-md hover:bg-primary-navy hover:text-white transition-all"
             >
               Start Free
-            </Link>
+            </a>
           </div>
 
           {/* Single */}

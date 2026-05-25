@@ -4,10 +4,12 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ReportViewer from '@/components/ReportViewer';
 import { API_BASE } from '@/lib/constants';
+import useSubsiteHref from '@/lib/useSubsiteHref';
 import type { ComplianceReport } from '../../../modules/gacc/report';
 
 function ReportContent() {
   const searchParams = useSearchParams();
+  const subsiteHref = useSubsiteHref();
   const id = searchParams.get('id');
   const [report, setReport] = useState<ComplianceReport | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,7 +54,7 @@ function ReportContent() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-primary-navy mb-2">Report Not Found</h1>
           <p className="text-gray-500">{error || 'This report may have expired or does not exist.'}</p>
-          <a href="/compli-service/" className="text-gold hover:underline mt-4 inline-block">
+          <a href={subsiteHref('/')} className="text-gold hover:underline mt-4 inline-block">
             &larr; Back to Home
           </a>
         </div>

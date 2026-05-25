@@ -1,5 +1,53 @@
 # NOTES.md — 技术决策与踩坑记录
 
+## 子站 URL 架构（统一方案）
+
+### 规则
+
+所有子站必须遵循主站的 locale 规则，URL 格式统一为：
+
+```
+/{locale}/<subsite-name>/<path>
+```
+
+例如：
+- `/en/compli-service/check/gacc/`
+- `/zh/compli-service/check/gacc/`
+- `/en/checklist/company/abc/`
+- `/ja/tradeclient/...`
+
+主站 middleware 只支持这一种 URL 模式，**不支持**裸路径 `/compli-service/...`。
+
+### 主站 middleware 职责
+
+```
+请求 → middleware
+  │
+  ├─ /{locale}/compli-service/*    → 去除 /{locale}/compli-service 前缀
+  │                                   → 转发到 compli-service.pages.dev/*
+  │
+  ├─ /{locale}/checklist/*         → 转发到 checklist.pages.dev/*     (未来)
+  ├─ /{locale}/tradeclient/*       → 转发到 tradeclient.pages.dev/*   (未来)
+  │
+  └─ 其他路径                       → 正常主站路由
+```
+
+### 子站构建约定
+
+| 配置 | 值 | 作用 |
+|------|-----|------|
+| `basePath` | `/<subsite-name>` | 静态资源路径前缀，proxy 据此定位 |
+| `API_BASE` | `/<subsite-name>/api` | 所有 API fetch 调用使用此前缀 |
+| 内部链接 | 使用 `useSubsiteHref()` hook 生成 `/{locale}/<name>/...` | 保证 locale 一致性 |
+
+### 子站内部链接统一处理
+
+`useSubsiteHref(path)` → 返回 `/{locale}/compli-service{path}`（或对应子站名）
+
+- 所有指向用户站内部的 `<a>`、`<Link>` 都用这个 hook
+- 指向主站的链接继续用 `/{locale}/...`（导航/页脚）
+- API 调用用 `API_BASE` 常量（不带 locale）
+
 ## 架构决策
 
 | 决策 | 方案 | 理由 |
