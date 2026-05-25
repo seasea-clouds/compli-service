@@ -12,19 +12,21 @@ npm run build      # 静态构建验证
 
 ### 发布到 Cloudflare Pages
 
-```bash
-# 登录 Cloudflare
-npx wrangler login
+GitHub push master 自动触发 CF Pages 构建部署（~1-2 分钟）。
 
-# 部署
-npm run deploy
+```bash
+git add -A
+git commit -m "内容描述"
+git push
 ```
 
-### 更新路由 Worker
+### 代理路由
 
-Worker 路由配置在 Cloudflare Dashboard → Workers & Pages → sinotradecompliance → Triggers → Routes
+`sinotradecompliance.com/compli-service/*` → 通过主站 Pages Function `functions/compli-service/[[catchall]].ts` 透明代理到 `compli-service.pages.dev`。
 
-路由规则：`sinotradecompliance.com/compli-service/*` → compli-service Pages 项目
+路由去除 `/compli-service` 前缀后转发：
+- `/compli-service/check/gacc` → `compli-service.pages.dev/check/gacc`
+- `/compli-service/_next/static/xxx.css` → `compli-service.pages.dev/_next/static/xxx.css`
 
 ### 初始化 D1
 

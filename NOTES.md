@@ -54,8 +54,9 @@
 - **依赖：** `next-intl`
 - **框架来源：** 直接从主站复制（routing.ts, messages.ts, request.ts）
 - **当前状态：** 48 语言框架就绪，所有语言使用英文消息
-- **LanguageSwitcher：** 从主站复制适配，选择语言后跳转到主站对应页面
-- **跨站语言一致性：** Header/Footer 链接使用 `useLocale()` 动态构造（待实现）
+- **LanguageSwitcher：** localStorage 存储语言偏好，刷新当前页生效
+- **ClientLocaleProvider：** 客户端运行时读取 localStorage → 动态加载对应语言消息（messagesMap 全量导入）→ 传入 NextIntlClientProvider
+- **跨站语言同步：** 主站 LanguageSwitcher 切换时也写入 localStorage key，用户站通过同一 localStorage 读取，两边保持一致
 
 ## 页头页脚
 
@@ -70,3 +71,11 @@
 - **2026-05-23:** 项目初始化，Core 层（支付/邮件/PDF），GACC 模块，首页，定价页
 - **2026-05-24:** GitHub + CF Pages 部署 + 环境变量 + 48 语言 i18n + 页头页脚对齐
 - **2026-05-25:** 项目定位重新梳理（漏斗模型），定价体系更新，认证方案确定，文档融合优化
+- **2026-05-25 (v2):** 
+  - LanguageSwitcher 改为 localStorage + 刷新当前页（不再跳转主站）
+  - Header/Footer 链接使用 `useClientLocale()` 动态读取 localStorage locale
+  - 新增 `ClientLocaleProvider` 运行时加载对应语言消息
+  - 新增 `basePath: /compli-service` 使静态资源路径统一
+  - 主站 Pages Function 代理 `/compli-service/*` → 用户站
+  - 主站 LanguageSwitcher 切换时同步写入 localStorage
+  - 修复 favicon 缺失，新增 ExpertCTA，完善报告页面路由

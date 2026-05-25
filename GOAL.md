@@ -77,8 +77,8 @@
 ### 多语言跨站切换策略
 | 阶段 | 内容 | 状态 |
 |------|------|------|
-| 1 | 用户站 Header/Footer 链接使用 `useLocale()` 动态语言 | ✅ 待实现 |
-| 2 | LanguageSwitcher 跳转主站对应语言 | ✅ 已实现 |
+| 1 | 用户站 Header/Footer 链接使用 `useClientLocale()` 动态语言 | ✅ 已实现 |
+| 2 | LanguageSwitcher localStorage 存储，刷新当前页 + 主站同步 | ✅ 已实现 |
 | 3 | Worker 路由支持 `/{locale}/compli-service/*` | ⏳ 随 Worker 路由 |
 | 4 | 用户站各语言翻译填充 | 远期 |
 
