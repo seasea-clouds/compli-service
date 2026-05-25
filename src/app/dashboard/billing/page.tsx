@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Link from 'next/link';
+import { API_BASE } from '@/lib/constants';
 
 interface Subscription {
   id: string;
@@ -20,7 +21,7 @@ function BillingContent() {
 
   useEffect(() => {
     if (!token) return;
-    fetch('/api/subscription', {
+    fetch(`${API_BASE}/subscription`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())

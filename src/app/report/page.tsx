@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ReportViewer from '@/components/ReportViewer';
+import { API_BASE } from '@/lib/constants';
 import type { ComplianceReport } from '../../../modules/gacc/report';
 
 function ReportContent() {
@@ -19,7 +20,7 @@ function ReportContent() {
       return;
     }
 
-    fetch(`/api/report/${id}`)
+    fetch(`${API_BASE}/report/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Report not found');
         return res.json();

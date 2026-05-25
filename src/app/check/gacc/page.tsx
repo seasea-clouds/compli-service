@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { checkGacc, CATEGORY_LABELS, type GaccCategory, type GaccInput } from "../../../../modules/gacc/rules";
+import { API_BASE } from "@/lib/constants";
 
 type Step = "form" | "free-result";
 
@@ -28,7 +29,7 @@ export default function GaccCheckPage() {
     try {
       const reportId = `GACC-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
-      const res = await fetch("/api/checkout", {
+      const res = await fetch(`${API_BASE}/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

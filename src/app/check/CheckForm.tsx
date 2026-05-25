@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from 'next-intl';
+import { API_BASE } from '@/lib/constants';
 
 interface FieldConfig {
   name: string;
@@ -49,7 +50,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
     setError("");
     try {
       const reportId = `${config.moduleKey.toUpperCase()}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-      const res = await fetch("/api/checkout", {
+      const res = await fetch(`${API_BASE}/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

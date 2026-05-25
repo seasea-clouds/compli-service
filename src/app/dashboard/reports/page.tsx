@@ -5,6 +5,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { useTranslations } from 'next-intl';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Link from 'next/link';
+import { API_BASE } from '@/lib/constants';
 
 interface Report {
   id: string;
@@ -23,7 +24,7 @@ function ReportsContent() {
 
   useEffect(() => {
     if (!token) return;
-    fetch('/api/reports/list', {
+    fetch(`${API_BASE}/reports/list`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
