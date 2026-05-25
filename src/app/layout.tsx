@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   title: "China Compliance Self-Check | SinoTrade Compliance",
@@ -22,6 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <CookieConsent />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

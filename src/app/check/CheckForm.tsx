@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from 'next-intl';
 
 interface FieldConfig {
   name: string;
@@ -28,6 +29,7 @@ interface CheckFormConfig {
 }
 
 export default function CheckForm({ config }: { config: CheckFormConfig }) {
+  const t = useTranslations('Check');
   const [step, setStep] = useState<"form" | "free-result">("form");
   const [values, setValues] = useState<Record<string, string>>({});
   const [email, setEmail] = useState("");
@@ -73,9 +75,9 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
       <div className="max-w-3xl mx-auto px-4 py-12">
         {/* Progress */}
         <div className="flex items-center justify-center gap-2 mb-8 text-sm text-gray-400">
-          <span className={step === "form" ? "text-[#D4AF37] font-semibold" : ""}>1. Product Info</span>
+          <span className={step === "form" ? "text-[#D4AF37] font-semibold" : ""}>1. {t('step1')}</span>
           <span>&rarr;</span>
-          <span className={step === "free-result" ? "text-[#D4AF37] font-semibold" : ""}>2. Free Result</span>
+          <span className={step === "free-result" ? "text-[#D4AF37] font-semibold" : ""}>2. {t('step2')}</span>
         </div>
 
         {/* Form */}
@@ -137,7 +139,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
               type="submit"
               className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-semibold py-3 px-6 rounded-md transition-all"
             >
-              Check My Product
+              {t('checkBtn')}
             </button>
           </form>
         )}
@@ -145,7 +147,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
         {/* Free Result */}
         {step === "free-result" && result && (
           <div className="bg-white rounded-lg shadow-sm border p-8 space-y-6">
-            <h2 className="text-xl font-bold text-[#1B365D]">Free Assessment Result</h2>
+            <h2 className="text-xl font-bold text-[#1B365D]">{t('freeResult')}</h2>
 
             <div className={`rounded-lg p-4 ${result.isActionNeeded ? "bg-amber-50 border border-amber-200" : "bg-green-50 border border-green-200"}`}>
               <p className="font-semibold">{result.summary}</p>
@@ -159,7 +161,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
 
             {result.documents.length > 0 && (
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold text-sm mb-2">Documents Required</h3>
+                <h3 className="font-semibold text-sm mb-2">{t('documentsTitle')}</h3>
                 <ul className="space-y-1">
                   {result.documents.slice(0, 5).map((doc, i) => (
                     <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
@@ -175,13 +177,13 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
             )}
 
             <div className="border-t pt-6 text-center space-y-4">
-              <p className="text-lg font-semibold text-[#1B365D]">Get the Full Compliance Report</p>
-              <p className="text-sm text-gray-500">Complete report with all required documents, timeline, and next steps.</p>
+              <p className="text-lg font-semibold text-[#1B365D]">{t('getFullReport')}</p>
+              <p className="text-sm text-gray-500">{t('getFullReportDesc')}</p>
 
               <div className="max-w-xs mx-auto">
                 <input
                   type="email"
-                  placeholder="Email (optional — to receive PDF)"
+                  placeholder={t('emailForPdf')}
                   className="w-full border border-gray-300 rounded-md p-2.5 text-sm text-center"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -196,28 +198,25 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
                   disabled={loading}
                   className="w-full max-w-xs bg-[#D4AF37] hover:bg-[#D4AF37]/90 disabled:bg-gray-300 text-[#1B365D] font-semibold py-3 px-6 rounded-md transition-all text-lg"
                 >
-                  {loading ? "Redirecting..." : "Full Report — $1"}
+                  {loading ? t('redirecting') : t('fullReport')}
                 </button>
-                <p className="text-xs text-gray-400">One-time payment. Report delivered via web + email.</p>
+                <p className="text-xs text-gray-400">{t('oneTimePayment')}</p>
               </div>
             </div>
 
             {/* Expert CTA */}
             <div className="bg-[#1B365D]/5 rounded-lg border border-[#D4AF37]/30 p-6 text-center">
-              <p className="text-lg font-semibold text-[#1B365D] mb-2">💼 Need Professional Help?</p>
-              <p className="text-sm text-gray-600 mb-4">
-                Our compliance experts can handle the entire registration process for you.
-              </p>
+              <p className="text-lg font-semibold text-[#1B365D] mb-2">{t('expertCtaTitle')}</p>
+              <p className="text-sm text-gray-600 mb-4">{t('expertCtaDesc')}</p>
               <a
                 href="https://sinotradecompliance.com/en/quote/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-semibold py-2.5 px-6 rounded-md transition-all"
               >
-                Get a Quote from Our Experts &
-arr;
+                {t('expertCtaBtn')}
               </a>
-              <p className="text-xs text-gray-400 mt-2">Professional services starting from $500</p>
+              <p className="text-xs text-gray-400 mt-2">{t('expertCtaPrice')}</p>
             </div>
           </div>
         )}

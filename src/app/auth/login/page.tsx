@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/components/AuthProvider';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const t = useTranslations('Auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -20,7 +22,7 @@ export default function LoginPage() {
       await login(email, password, rememberMe);
       window.location.href = '/dashboard';
     } catch (err: any) {
-      setError(err.message || 'Login failed');
+      setError(err.message || t('errorInvalid'));
     } finally {
       setLoading(false);
     }
@@ -29,7 +31,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#F4F6F9] flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-        <h1 className="text-2xl font-bold text-[#1B365D] text-center mb-6">Sign In</h1>
+        <h1 className="text-2xl font-bold text-[#1B365D] text-center mb-6">{t('signIn')}</h1>
 
         {error && (
           <div className="bg-red-50 text-red-600 text-sm p-3 rounded-md mb-4">{error}</div>
@@ -37,26 +39,26 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('email')}</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
-              placeholder="you@example.com"
+              placeholder={t('emailPlaceholder')}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('password')}</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
-              placeholder="Enter your password"
+              placeholder={t('passwordPlaceholder')}
             />
           </div>
 
@@ -68,7 +70,7 @@ export default function LoginPage() {
               onChange={(e) => setRememberMe(e.target.checked)}
               className="rounded border-gray-300"
             />
-            <label htmlFor="remember" className="text-sm text-gray-600">Remember me</label>
+            <label htmlFor="remember" className="text-sm text-gray-600">{t('rememberMe')}</label>
           </div>
 
           <button
@@ -76,14 +78,14 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-[#1B365D] hover:bg-[#1B365D]/90 text-white font-semibold py-2.5 rounded-md transition-all disabled:opacity-50"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('signingIn') : t('signInBtn')}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Don't have an account?{' '}
+          {t('noAccount')}{' '}
           <Link href="/auth/register" className="text-[#D4AF37] hover:underline font-medium">
-            Register
+            {t('register')}
           </Link>
         </p>
       </div>
