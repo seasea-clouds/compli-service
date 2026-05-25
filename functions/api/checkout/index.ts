@@ -33,10 +33,10 @@ export async function onRequest(context: {
     // Determine which product to use
     const pid = productId ?? context.env.CREEM_PRODUCT_ID_SINGLE;
 
+    // Creem checkout API - test env rejects cancel_url
     const body: Record<string, unknown> = {
       product_id: pid,
       success_url: `https://sinotradecompliance.com/compli-service/report/?id=${reportId}`,
-      cancel_url: `https://sinotradecompliance.com/compli-service/check/gacc`,
       metadata: {
         report_id: reportId,
         ...(email && { email }),
