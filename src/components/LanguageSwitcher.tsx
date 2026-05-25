@@ -1,21 +1,17 @@
 'use client';
 
 import { locales, localeNames } from '@/i18n/routing';
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getStoredLocale, setStoredLocale } from '@/lib/useClientLocale';
 
 export default function LanguageSwitcher() {
-  const mountedRef = useRef(false);
-  const [rendered, setRendered] = useState(false);
   const [locale, setLocale] = useState('en');
+  const [mounted, setMounted] = useState(false);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
-  useLayoutEffect(() => {
-    mountedRef.current = true;
-    setRendered(true);
+  useEffect(() => {
     setLocale(getStoredLocale());
+    setMounted(true);
   }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleChange = (newLocale: string) => {
     if (newLocale === locale) return;
@@ -23,13 +19,11 @@ export default function LanguageSwitcher() {
     window.location.reload();
   };
 
-  if (!rendered) return null;
-
   return (
     <div className="relative group">
       <button type="button" className="flex items-center gap-1 text-white/80 hover:text-white transition-colors text-sm">
         <span className="text-base">🌐</span>
-        <span className="hidden sm:inline">{localeNames[locale as keyof typeof localeNames]?.split(' ').slice(1).join(' ')}</span>
+        <span className="hidden sm:inline">{mounted ? localeNames[locale as keyof typeof localeNames]?.split(' ').slice(1).join(' ') : 'English'}</span>
         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
