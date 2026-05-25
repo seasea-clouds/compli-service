@@ -35,7 +35,7 @@ export async function onRequest(context: {
 
     const body: Record<string, unknown> = {
       product_id: pid,
-      success_url: `https://sinotradecompliance.com/compli-service/report/${reportId}`,
+      success_url: `https://sinotradecompliance.com/compli-service/report/?id=${reportId}`,
       cancel_url: `https://sinotradecompliance.com/compli-service/check/gacc`,
       metadata: {
         report_id: reportId,

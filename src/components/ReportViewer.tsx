@@ -1,5 +1,6 @@
 import type { ComplianceReport } from "../../modules/gacc/report";
 import { ReportTemplate } from "@/core/report/template";
+import ExpertCta from "./ExpertCta";
 
 interface ReportViewerProps {
   report: ComplianceReport;
@@ -27,6 +28,8 @@ export default function ReportViewer({ report, onBack }: ReportViewerProps) {
           nextSteps={report.nextSteps}
           generatedAt={report.generatedAt}
         />
+
+        <ExpertCta />
       </div>
     </main>
   );

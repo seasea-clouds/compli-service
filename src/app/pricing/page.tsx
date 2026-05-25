@@ -1,4 +1,12 @@
+'use client';
+
+import useClientLocale from '@/lib/useClientLocale';
+import Link from 'next/link';
+
 export default function PricingPage() {
+  const locale = useClientLocale();
+  const href = (path: string) => `/${locale}${path}`;
+
   return (
     <main className="min-h-screen bg-bg-ice py-16">
       <div className="max-w-4xl mx-auto px-4 text-center">
@@ -17,12 +25,12 @@ export default function PricingPage() {
               <li>Instant results</li>
               <li>No registration needed</li>
             </ul>
-            <a
+            <Link
               href="/check/gacc"
               className="inline-block w-full border-2 border-primary-navy text-primary-navy font-semibold py-2.5 rounded-md hover:bg-primary-navy hover:text-white transition-all"
             >
               Start Free
-            </a>
+            </Link>
           </div>
 
           {/* Single */}
@@ -69,7 +77,7 @@ export default function PricingPage() {
               <li>Customs clearance support</li>
             </ul>
             <a
-              href="https://sinotradecompliance.com/en/packages/"
+              href={href('/packages/')}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block w-full bg-primary-navy hover:bg-primary-navy/90 text-white font-semibold py-2.5 rounded-md transition-all"
