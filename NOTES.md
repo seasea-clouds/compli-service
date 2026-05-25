@@ -9,52 +9,64 @@
 | 邮件 | Resend（EmailProvider 抽象） | 已测通，松耦合可换 |
 | PDF | @react-pdf/renderer v4.5.1 | React 组件生成 PDF，风格一致 |
 | 人机验证 | CF Turnstile | 免费、无感、CF 原生 |
-| 认证 | 邮箱+密码（bcrypt）+ JWT | 轻量、零依赖第三方 |
+| 认证 | JWT + localStorage | 轻量、零依赖第三方、静态导出兼容 |
 | 部署 | Pages + Worker 路由 | 独立 CI/CD，互不影响 |
 | 多语言 | next-intl + 主站 locale 列表 | 48 语言特色，与主站一致 |
-
-## Creem 支付
-
-- Creem 是 Merchant of Record，处理全球税务合规
-- API 认证：`x-api-key` header
-- 测试环境：`https://test-api.creem.io`
-- 生产环境：`https://api.creem.io`
-- 需要先在 Creem 创建产品获取 `product_id`
-- Webhook 监听：checkout.completed / subscription.created / subscription.cancelled
-- 详细步骤见 [SOP.md](./SOP.md#-creem-支付接入流程)
 
 ## Cloudflare Pages 部署
 
 - **项目名：** `compli-service`
 - **生产域名：** `https://compli-service.pages.dev`
-- **构建配置：** `npm run build` → `out/`
 - **GitHub 关联：** `seasea-clouds/compli-service` → master 分支自动部署
+- **构建命令：** `npm run build`
+- **输出目录：** `out/`
 - **工作流：** push → CF Pages 自动构建 → 1-2 分钟上线
-- **2026-05-24 初始部署上线成功**
 
 ## 环境变量管理
 
-- **开发环境：** `~/.openclaw/.env` 统一凭证库 + `project/.env` 本地副本
-- **CF Pages：** Preview + Production 各自配置，密钥类型 `secret_text`
-- **已配置变量：** CREEM_API_KEY, CREEM_WEBHOOK_SECRET, CREEM_PRODUCT_ID_*, RESEND_API_KEY, EMAIL_FROM, NODE_VERSION=22
+- **唯一来源：** `~/.openclaw/.env`
+- **CF Pages：** Preview + Production 各自配置，敏感变量用 `secret_text` 类型
+- **已配置（2026-05-24）：** CREEM_API_KEY, CREEM_WEBHOOK_SECRET, CREEM_PRODUCT_ID_SINGLE, CREEM_PRODUCT_ID_SUBSCRIBE, RESEND_API_KEY, EMAIL_FROM, NODE_VERSION=22
+
+## 认证方案
+
+- **存储：** localStorage（关闭浏览器不丢）
+- **JWT 有效期：** 24h（普通登录）/ 30 天（Remember Me）
+- **API 鉴权：** `Authorization: Bearer <token>` header
+- **路由守卫：** AuthProvider + ProtectedRoute 客户端组件
+- **独立登录：** 不与主站共享（主站无用户系统），未来可统一
+
+### 为什么不选 cookie？
+- 静态导出（output: 'export'）无法在服务端写 HttpOnly cookie
+- localStorage 对自查工具够用（不含敏感金融数据）
+- 未来升级：Pages Function 可用 `Set-Cookie` header 设 HttpOnly cookie
+
+## Cookie 同意
+
+**当前不需要。** 理由：
+- JWT 存 localStorage，非 cookie
+- 无第三方追踪/分析工具
+- GDPR 严格必要豁免
+- 未来接入分析工具时需加 `<CookieConsent />` 组件
 
 ## i18n 多语言
 
-- 依赖：`next-intl`
-- 框架从主站复制：`routing.ts`（48 locale）、`messages.ts`、`request.ts`
-- 当前所有语言使用英文消息，后续可逐语种翻译
-- LanguageSwitcher 直接从主站复制适配
-- 语言切换目前跳转到主站对应页面（`sinotradecompliance.com/{locale}/`）
+- **依赖：** `next-intl`
+- **框架来源：** 直接从主站复制（routing.ts, messages.ts, request.ts）
+- **当前状态：** 48 语言框架就绪，所有语言使用英文消息
+- **LanguageSwitcher：** 从主站复制适配，选择语言后跳转到主站对应页面
+- **跨站语言一致性：** Header/Footer 链接使用 `useLocale()` 动态构造（待实现）
 
 ## 页头页脚
 
-- 从主站直接复制 Navbar.tsx / Footer.tsx 适配
-- 导航栏：Services(下拉) | Industries(下拉) | About | Packages | FAQ | Insights | LanguageSwitcher
-- 第一行：Logo | WhatsApp | Get a Quote
-- 页脚 4 列：Services(6) | Quick Links(5) | Contact(col-span-2)
-- 外部链接指向主站（`target="_blank"`），内部页面保留本站路由
+- **来源：** 直接从主站 Navbar.tsx / Footer.tsx 复制适配
+- **导航结构（完全对齐主站）：** Services(下拉) | Industries(下拉) | About | Packages | FAQ | Insights | LanguageSwitcher
+- **顶栏：** Logo | WhatsApp | Get a Quote
+- **页脚 4 列：** Services × 6 | Quick Links × 5 | Contact（col-span-2）
+- **跨站链接：** 内部功能保留本站路由，导航/品牌链接指向主站（target="_blank"）
 
 ## 进度记录
 
 - **2026-05-23:** 项目初始化，Core 层（支付/邮件/PDF），GACC 模块，首页，定价页
-- **2026-05-24:** GitHub 仓库 + CF Pages 部署 + 环境变量配置 + 48语言 i18n + 页头页脚与主站对齐
+- **2026-05-24:** GitHub + CF Pages 部署 + 环境变量 + 48 语言 i18n + 页头页脚对齐
+- **2026-05-25:** 项目定位重新梳理（漏斗模型），定价体系更新，认证方案确定，文档融合优化
