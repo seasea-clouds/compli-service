@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import "./globals.css";
 import Header from "@/components/LayoutHeader";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import CookieConsent from "@/components/CookieConsent";
+import ClientLocaleProvider from "@/components/ClientLocaleProvider";
 
 export const metadata: Metadata = {
   title: "China Compliance Self-Check | SinoTrade Compliance",
   description: "Check if your product needs GACC registration, CCC certification, or NMPA filing for export to China.",
+  icons: {
+    icon: '/compli-service/favicon.ico',
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,14 +21,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
-        <NextIntlClientProvider messages={messages}>
+        <ClientLocaleProvider serverMessages={messages}>
           <AuthProvider>
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
             <CookieConsent />
           </AuthProvider>
-        </NextIntlClientProvider>
+        </ClientLocaleProvider>
       </body>
     </html>
   );
