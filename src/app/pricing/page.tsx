@@ -7,7 +7,7 @@ export default function PricingPage() {
           Pay only for what you need. Free assessment included.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Free */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
             <h2 className="text-lg font-semibold text-primary-navy">Free Check</h2>
@@ -57,7 +57,31 @@ export default function PricingPage() {
               Subscribe $9.9/mo
             </button>
           </div>
+
+          {/* Professional Service */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center flex flex-col">
+            <h2 className="text-lg font-semibold text-primary-navy">Professional Service</h2>
+            <p className="text-4xl font-bold text-primary-navy my-6">$500+</p>
+            <ul className="text-sm text-gray-500 space-y-3 mb-8 flex-1">
+              <li>Full compliance registration</li>
+              <li>Documentation handling</li>
+              <li>Government liaison</li>
+              <li>Customs clearance support</li>
+            </ul>
+            <a
+              href="https://sinotradecompliance.com/en/packages/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full bg-primary-navy hover:bg-primary-navy/90 text-white font-semibold py-2.5 rounded-md transition-all"
+            >
+              Learn More &rarr;
+            </a>
+          </div>
         </div>
+
+        <p className="text-xs text-gray-400 mt-8 max-w-lg mx-auto">
+          The self-check tool provides preliminary guidance. Professional services are handled by our expert team.
+        </p>
       </div>
     </main>
   );

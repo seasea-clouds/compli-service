@@ -201,6 +201,24 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
                 <p className="text-xs text-gray-400">One-time payment. Report delivered via web + email.</p>
               </div>
             </div>
+
+            {/* Expert CTA */}
+            <div className="bg-[#1B365D]/5 rounded-lg border border-[#D4AF37]/30 p-6 text-center">
+              <p className="text-lg font-semibold text-[#1B365D] mb-2">💼 Need Professional Help?</p>
+              <p className="text-sm text-gray-600 mb-4">
+                Our compliance experts can handle the entire registration process for you.
+              </p>
+              <a
+                href="https://sinotradecompliance.com/en/quote/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-semibold py-2.5 px-6 rounded-md transition-all"
+              >
+                Get a Quote from Our Experts &
+arr;
+              </a>
+              <p className="text-xs text-gray-400 mt-2">Professional services starting from $500</p>
+            </div>
           </div>
         )}
       </div>
