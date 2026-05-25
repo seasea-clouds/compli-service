@@ -1,30 +1,26 @@
 'use client';
 
-import { useLocale } from 'next-intl';
 import { locales, localeNames } from '@/i18n/routing';
 import { useState, useRef, useLayoutEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { getStoredLocale, setStoredLocale } from '@/lib/useClientLocale';
 
 export default function LanguageSwitcher() {
-  const locale = useLocale();
   const mountedRef = useRef(false);
   const [rendered, setRendered] = useState(false);
-  const router = useRouter();
+  const [locale, setLocale] = useState('en');
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useLayoutEffect(() => {
     mountedRef.current = true;
     setRendered(true);
+    setLocale(getStoredLocale());
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
-  // Static export: change path directly
   const handleChange = (newLocale: string) => {
     if (newLocale === locale) return;
-    const path = window.location.pathname;
-    // Replace locale in path
-    const newPath = path.replace(`/${locale}/`, `/${newLocale}/`);
-    router.push(newPath);
+    setStoredLocale(newLocale);
+    window.location.reload();
   };
 
   if (!rendered) return null;

@@ -1,9 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import { WHATSAPP_URL } from '@/lib/constants';
+import useClientLocale from '@/lib/useClientLocale';
 import { Mail, MessageCircle, MapPin } from 'lucide-react';
 
 const serviceLinks = [
@@ -17,8 +16,8 @@ const serviceLinks = [
 
 export default function Footer() {
   const t = useTranslations('Footer');
-  const params = useParams<{ locale: string }>();
-  const locale = params?.locale ?? 'en';
+  const locale = useClientLocale();
+  const href = (path: string) => `/${locale}${path}`;
 
   return (
     <footer className="bg-primary-navy py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
@@ -30,12 +29,12 @@ export default function Footer() {
             <ul className="space-y-2">
               {serviceLinks.map((s) => (
                 <li key={s.key}>
-                  <Link
-                    href={`/${locale}${s.href}`}
+                  <a
+                    href={href(s.href)}
                     className="text-white/70 hover:text-white transition-colors text-sm"
                   >
                     {t(s.key)}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -46,29 +45,29 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-4">{t('quickLinks')}</h4>
             <ul className="space-y-2">
               <li>
-                <Link href={`/${locale}/about/`} className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={href('/about/')} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('about')}
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href={`/${locale}/packages/`} className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={href('/packages/')} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('packages')}
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href={`/${locale}/industries/`} className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={href('/industries/')} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('industries')}
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href={`/${locale}/blog/`} className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={href('/blog/')} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('blog')}
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href={`/${locale}/faq/`} className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={href('/faq/')} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('faq')}
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

@@ -2,37 +2,37 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
 import { MessageCircle, ChevronDown, Search } from 'lucide-react';
-import Link from 'next/link';
 import { WHATSAPP_URL } from '@/lib/constants';
+import useClientLocale from '@/lib/useClientLocale';
 import LanguageSwitcher from './LanguageSwitcher';
 import { industries } from '@/data/industries';
 
 const serviceLinks = [
-  { key: 'gacc', href: '/services/gacc/', emoji: '📋' },
-  { key: 'label', href: '/services/label/', emoji: '🏷️' },
-  { key: 'ccc', href: '/services/ccc/', emoji: '✅' },
-  { key: 'cosmetics', href: '/services/cosmetics/', emoji: '💄' },
-  { key: 'ecommerce', href: '/services/ecommerce/', emoji: '🌐' },
-  { key: 'brand', href: '/services/brand/', emoji: '🛡️' },
+  { key: 'gacc', path: '/services/gacc/', emoji: '📋' },
+  { key: 'label', path: '/services/label/', emoji: '🏷️' },
+  { key: 'ccc', path: '/services/ccc/', emoji: '✅' },
+  { key: 'cosmetics', path: '/services/cosmetics/', emoji: '💄' },
+  { key: 'ecommerce', path: '/services/ecommerce/', emoji: '🌐' },
+  { key: 'brand', path: '/services/brand/', emoji: '🛡️' },
 ];
 
 export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
   const t = useTranslations('Navbar');
-  const params = useParams<{ locale: string }>();
-  const locale = params?.locale ?? 'en';
+  const locale = useClientLocale();
   const [servicesOpen, setServicesOpen] = useState(false);
   const [industriesOpen, setIndustriesOpen] = useState(false);
+
+  const href = (path: string) => `/${locale}${path}`;
 
   return (
     <nav className="relative z-50 bg-primary-navy/95 backdrop-blur-sm shadow-md">
       {/* 第一行：Logo + WhatsApp */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          <Link href={`/${locale}/`} className="text-white font-bold text-lg sm:text-xl">
+          <a href={href('/')} className="text-white font-bold text-lg sm:text-xl">
             {t('logo')}
-          </Link>
+          </a>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -51,13 +51,11 @@ export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
               <MessageCircle className="w-4 h-4" />
               <span className="hidden sm:inline">{t('whatsapp')}</span>
             </a>
-            <Link href={`/${locale}/quote/`} className="bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md">
+            <a href={href('/quote/')} className="bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md">
               {t('quote')}
-            </Link>
+            </a>
             <a
-              href="https://compli-service.pages.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/compli-service/"
               className="bg-gold hover:bg-gold/90 text-primary-navy font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md"
             >
               {t('freeCheck')}
@@ -86,13 +84,13 @@ export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
               {servicesOpen && (
                 <div className="absolute top-full left-0 w-56 bg-white rounded-md shadow-lg py-2 z-50 max-h-[32rem] overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#D4AF37 #f1f1f1' }}>
                   {serviceLinks.map((s) => (
-                    <Link
+                    <a
                       key={s.key}
-                      href={`/${locale}${s.href}`}
+                      href={href(s.path)}
                       className="block px-4 py-2 text-sm text-text-charcoal hover:bg-bg-ice hover:text-primary-navy transition-colors"
                     >
                       {s.emoji} {t(`servicesDropdown.${s.key}`)}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               )}
@@ -113,58 +111,57 @@ export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
               {industriesOpen && (
                 <div className="absolute top-full left-0 w-56 bg-white rounded-md shadow-lg py-2 z-50 max-h-[32rem] overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#D4AF37 #f1f1f1' }}>
                   {industries.map((ind) => (
-                    <Link
+                    <a
                       key={ind.slug}
-                      href={`/${locale}/industries/${ind.slug}/`}
+                      href={href(`/industries/${ind.slug}/`)}
                       className="block px-4 py-2 text-sm text-text-charcoal hover:bg-bg-ice hover:text-primary-navy transition-colors"
                     >
                       {ind.emoji} {t(`industriesDropdown.${ind.slug.replace(/-/g, '')}`)}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               )}
             </div>
 
-            <Link href={`/${locale}/about/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <a href={href('/about/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('about')}
-            </Link>
-            <Link href={`/${locale}/packages/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            </a>
+            <a href={href('/packages/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('packages')}
-            </Link>
-            <Link href={`/${locale}/faq/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            </a>
+            <a href={href('/faq/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('faq')}
-            </Link>
-            <Link href={`/${locale}/blog/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            </a>
+            <a href={href('/blog/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('blog')}
-            </Link>
+            </a>
             <LanguageSwitcher />
           </div>
 
           {/* 手机端：flex-wrap 允许换行 */}
           <div className="md:hidden flex flex-wrap items-center justify-center gap-x-5 gap-y-1 py-2 text-sm">
-            <Link href={`/${locale}/services/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={href('/services/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('services')}
-            </Link>
-            <Link href={`/${locale}/industries/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </a>
+            <a href={href('/industries/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('industries')}
-            </Link>
-            <Link href={`/${locale}/about/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </a>
+            <a href={href('/about/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('about')}
-            </Link>
-            <Link href={`/${locale}/packages/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </a>
+            <a href={href('/packages/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('packages')}
-            </Link>
-            <Link href={`/${locale}/faq/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </a>
+            <a href={href('/faq/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('faq')}
-            </Link>
-            <Link href={`/${locale}/blog/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </a>
+            <a href={href('/blog/')} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('blog')}
-            </Link>
+            </a>
             <LanguageSwitcher />
           </div>
         </div>
       </div>
-
     </nav>
   );
 }
