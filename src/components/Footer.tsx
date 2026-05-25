@@ -1,10 +1,10 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { WHATSAPP_URL } from '@/lib/constants';
 import { Mail, MessageCircle, MapPin } from 'lucide-react';
-
-const WHATSAPP_URL = 'https://wa.me/message/HPPZ5X6XZSMLM1';
-const BASE = 'https://sinotradecompliance.com';
 
 const serviceLinks = [
   { key: 'gaccRegistration', href: '/services/gacc/' },
@@ -17,7 +17,8 @@ const serviceLinks = [
 
 export default function Footer() {
   const t = useTranslations('Footer');
-  const locale = useLocale();
+  const params = useParams<{ locale: string }>();
+  const locale = params?.locale ?? 'en';
 
   return (
     <footer className="bg-primary-navy py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
@@ -29,14 +30,12 @@ export default function Footer() {
             <ul className="space-y-2">
               {serviceLinks.map((s) => (
                 <li key={s.key}>
-                  <a
-                    href={`${BASE}/${locale}${s.href}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href={`/${locale}${s.href}`}
                     className="text-white/70 hover:text-white transition-colors text-sm"
                   >
                     {t(s.key)}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -47,29 +46,29 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-4">{t('quickLinks')}</h4>
             <ul className="space-y-2">
               <li>
-                <a href={`${BASE}/${locale}/about/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <Link href={`/${locale}/about/`} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('about')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href={`${BASE}/${locale}/packages/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <Link href={`/${locale}/packages/`} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('packages')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href={`${BASE}/${locale}/industries/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <Link href={`/${locale}/industries/`} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('industries')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href={`${BASE}/${locale}/blog/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <Link href={`/${locale}/blog/`} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('blog')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href={`${BASE}/${locale}/faq/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <Link href={`/${locale}/faq/`} className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('faq')}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -103,13 +102,14 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/20 pt-6">
-          <p className="text-center text-white/60 text-sm mb-4">{t('rights')}</p>
+        <div id="footer-divider" className="border-t border-white/20 pt-6">
+          <p id="copyright-bar" className="text-center text-white/60 text-sm mb-4">{t('rights')}</p>
           <p className="text-center text-white/40 text-xs max-w-2xl mx-auto">
             {t('disclaimer')}
           </p>
         </div>
       </div>
+          <link rel="llms.txt" href={`/${locale}/llms.txt`} />
     </footer>
   );
 }

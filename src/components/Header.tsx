@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
-import { MessageCircle, ChevronDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { MessageCircle, ChevronDown, Search } from 'lucide-react';
 import Link from 'next/link';
+import { WHATSAPP_URL } from '@/lib/constants';
 import LanguageSwitcher from './LanguageSwitcher';
-
-const WHATSAPP_URL = 'https://wa.me/message/HPPZ5X6XZSMLM1';
+import { industries } from '@/data/industries';
 
 const serviceLinks = [
   { key: 'gacc', href: '/services/gacc/', emoji: '📋' },
@@ -17,24 +18,10 @@ const serviceLinks = [
   { key: 'brand', href: '/services/brand/', emoji: '🛡️' },
 ];
 
-const industries = [
-  { slug: 'dairy-milk-products', emoji: '🥛' },
-  { slug: 'meat-seafood', emoji: '🥩' },
-  { slug: 'wine-spirits', emoji: '🍷' },
-  { slug: 'skincare-cosmetics', emoji: '💄' },
-  { slug: 'pet-food', emoji: '🐾' },
-  { slug: 'health-supplements', emoji: '💊' },
-  { slug: 'baby-maternal', emoji: '👶' },
-  { slug: 'consumer-electronics', emoji: '📱' },
-  { slug: 'medical-devices', emoji: '🏥' },
-  { slug: 'crossborder-ecommerce', emoji: '🛒' },
-];
-
-const BASE = 'https://sinotradecompliance.com';
-
-export default function Navbar() {
+export default function Navbar({ onSearchOpen }: { onSearchOpen: () => void }) {
   const t = useTranslations('Navbar');
-  const locale = useLocale();
+  const params = useParams<{ locale: string }>();
+  const locale = params?.locale ?? 'en';
   const [servicesOpen, setServicesOpen] = useState(false);
   const [industriesOpen, setIndustriesOpen] = useState(false);
 
@@ -43,10 +30,18 @@ export default function Navbar() {
       {/* 第一行：Logo + WhatsApp */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
-          <Link href="/" className="text-white font-bold text-lg sm:text-xl">
+          <Link href={`/${locale}/`} className="text-white font-bold text-lg sm:text-xl">
             {t('logo')}
           </Link>
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onSearchOpen}
+              className="p-2 text-white/80 hover:text-white transition-colors rounded-md hover:bg-white/10"
+              aria-label="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -56,13 +51,16 @@ export default function Navbar() {
               <MessageCircle className="w-4 h-4" />
               <span className="hidden sm:inline">{t('whatsapp')}</span>
             </a>
+            <Link href={`/${locale}/quote/`} className="bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md">
+              {t('quote')}
+            </Link>
             <a
-              href={`${BASE}/${locale}/quote/`}
+              href="https://compli-service.pages.dev/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md"
+              className="bg-gold hover:bg-gold/90 text-primary-navy font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md"
             >
-              {t('quote')}
+              {t('freeCheck')}
             </a>
           </div>
         </div>
@@ -88,15 +86,13 @@ export default function Navbar() {
               {servicesOpen && (
                 <div className="absolute top-full left-0 w-56 bg-white rounded-md shadow-lg py-2 z-50 max-h-[32rem] overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#D4AF37 #f1f1f1' }}>
                   {serviceLinks.map((s) => (
-                    <a
+                    <Link
                       key={s.key}
-                      href={`${BASE}/en${s.href}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-navy transition-colors"
+                      href={`/${locale}${s.href}`}
+                      className="block px-4 py-2 text-sm text-text-charcoal hover:bg-bg-ice hover:text-primary-navy transition-colors"
                     >
                       {s.emoji} {t(`servicesDropdown.${s.key}`)}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -117,55 +113,53 @@ export default function Navbar() {
               {industriesOpen && (
                 <div className="absolute top-full left-0 w-56 bg-white rounded-md shadow-lg py-2 z-50 max-h-[32rem] overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#D4AF37 #f1f1f1' }}>
                   {industries.map((ind) => (
-                    <a
+                    <Link
                       key={ind.slug}
-                      href={`${BASE}/${locale}/industries/${ind.slug}/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-navy transition-colors"
+                      href={`/${locale}/industries/${ind.slug}/`}
+                      className="block px-4 py-2 text-sm text-text-charcoal hover:bg-bg-ice hover:text-primary-navy transition-colors"
                     >
                       {ind.emoji} {t(`industriesDropdown.${ind.slug.replace(/-/g, '')}`)}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
             </div>
 
-            <a href={`${BASE}/${locale}/about/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <Link href={`/${locale}/about/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('about')}
-            </a>
-            <a href={`${BASE}/${locale}/packages/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            </Link>
+            <Link href={`/${locale}/packages/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('packages')}
-            </a>
-            <a href={`${BASE}/${locale}/faq/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            </Link>
+            <Link href={`/${locale}/faq/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('faq')}
-            </a>
-            <a href={`${BASE}/${locale}/blog/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            </Link>
+            <Link href={`/${locale}/blog/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('blog')}
-            </a>
+            </Link>
             <LanguageSwitcher />
           </div>
 
           {/* 手机端：flex-wrap 允许换行 */}
           <div className="md:hidden flex flex-wrap items-center justify-center gap-x-5 gap-y-1 py-2 text-sm">
-            <a href={`${BASE}/${locale}/services/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <Link href={`/${locale}/services/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('services')}
-            </a>
-            <a href={`${BASE}/${locale}/industries/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </Link>
+            <Link href={`/${locale}/industries/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('industries')}
-            </a>
-            <a href={`${BASE}/${locale}/about/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </Link>
+            <Link href={`/${locale}/about/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('about')}
-            </a>
-            <a href={`${BASE}/${locale}/packages/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </Link>
+            <Link href={`/${locale}/packages/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('packages')}
-            </a>
-            <a href={`${BASE}/${locale}/faq/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </Link>
+            <Link href={`/${locale}/faq/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('faq')}
-            </a>
-            <a href={`${BASE}/${locale}/blog/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            </Link>
+            <Link href={`/${locale}/blog/`} className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('blog')}
-            </a>
+            </Link>
             <LanguageSwitcher />
           </div>
         </div>

@@ -4,6 +4,4 @@ compatibility_date = "2026-05-23"
 
 routes = [
   { pattern = "sinotradecompliance.com/compli-service/*", zone_id = "48516c3ee788fe8d2f09af43d91db92d" },
-  { pattern = "sinotradecompliance.com/_next/static/*", zone_id = "48516c3ee788fe8d2f09af43d91db92d" },
-  { pattern = "sinotradecompliance.com/favicon.ico", zone_id = "48516c3ee788fe8d2f09af43d91db92d" },
 ]

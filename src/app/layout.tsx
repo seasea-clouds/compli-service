@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import "./globals.css";
-import Header from "@/components/Header";
+import Header from "@/components/LayoutHeader";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import CookieConsent from "@/components/CookieConsent";
