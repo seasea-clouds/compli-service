@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Mail, MessageCircle, MapPin } from 'lucide-react';
 
 const WHATSAPP_URL = 'https://wa.me/message/HPPZ5X6XZSMLM1';
@@ -17,6 +17,7 @@ const serviceLinks = [
 
 export default function Footer() {
   const t = useTranslations('Footer');
+  const locale = useLocale();
 
   return (
     <footer className="bg-primary-navy py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
@@ -29,7 +30,7 @@ export default function Footer() {
               {serviceLinks.map((s) => (
                 <li key={s.key}>
                   <a
-                    href={`${BASE}/en${s.href}`}
+                    href={`${BASE}/${locale}${s.href}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/70 hover:text-white transition-colors text-sm"
@@ -46,27 +47,27 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-4">{t('quickLinks')}</h4>
             <ul className="space-y-2">
               <li>
-                <a href={`${BASE}/en/about/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={`${BASE}/${locale}/about/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('about')}
                 </a>
               </li>
               <li>
-                <a href={`${BASE}/en/packages/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={`${BASE}/${locale}/packages/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('packages')}
                 </a>
               </li>
               <li>
-                <a href={`${BASE}/en/industries/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={`${BASE}/${locale}/industries/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('industries')}
                 </a>
               </li>
               <li>
-                <a href={`${BASE}/en/blog/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={`${BASE}/${locale}/blog/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('blog')}
                 </a>
               </li>
               <li>
-                <a href={`${BASE}/en/faq/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
+                <a href={`${BASE}/${locale}/faq/`} target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors text-sm">
                   {t('faq')}
                 </a>
               </li>

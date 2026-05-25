@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { MessageCircle, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -34,6 +34,7 @@ const BASE = 'https://sinotradecompliance.com';
 
 export default function Navbar() {
   const t = useTranslations('Navbar');
+  const locale = useLocale();
   const [servicesOpen, setServicesOpen] = useState(false);
   const [industriesOpen, setIndustriesOpen] = useState(false);
 
@@ -56,7 +57,7 @@ export default function Navbar() {
               <span className="hidden sm:inline">{t('whatsapp')}</span>
             </a>
             <a
-              href={`${BASE}/en/quote/`}
+              href={`${BASE}/${locale}/quote/`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold px-3 py-1.5 rounded-md text-sm transition-all hover:shadow-md"
@@ -118,7 +119,7 @@ export default function Navbar() {
                   {industries.map((ind) => (
                     <a
                       key={ind.slug}
-                      href={`${BASE}/en/industries/${ind.slug}/`}
+                      href={`${BASE}/${locale}/industries/${ind.slug}/`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-navy transition-colors"
@@ -130,16 +131,16 @@ export default function Navbar() {
               )}
             </div>
 
-            <a href={`${BASE}/en/about/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <a href={`${BASE}/${locale}/about/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('about')}
             </a>
-            <a href={`${BASE}/en/packages/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <a href={`${BASE}/${locale}/packages/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('packages')}
             </a>
-            <a href={`${BASE}/en/faq/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <a href={`${BASE}/${locale}/faq/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('faq')}
             </a>
-            <a href={`${BASE}/en/blog/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <a href={`${BASE}/${locale}/blog/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors text-sm font-medium">
               {t('blog')}
             </a>
             <LanguageSwitcher />
@@ -147,22 +148,22 @@ export default function Navbar() {
 
           {/* 手机端：flex-wrap 允许换行 */}
           <div className="md:hidden flex flex-wrap items-center justify-center gap-x-5 gap-y-1 py-2 text-sm">
-            <a href={`${BASE}/en/services/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={`${BASE}/${locale}/services/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('services')}
             </a>
-            <a href={`${BASE}/en/industries/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={`${BASE}/${locale}/industries/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('industries')}
             </a>
-            <a href={`${BASE}/en/about/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={`${BASE}/${locale}/about/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('about')}
             </a>
-            <a href={`${BASE}/en/packages/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={`${BASE}/${locale}/packages/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('packages')}
             </a>
-            <a href={`${BASE}/en/faq/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={`${BASE}/${locale}/faq/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('faq')}
             </a>
-            <a href={`${BASE}/en/blog/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
+            <a href={`${BASE}/${locale}/blog/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
               {t('blog')}
             </a>
             <LanguageSwitcher />
