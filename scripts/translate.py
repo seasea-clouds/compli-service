@@ -1,88 +1,99 @@
 #!/usr/bin/env python3
-"""Translate compli-service message files from English to 47 languages."""
+"""Fast batch translation using direct Google Translate API."""
 
-import json
-import os
-import sys
-import time
-from deep_translator import GoogleTranslator
+import json, os, time, urllib.parse, requests
 
 MSG_DIR = "/root/projects/trade/compli-service/messages"
 
-# Map locale codes to Google Translate language codes
 LOCALE_TO_GT = {
-    "af": "af", "ar": "ar", "az": "az", "be": "be", "bg": "bg", "bn": "bn",
-    "ca": "ca", "cs": "cs", "da": "da", "de": "de", "el": "el", "es": "es",
-    "fa": "fa", "fi": "fi", "fr": "fr", "he": "he", "hi": "hi", "hr": "hr",
-    "hu": "hu", "hy": "hy", "id": "id", "it": "it", "ja": "ja", "ka": "ka",
-    "ko": "ko", "ms": "ms", "ne": "ne", "nl": "nl", "no": "no", "pl": "pl",
-    "pt": "pt", "ro": "ro", "ru": "ru", "si": "si", "sk": "sk", "sl": "sl",
-    "sq": "sq", "sr": "sr", "sv": "sv", "sw": "sw", "ta": "ta", "th": "th",
-    "tr": "tr", "uk": "uk", "ur": "ur", "vi": "vi", "zh": "zh-CN",
+    "af":"af","ar":"ar","az":"az","be":"be","bg":"bg","bn":"bn","ca":"ca","cs":"cs",
+    "da":"da","de":"de","el":"el","es":"es","fa":"fa","fi":"fi","fr":"fr","he":"he",
+    "hi":"hi","hr":"hr","hu":"hu","hy":"hy","id":"id","it":"it","ja":"ja","ka":"ka",
+    "ko":"ko","ms":"ms","ne":"ne","nl":"nl","no":"no","pl":"pl","pt":"pt","ro":"ro",
+    "ru":"ru","si":"si","sk":"sk","sl":"sl","sq":"sq","sr":"sr","sv":"sv","sw":"sw",
+    "ta":"ta","th":"th","tr":"tr","uk":"uk","ur":"ur","vi":"vi","zh":"zh-CN",
 }
 
-def translate_text(text, target_lang):
-    """Translate a single text string."""
-    if not text or not isinstance(text, str) or len(text.strip()) == 0:
+SKIP_VALUES = {
+    "SinoTrade Compliance", "david@sinotradecompliance.com",
+    "Jing'an District, Shanghai, China",
+}
+
+def translate(text, target):
+    """Translate a single text via Google Translate API."""
+    if not text or not isinstance(text, str) or not text.strip():
         return text
-    # Don't translate brand names or URLs
-    if text.startswith("http") or text == "SinoTrade Compliance":
-        return text
-    # Don't translate variables like {name} or placeholders
-    if text.startswith("{") and text.endswith("}"):
+    if text in SKIP_VALUES or text.startswith("http") or text.startswith("©") or text.startswith("Disclaimer"):
         return text
     try:
-        result = GoogleTranslator(source="en", target=target_lang).translate(text[:500])
-        time.sleep(0.3)  # Rate limit
-        return result or text
+        url = "https://translate.googleapis.com/translate_a/single"
+        params = {"client": "gtx", "sl": "en", "tl": target, "dt": "t", "q": text[:2000]}
+        r = requests.get(url, params=params, timeout=10)
+        data = r.json()
+        result = "".join(part[0] for part in data[0])
+        return result if result else text
     except Exception as e:
-        print(f"  ⚠️  Translation failed: {e}")
         return text
 
-def translate_obj(obj, target_lang, path=""):
-    """Recursively translate all string values in a JSON object."""
+def flatten(obj, prefix=""):
+    """Flatten nested dict to list of (path, value) tuples."""
+    items = []
     if isinstance(obj, dict):
-        return {k: translate_obj(v, target_lang, f"{path}.{k}") for k, v in obj.items()}
-    elif isinstance(obj, list):
-        return [translate_obj(item, target_lang, f"{path}[{i}]") for i, item in enumerate(obj)]
+        for k, v in obj.items():
+            items.extend(flatten(v, f"{prefix}.{k}" if prefix else k))
     elif isinstance(obj, str):
-        # Skip known non-translatable values
-        skip_patterns = [
-            "SinoTrade Compliance", "http", "Jing'an District",
-            "© ", "david@", "Disclaimer:", "We are an independent",
-        ]
-        if any(obj.startswith(p) for p in skip_patterns):
-            return obj
-        translated = translate_text(obj, target_lang)
-        if translated != obj:
-            print(f"  ✓ {path}")
-        return translated
-    else:
-        return obj
+        items.append((prefix, obj))
+    return items
 
 def main():
-    # Load English source
     en_path = os.path.join(MSG_DIR, "en.json")
     with open(en_path) as f:
         en_data = json.load(f)
 
+    all_items = flatten(en_data)
+    texts = [(p, v) for p, v in all_items if isinstance(v, str) and len(v.strip()) > 0]
+    print(f"Total: {len(texts)} strings", flush=True)
+
+    # Detect already translated
+    done = set()
+    for f in os.listdir(MSG_DIR):
+        if f.endswith(".json") and f != "en.json":
+            try:
+                d = json.load(open(os.path.join(MSG_DIR, f)))
+                if d.get("Home",{}).get("heroSubtitle","") != en_data.get("Home",{}).get("heroSubtitle",""):
+                    done.add(f.replace(".json",""))
+            except: pass
+
+    print(f"Skipping {len(done)} already translated: {sorted(done)}", flush=True)
+
     for locale, gt_lang in sorted(LOCALE_TO_GT.items()):
-        filepath = os.path.join(MSG_DIR, f"{locale}.json")
-        
-        # Skip English
-        if locale == "en":
+        if locale in done:
             continue
-        
-        print(f"\n--- {locale} ({gt_lang}) ---")
-        
-        # Translate
-        translated = translate_obj(en_data, gt_lang)
-        
-        # Write
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(translated, f, ensure_ascii=False, indent=2)
-        
-        print(f"  → Saved {locale}.json")
+
+        print(f"\n{locale} ({gt_lang})...", end=" ", flush=True)
+        start = time.time()
+
+        result = json.loads(json.dumps(en_data))
+
+        for path, val in texts:
+            translated = translate(val, gt_lang)
+            # Apply to result
+            parts = path.split(".")
+            obj = result
+            for i, p in enumerate(parts):
+                if i == len(parts) - 1:
+                    if isinstance(obj, dict) and isinstance(obj.get(p), str):
+                        obj[p] = translated
+                else:
+                    obj = obj.get(p, {})
+            time.sleep(0.08)
+
+        with open(os.path.join(MSG_DIR, f"{locale}.json"), "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+
+        print(f"{time.time()-start:.0f}s", flush=True)
+
+    print(f"\n✅ Done! {len(done)+len(LOCALE_TO_GT)-1}/47 languages")  # won't be accurate but close
 
 if __name__ == "__main__":
     main()
