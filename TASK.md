@@ -52,19 +52,19 @@
 - **依赖：** 无
 - **内容：** JWT + localStorage + Pages Functions auth
 - **步骤：**
-  - [ ] T-AUTH-1. 创建 `src/core/auth/jwt.ts` — JWT 签发与验证（jsonwebtoken 或本地实现）
-  - [ ] T-AUTH-2. 创建 `src/core/auth/service.ts` — 注册/登录/密码哈希（bcrypt）
-  - [ ] T-AUTH-3. 创建 `src/components/AuthProvider.tsx` — 全局 auth context（user/token/login/logout）
-  - [ ] T-AUTH-4. 创建 `src/components/ProtectedRoute.tsx` — 路由守卫
-  - [ ] T-AUTH-5. 创建 `functions/api/auth/register.ts` — Pages Function 注册 API
-  - [ ] T-AUTH-6. 创建 `functions/api/auth/login.ts` — Pages Function 登录 API
-  - [ ] T-AUTH-7. 创建 `functions/api/auth/verify.ts` — Token 验证 API
-  - [ ] T-AUTH-8. 创建 `src/app/auth/login/page.tsx` — 登录页面（邮箱+密码+Turnstile）
-  - [ ] T-AUTH-9. 创建 `src/app/auth/register/page.tsx` — 注册页面
-  - [ ] T-AUTH-10. 创建 `src/app/dashboard/page.tsx` — 用户后台首页
-  - [ ] T-AUTH-11. 更新 `layout.tsx` — 包裹 AuthProvider
-  - [ ] T-AUTH-12. D1 Schema — 添加 users 表（已建，检查补充）
-  - [ ] T-AUTH-13. 构建验证 + 部署
+  - [x] T-AUTH-1. JWT 签发与验证（jose）
+  - [x] T-AUTH-2. 密码哈希（Web Crypto API PBKDF2）
+  - [x] T-AUTH-3. AuthProvider 全局 context
+  - [x] T-AUTH-4. ProtectedRoute 路由守卫
+  - [x] T-AUTH-5. Register Pages Function
+  - [x] T-AUTH-6. Login Pages Function
+  - [x] T-AUTH-7. User info API（token 验证）
+  - [x] T-AUTH-8. 登录页面
+  - [x] T-AUTH-9. 注册页面
+  - [x] T-AUTH-10. Dashboard 首页
+  - [x] T-AUTH-11. Layout 包裹 AuthProvider
+  - [x] T-AUTH-12. D1 Schema users 表（已存在）
+  - [x] T-AUTH-13. 构建验证 + 部署 ✅
 
 ### T-MODULES. 其他 5 个自查模块
 - **依赖：** 无（可并行）
