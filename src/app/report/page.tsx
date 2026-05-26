@@ -6,63 +6,15 @@ import ReportViewer from '@/components/ReportViewer';
 import { API_BASE } from '@/lib/constants';
 import useSubsiteHref from '@/lib/useSubsiteHref';
 import type { ComplianceReport } from '../../../modules/gacc/report';
+import { checkGacc } from '../../../modules/gacc/rules';
+import { checkCcc } from '../../../modules/ccc/rules';
+import { checkCosmetics } from '../../../modules/nmpa/rules';
+import { checkLabel } from '../../../modules/label/rules';
+import { checkCrossborder } from '../../../modules/crossborder/rules';
+import { checkTrademark } from '../../../modules/trademark/rules';
 
-// Module check functions for regenerating full report data
-const CHECK_FUNCTIONS: Record<string, (input: any) => any> = {};
-function getCheckFn(module: string): ((input: any) => any) | null {
-  if (CHECK_FUNCTIONS.gacc) return CHECK_FUNCTIONS[module];
-  // Lazy load all check functions
-  try {
-    const gacc = require('../../../modules/gacc/rules');
-    CHECK_FUNCTIONS.gacc = gacc.checkGacc;
-    CHECK_FUNCTIONS['GACC Food Registration'] = gacc.checkGacc;
-  } catch {}
-  try {
-    const ccc = require('../../../modules/ccc/rules');
-    CHECK_FUNCTIONS.ccc = ccc.checkCcc;
-    CHECK_FUNCTIONS['CCC Certification'] = ccc.checkCcc;
-  } catch {}
-  try {
-    const nmpa = require('../../../modules/nmpa/rules');
-    CHECK_FUNCTIONS.nmpa = nmpa.checkCosmetics;
-    CHECK_FUNCTIONS['Cosmetics Filing (NMPA)'] = nmpa.checkCosmetics;
-  } catch {}
-  try {
-    const label = require('../../../modules/label/rules');
-    CHECK_FUNCTIONS.label = label.checkLabel;
-    CHECK_FUNCTIONS['Chinese Label Compliance'] = label.checkLabel;
-  } catch {}
-  try {
-    const cb = require('../../../modules/crossborder/rules');
-    CHECK_FUNCTIONS.crossborder = cb.checkCrossborder;
-    CHECK_FUNCTIONS['Cross-Border E-commerce'] = cb.checkCrossborder;
-  } catch {}
-  try {
-    const tm = require('../../../modules/trademark/rules');
-    CHECK_FUNCTIONS.trademark = tm.checkTrademark;
-    CHECK_FUNCTIONS['Brand Protection'] = tm.checkTrademark;
-  } catch {}
-  return CHECK_FUNCTIONS[module] || null;
-}
 
-function generateFullResult(stored: any): any {
-  const fn = getCheckFn(stored.module);
-  if (!fn) {
-    // Fallback: return the stored minimal result
-    return stored.result || {};
-  }
-  try {
-    const input = {
-      productName: stored.productInfo?.name || '',
-      category: stored.productInfo?.category || '',
-      originCountry: stored.productInfo?.originCountry || '',
-      hsCode: stored.productInfo?.hsCode || '',
-    };
-    return fn(input);
-  } catch {
-    return stored.result || {};
-  }
-}
+
 
 const MAX_RETRIES = 15;
 const RETRY_DELAY = 2000;
@@ -89,9 +41,7 @@ function ReportContent() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.id === id) {
-          // Regenerate full report data from the stored module and product info
-          const fullResult = generateFullResult(parsed);
-          setReport({...parsed, result: fullResult});
+          setReport(parsed);
           setLoading(false);
           localStorage.removeItem('compli…ort');
           return;
@@ -205,6 +155,22 @@ function ReportContent() {
   }
 
   return <ReportViewer report={report} />;
+}
+
+
+const CHECK_FUNCTIONS: Record<string, (input: any) => any> = {
+  'GACC Food Registration': checkGacc,
+  'CCC Certification': checkCcc,
+  'Cosmetics Filing (NMPA)': checkCosmetics,
+  'Chinese Label Compliance': checkLabel,
+  'Cross-Border E-commerce': checkCrossborder,
+  'Brand Protection': checkTrademark,
+};
+
+function getCheckFn(moduleName: string) {
+  return CHECK_FUNCTIONS[moduleName] || CHECK_FUNCTIONS[
+    Object.entries(CHECK_FUNCTIONS).find(([k]) => k.toLowerCase().includes(moduleName.toLowerCase()))?.[0] || ''
+  ] || null;
 }
 
 export default function ReportPage() {
