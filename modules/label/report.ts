@@ -1,11 +1,11 @@
-import { checkLabel, type LabelInput, type LabelResult, CATEGORY_LABELS } from "./rules";
+import { checkLabel, type LabelInput, CATEGORY_LABELS } from "./rules";
 
 export interface ComplianceReport {
   id: string;
   module: string;
   generatedAt: string;
   productInfo: { name: string; category: string; originCountry?: string };
-  result: LabelResult;
+  result: any;
   nextSteps: string[];
 }
 
