@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl';
 import type { ComplianceReport } from "../../modules/gacc/report";
 import { ReportTemplate } from "@/core/report/template";
-import ExpertCta from "./ExpertCta";
 import useClientLocale from '@/lib/useClientLocale';
 
 interface ReportViewerProps {
@@ -67,8 +66,6 @@ export default function ReportViewer({ report, onBack }: ReportViewerProps) {
           nextSteps={report.nextSteps}
           generatedAt={report.generatedAt}
         />
-
-        <ExpertCta />
       </div>
     </main>
   );
