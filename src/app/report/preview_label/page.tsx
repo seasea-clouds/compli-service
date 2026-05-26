@@ -21,8 +21,8 @@ const SAMPLE_RESULT: GaccResult = {
   marketIntel: {
     chinaImportTrend: "Growing demand — China's imports of this category have been increasing 8-15% year on year. Premium imported products particularly sought after by middle-class consumers.",
     topOrigins: [{ country: "Belgium", share: "28%" }, { country: "Switzerland", share: "22%" }, { country: "Australia", share: "15%" }, { country: "Italy", share: "12%" }],
-    consumerPerception: "Chinese consumers generally view imported Prepackaged Foods / Chocolate products favorably, associating them with higher quality and safety standards. Premium positioning is achievable.",
-    keyDrivers: ["Rising middle class demand for premium imports", "Growing food safety awareness", "Cross-border e-commerce enabling direct access", "Young consumers' preference for international brands"],
+    consumerPerception: "Chinese consumers generally view imported Confectionery / Chocolate products favorably, associating them with higher quality and safety standards. Premium positioning is achievable.",
+    keyDrivers: ["Rising middle class demand for premium imports", "Growing label compliance awareness", "Cross-border e-commerce enabling direct access", "Young consumers' preference for international brands"],
     barriers: ["Competition from established import brands", "Regulatory complexity", "Price sensitivity in certain segments"],
     recommendation: "General trade recommended for full market access. Leverage premium positioning for better margins.",
   },
@@ -32,7 +32,7 @@ const SAMPLE_RESULT: GaccResult = {
     { channel: "Personal Parcel / Courier", suitability: 'low', gaccRequired: false, description: "Direct-to-consumer via courier (FedEx, DHL). For small quantities only.", advantages: ["Minimal documentation", "Fastest delivery"], disadvantages: ["Strictly limited to personal use quantities", "Not scalable", "Cannot build brand in market"], timeline: "Days", costRange: "$200-500 per shipment (customs brokerage)" },
   ],
   tariffInfo: {
-    hsCode: "1904.10",
+    hsCode: "1704, 1806",
     mfnRate: "8-15% (MFN)",
     ftaRate: "No FTA — MFN rates apply",
     vatRate: "13%",
@@ -42,8 +42,8 @@ const SAMPLE_RESULT: GaccResult = {
   },
   regulations: [
     { name: "GACC Decree 248", number: "Decree 248 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Regulations on the Registration of Overseas Manufacturers of Imported Food. All overseas food producers must register via CIFER before exporting to China." },
-    { name: "GACC Decree 249", number: "Decree 249 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Administrative Measures on Import and Export Food Safety." },
-    { name: "Food Safety Law of China", number: "PRC Food Safety Law (2015, amended 2021)", effectiveDate: "October 1, 2015", issuingAuthority: "NPC", relevance: 'primary', description: "Primary legislation governing food safety in China." },
+    { name: "GB 7718 Standard", number: "Decree 249 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Administrative Measures on Import and Export Food Safety." },
+    { name: "Food Safety Law of China", number: "PRC Food Safety Law (2015, amended 2021)", effectiveDate: "October 1, 2015", issuingAuthority: "NPC", relevance: 'primary', description: "Primary legislation governing label compliance in China." },
     { name: "GB 7718", number: "GB 7718-2011", effectiveDate: "April 20, 2012", issuingAuthority: "NHC", relevance: 'primary', description: "National Food Safety Standard — General Rules for Nutrition Labeling of Prepackaged Foods." },
     { name: "GB 28050", number: "GB 28050-2011", effectiveDate: "January 1, 2013", issuingAuthority: "NHC", relevance: 'primary', description: "General Rules for Nutrition Labeling of Prepackaged Foods." },
     { name: "GB 2760", number: "GB 2760-2024", effectiveDate: "February 8, 2025", issuingAuthority: "NHC", relevance: 'primary', description: "Uses of Food Additives — positive list system." },
@@ -74,7 +74,7 @@ const SAMPLE_RESULT: GaccResult = {
     "Product Photos & Packaging Images",
   ],
   documentGuide: [
-    { name: "Label Compliance Application Form", format: "CIFER system online submission", notarization: "Not required", validity: "Per application", commonError: "Incomplete fields, missing signatory information" },
+    { name: "Label Compliance Application Form", format: "Label review process online submission", notarization: "Not required", validity: "Per application", commonError: "Incomplete fields, missing signatory information" },
     { name: "Product Description & Ingredients List", format: "PDF/Word, Chinese or bilingual", notarization: "Translation certification recommended", validity: "Per application", commonError: "Additive codes not per GB 2760" },
     { name: "Manufacturing Process Flow Chart", format: "PDF, diagram format", notarization: "Translation certification recommended", validity: "Per application", commonError: "Too generic, missing critical control points" },
     { name: "HACCP / ISO 22000 Certificate", format: "PDF, valid certificate copy", notarization: "Certified copy + translation required", validity: "Must be current", commonError: "Expired certificate, wrong facility name" },
@@ -117,13 +117,13 @@ const SAMPLE_RESULT: GaccResult = {
     { phase: "Initial Assessment & Classification", duration: "1-2 weeks", description: "Confirm HS code, GACC category classification, and identify required documents.", responsible: 'SinoTrade', dependencies: [] },
     { phase: "Document Preparation & Translation", duration: "2-4 weeks", description: "Gather all required documents, translate to Chinese, notarize where required.", responsible: 'Both', dependencies: ["Initial assessment complete"] },
     { phase: "Lab Testing (CNAS Accredited)", duration: "2-3 weeks", description: "Product samples sent to CNAS-accredited lab for required testing.", responsible: 'SinoTrade', dependencies: ["Sample shipment arranged"] },
-    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via CIFER system with our team handling all documentation and submission requirements.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
+    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via Label review process with our team handling all documentation and submission requirements.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
     { phase: "GACC Review & Approval", duration: "2-6 weeks", description: "GACC processes application. Issue registration certificate upon approval.", responsible: 'SinoTrade', dependencies: ["Application submitted"] },
     { phase: "Label Design & Compliance", duration: "2-3 weeks", description: "Design Chinese label per GB 7718/28050. Submit for compliance review.", responsible: 'SinoTrade', dependencies: ["Product details finalized"] },
     { phase: "First Shipment & Customs Clearance", duration: "1-3 weeks", description: "First commercial shipment. CIQ inspection: document check, label verification, random sampling.", responsible: 'Both', dependencies: ["Label Compliance certificate", "Label approved"] },
   ],
   costBreakdown: [
-    { item: "Label Compliance Fee", estimatedRange: "$200-800", notes: "CIFER system filing with professional agent handling." },
+    { item: "Label Compliance Fee", estimatedRange: "$200-800", notes: "Label review process filing with professional agent handling." },
     { item: "Laboratory Testing (CNAS)", estimatedRange: "$600-2,000", notes: "Required tests: Microbiological, Heavy metals, Food additives, Melamine, Pesticide residues." },
     { item: "Document Translation & Notarization", estimatedRange: "$500-2,000", notes: "All non-Chinese documents need certified Chinese translation." },
     { item: "Chinese Label Design & Compliance Review", estimatedRange: "$300-1,500", notes: "Includes GB 7718 check, nutrition panel, 2 revision rounds." },
@@ -132,7 +132,7 @@ const SAMPLE_RESULT: GaccResult = {
   ],
   totalCostRange: "$3,500-9,500",
   estimatedTimeline: "6-10 weeks",
-  detailedTimeline: "Standard GACC registration for Prepackaged Foods / Chocolate typically takes 6-10 weeks. This assumes complete documentation and no requests for supplementary materials.",
+  detailedTimeline: "Standard GACC registration for Confectionery / Chocolate typically takes 6-10 weeks. This assumes complete documentation and no requests for supplementary materials.",
   countryProfile: {
     importVolumeRank: 3,
     region: "North America",
@@ -147,7 +147,7 @@ const SAMPLE_RESULT: GaccResult = {
     commonIssues: ["Additional 301 tariffs", "Differences in food additive standards between FDA and CFDA"],
     importVolumeNote: "Largest agricultural exporter to China. Strong presence in grains, meat, and nuts.",
   },
-  competitiveAnalysis: "China imported significant volumes of Prepackaged Foods / Chocolate products in 2024-2025. Top origins include Belgium, Switzerland, Australia, Italy. The category shows growth potential with rising consumer demand for premium imports.",
+  competitiveAnalysis: "China imported significant volumes of Confectionery / Chocolate products in 2024-2025. Top origins include Belgium, Switzerland, Australia, Italy. The category shows growth potential with rising consumer demand for premium imports.",
   commonRejections: [
     { problem: "Dairy content triggers high-risk reclassification", cause: "Products with >5% dairy content may be reclassified", solution: "Pre-classification review: dairy threshold analysis" },
     { problem: "Additives not in GB 2760", cause: "Using additives approved in origin but banned in China", solution: "Full additive formula audit before application" },
