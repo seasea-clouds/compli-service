@@ -1,6 +1,7 @@
 import type { ComplianceReport } from "../../modules/gacc/report";
 import { ReportTemplate } from "@/core/report/template";
 import ExpertCta from "./ExpertCta";
+import useClientLocale from '@/lib/useClientLocale';
 
 interface ReportViewerProps {
   report: ComplianceReport;
@@ -8,6 +9,7 @@ interface ReportViewerProps {
 }
 
 export default function ReportViewer({ report, onBack }: ReportViewerProps) {
+  const locale = useClientLocale();
   return (
     <main className="min-h-screen bg-bg-ice py-12">
       <div className="max-w-3xl mx-auto px-4 space-y-4">
@@ -23,6 +25,7 @@ export default function ReportViewer({ report, onBack }: ReportViewerProps) {
         <ReportTemplate
           reportId={report.id}
           module={report.module}
+          locale={locale}
           productInfo={report.productInfo}
           result={report.result}
           nextSteps={report.nextSteps}

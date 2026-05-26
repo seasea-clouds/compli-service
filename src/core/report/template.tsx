@@ -3,6 +3,7 @@
 interface ReportTemplateProps {
   reportId: string;
   module: string;
+  locale?: string;
   productInfo: {
     name: string;
     category: string;
@@ -22,8 +23,9 @@ interface ReportTemplateProps {
 
 export function ReportTemplate(data: ReportTemplateProps) {
   const {
-    reportId, module, productInfo, result, nextSteps, generatedAt,
+    reportId, module, locale, productInfo, result, nextSteps, generatedAt,
   } = data;
+  const href = (path: string) => `/${locale || 'en'}${path}`;
 
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-8">
@@ -95,7 +97,7 @@ export function ReportTemplate(data: ReportTemplateProps) {
           Our compliance experts will provide a tailored plan and pricing for your specific product.
         </p>
         <a
-          href="https://sinotradecompliance.com/en/quote"
+          href={href('/quote')}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-gold hover:bg-gold/90 text-primary-navy font-semibold px-6 py-2 rounded transition-all"
