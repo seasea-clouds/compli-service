@@ -14,13 +14,24 @@ export interface LabelInput {
   originCountry?: string;
 }
 
+export interface LabelRegulation {
+  name: string;
+  number: string;
+  authority: string;
+  relevance: string;
+  description: string;
+}
+
 export interface LabelResult {
   requiresCompliance: boolean;
   riskCategory: "high" | "medium" | "low";
   riskScore: number;
+  riskDimensions: { dimension: string; score: number; color: string; note: string }[];
   executiveSummary: string;
   oneLineDecision: string;
-  regulations: any[];
+  channels: { name: string; suitability: string; description: string; timeline: string; costRange: string }[];
+  tariffInfo: { mfnRate: string; vatRate: string; ftaRate: string };
+  regulations: LabelRegulation[];
   documentGuide: { name: string; format: string; commonError: string }[];
   requiredDocuments: string[];
   testRequirements: string[];
@@ -29,10 +40,15 @@ export interface LabelResult {
   estimatedTimeline: string;
   costBreakdown: { item: string; range: string; note: string }[];
   totalCostRange: string;
+  riskMatrix: { dimension: string; rating: string; explanation: string }[];
   labelFieldGuide: { field: string; requirement: string; commonMistake: string }[];
   gb7718Requirements: string[];
   gb28050Requirements: string[];
   commonIssues: { problem: string; cause: string; solution: string }[];
+  commonRejections: { problem: string; cause: string; solution: string }[];
+  countryNotes: string[];
+  postApproval: { item: string; freq: string; desc: string }[];
+  horizonScan: { topic: string; impact: string; timeframe: string; description: string; actionRequired: string }[];
   summary: string;
 }
 
@@ -55,8 +71,21 @@ export function checkLabel(input: LabelInput): LabelResult {
     requiresCompliance: true,
     riskCategory: "medium",
     riskScore,
+    riskDimensions: [
+      { dimension: "Product Classification", score: 5, color: "amber", note: "Standard prepackaged food — moderate regulatory burden" },
+      { dimension: "Label Completeness", score: 4, color: "amber", note: "Expected gaps in Chinese-language requirements" },
+      { dimension: "Nutrition Compliance", score: 5, color: "amber", note: "GB 28050 format must be strictly followed; kJ mandatory" },
+      { dimension: "Additive Compliance", score: 6, color: "green", note: "Common additives in this category are generally on GB 2760" },
+      { dimension: "Import Readiness", score: 5, color: "amber", note: "Chinese agent info and GACC registration still needed" },
+    ],
     executiveSummary: `Label compliance assessment for ${input.productName}. All imported prepackaged food requires Chinese label compliant with GB 7718 and GB 28050. Score: ${riskScore}/10.`,
     oneLineDecision: "⚠️ Chinese label required. Budget $500-2,000 for compliance.",
+    channels: [
+      { name: "Cross-border E‑commerce (CBEC)", suitability: "Best for small-volume trial", description: "Label requirements relaxed for CBEC; digital label accepted", timeline: "1-2 weeks", costRange: "$200-500" },
+      { name: "General Trade (Retail)", suitability: "Required for mass retail", description: "Full physical Chinese label required per GB 7718 / GACC 249", timeline: "2-4 weeks", costRange: "$500-2,000" },
+      { name: "Food Service / HORECA", suitability: "Bulk / ingredient supply", description: "Label may be on outer carton; simplified nutrition per GB 28050", timeline: "1-3 weeks", costRange: "$300-1,000" },
+    ],
+    tariffInfo: { mfnRate: "12-20%", vatRate: "13%", ftaRate: "0-5% (if FTA with CN)" },
     regulations: [
       { name: "GB 7718-2011", number: "GB 7718-2011 (rev. pending 2025)", authority: "NHC", relevance: "primary", description: "The foundational label standard. Mandatory for ALL prepackaged food." },
       { name: "GB 28050-2011", number: "GB 28050-2011", authority: "NHC", relevance: "primary", description: "Nutrition labeling mandatory for all prepackaged food." },
@@ -88,6 +117,12 @@ export function checkLabel(input: LabelInput): LabelResult {
       { item: "Translation (if needed)", range: "$100-300", note: "English → Chinese" },
     ],
     totalCostRange: "$500-2,000",
+    riskMatrix: [
+      { dimension: "Label Completeness", rating: "Medium", explanation: "Chinese label design and translation still needed" },
+      { dimension: "Nutrition Compliance", rating: "Medium", explanation: "kJ-first format and NRV% calculation require attention" },
+      { dimension: "Additive Regulatory Fit", rating: "Low", explanation: "Most common food additives are on GB 2760 positive list" },
+      { dimension: "Customs Clearance", rating: "Medium", explanation: "GACC Decree 249 label inspection may flag formatting issues" },
+    ],
     labelFieldGuide: [
       { field: "Product Name", requirement: "Reflect true nature of product. Standardized name if exists.", commonMistake: "Fanciful names without descriptive standard name" },
       { field: "Ingredients List", requirement: "Descending order. Additives with GB 2760 codes.", commonMistake: "Missing additive codes or incorrect order" },
@@ -122,6 +157,31 @@ export function checkLabel(input: LabelInput): LabelResult {
       { problem: "Additive not on GB 2760 positive list", cause: "Ingredient approved in origin but not in China", solution: "Pre-submission full additive audit against GB 2760" },
       { problem: "Allergen declaration incomplete", cause: "China's Big 8 differs from other markets' allergen lists", solution: "Cross-check allergens against the China-standard Big 8" },
       { problem: "Chinese agent info missing", cause: "GACC Decree 249 requires Chinese responsible party on label", solution: "Engage Chinese agent before label printing" },
+    ],
+    commonRejections: [
+      { problem: "Nutrition panel uses kcal-only without kJ", cause: "GB 28050 mandates kJ as mandatory unit", solution: "Redesign nutrition table with kJ first, kcal optional" },
+      { problem: "Chinese agent / responsible party missing", cause: "GACC Decree 249 Art. 19 requires Chinese entity", solution: "Engage a Chinese import agent and add to label" },
+      { problem: "Font size below 1.8mm on mandatory fields", cause: "GB 7718 minimum height requirement", solution: "Resize label elements; reprint with ≥1.8mm font" },
+      { problem: "Additive INS code missing or wrong", cause: "GB 2760 requires recognized INS/E numbers", solution: "Cross-reference additives with GB 2760 positive list" },
+    ],
+    countryNotes: [
+      "All imported prepackaged food requires a Chinese label — no exemptions for small-volume imports.",
+      "Chinese label must be affixed before customs clearance; cannot be stickered post-import.",
+      "Overseas manufacturer must authorize a Chinese agent (GACC Decree 249).",
+      "Country of origin must match the customs declaration country exactly.",
+      "FTA rates may apply if the exporting country has a Free Trade Agreement with China.",
+    ],
+    postApproval: [
+      { item: "Label Archive & Record-Keeping", freq: "Ongoing", desc: "Keep label proofs, test reports, and approval records for regulatory inspection" },
+      { item: "Standard Updates Monitoring", freq: "Annual", desc: "Monitor NHC announcements for GB 7718 / GB 28050 revisions" },
+      { item: "Post-Import Sampling Review", freq: "Per shipment (spot check)", desc: "GACC may conduct random label inspection at customs; correct on notice" },
+      { item: "Renewal of CIQ/Registration", freq: "Per validity period", desc: "Ensure GACC registration and CIQ record remain current" },
+    ],
+    horizonScan: [
+      { topic: "GB 7718 Revised Standard", impact: "High", timeframe: "2025-2026", description: "New allergen labeling rules, digital labeling provisions, and expanded mandatory items expected", actionRequired: "Review draft when published; budget for label redesign" },
+      { topic: "Digital / QR Labeling Mandates", impact: "Medium", timeframe: "2026-2027", description: "NHC exploring QR-linked digital supplementary labels for traceability", actionRequired: "Prepare digital label infrastructure; test QR integration" },
+      { topic: "GB 28050 Nutrient Update", impact: "Medium", timeframe: "2025-2026", description: "Possible addition of sugar, saturated fat, and fiber to mandatory panel", actionRequired: "Update nutrition test scope to cover proposed new line items" },
+      { topic: "CBEC Policy Tightening", impact: "Low-Medium", timeframe: "2026+", description: "Cross-border e-commerce label exemptions may be narrowed for certain categories", actionRequired: "Monitor MOFCOM/GACC policy updates for CBEC label rules" },
     ],
     summary: `All imported food requires Chinese label per GB 7718 & GB 28050. Estimated compliance cost: $500-2,000. Timeline: 2-4 weeks.`,
   };

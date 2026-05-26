@@ -246,7 +246,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Barriers</p>
             <ul className="space-y-1">
-              {result.marketIntel.barriers.map((b: any, i: number) => (
+              {result.marketIntel.barriers.map((b, i) => (
                 <li key={i} className="text-xs text-gray-700 flex items-start gap-1">
                   <span className="text-amber-500 mt-0.5">!</span> {b}
                 </li>
@@ -274,7 +274,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         </div>
         
         <div className="space-y-3">
-          {result.channels.map((ch: any, i: number) => (
+          {result.channels.map((ch, i) => (
             <div key={i} className={`rounded-lg border p-4 ${
               ch.suitability === 'high' ? 'border-green-300 bg-green-50' :
               ch.suitability === 'medium' ? 'border-amber-300 bg-amber-50' :
@@ -304,10 +304,10 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </div>
 
               <div className="mt-2 flex flex-wrap gap-1">
-                {ch.advantages.slice(0, 2).map((a: any, j: number) => (
+                {ch.advantages.slice(0, 2).map((a, j) => (
                   <span key={j} className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded">+ {a}</span>
                 ))}
-                {ch.disadvantages.slice(0, 1).map((d: any, j: number) => (
+                {ch.disadvantages.slice(0, 1).map((d, j) => (
                   <span key={j} className="text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded">− {d}</span>
                 ))}
               </div>
@@ -359,7 +359,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         <p className="text-xs text-gray-500 mb-3">The following regulations form the legal basis for importing your product into China. Each citation includes specific articles relevant to your product category.</p>
         
         <div className="space-y-2">
-          {result.regulations.filter((r: any) => r.relevance === 'primary').map((reg: any, i: number) => (
+          {result.regulations.filter(r => r.relevance === 'primary').map((reg, i) => (
             <div key={i} className="bg-gray-50 rounded-lg p-3 border border-gray-100">
               <div className="flex justify-between items-start">
                 <div>
@@ -378,10 +378,10 @@ export function ReportTemplate(props: ReportTemplateProps) {
         
         <details className="mt-3">
           <summary className="text-xs text-gray-500 cursor-pointer hover:text-primary-navy font-semibold">
-            + View secondary regulations ({result.regulations.filter((r: any) => r.relevance !== 'primary').length})
+            + View secondary regulations ({result.regulations.filter(r => r.relevance !== 'primary').length})
           </summary>
           <div className="mt-2 space-y-2">
-            {result.regulations.filter((r: any) => r.relevance !== 'primary').map((reg: any, i: number) => (
+            {result.regulations.filter(r => r.relevance !== 'primary').map((reg, i) => (
               <div key={i} className="bg-gray-50/50 rounded-lg p-2 border border-gray-100">
                 <p className="text-xs font-semibold text-gray-700">{reg.name}</p>
                 <p className="text-[10px] text-gray-500">{reg.number}</p>
@@ -438,7 +438,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         
         {/* Visual heat map */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-4">
-          {result.riskMatrix.map((item: any, i: number) => (
+          {result.riskMatrix.map((item, i) => (
             <div key={i} className={`rounded-lg p-3 border-2 text-center ${
               item.rating === '🔴' ? 'bg-red-50 border-red-300' :
               item.rating === '🟡' ? 'bg-amber-50 border-amber-300' :
@@ -456,13 +456,13 @@ export function ReportTemplate(props: ReportTemplateProps) {
             + View risk mitigation strategies
           </summary>
           <div className="mt-2 space-y-1.5">
-            {result.riskMatrix.filter((r: any) => r.rating !== '🟢').map((item: any, i: number) => (
+            {result.riskMatrix.filter(r => r.rating !== '🟢').map((item, i) => (
               <div key={i} className="bg-primary-navy/5 rounded p-2 text-xs">
                 <span className="font-bold text-primary-navy">{item.rating} {item.dimension}:</span>{' '}
                 <span className="text-gray-600">Mitigation recommended. {item.explanation}</span>
               </div>
             ))}
-            {result.riskMatrix.filter((r: any) => r.rating === '🟢').length === result.riskMatrix.length && (
+            {result.riskMatrix.filter(r => r.rating === '🟢').length === result.riskMatrix.length && (
               <p className="text-xs text-green-700">✅ All dimensions at low risk. Standard compliance pathway is sufficient.</p>
             )}
           </div>
@@ -495,7 +495,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </tr>
             </thead>
             <tbody>
-              {result.documentGuide.map((doc: any, i: number) => (
+              {result.documentGuide.map((doc, i) => (
                 <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="p-2 text-gray-500 font-bold">{i + 1}</td>
                   <td className="p-2 font-semibold text-gray-800">{doc.name}</td>
@@ -526,7 +526,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         <p className="text-sm text-gray-700 mb-3">{result.labGuide}</p>
         
         <div className="grid grid-cols-2 gap-2">
-          {result.labTests.map((test: any, i: number) => (
+          {result.labTests.map((test, i) => (
             <div key={i} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2 border border-gray-100">
               <span className="w-5 h-5 bg-gold/10 text-gold rounded flex items-center justify-center text-xs font-bold flex-shrink-0">🔬</span>
               <span className="text-xs text-gray-700">{test}</span>
@@ -558,7 +558,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </tr>
             </thead>
             <tbody>
-              {result.labelGuide.requiredItems.map((item: any, i: number) => (
+              {result.labelGuide.requiredItems.map((item, i) => (
                 <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="p-2 font-semibold text-gray-800 whitespace-nowrap">{item.field}</td>
                   <td className="p-2 text-gray-600">{item.requirement}</td>
@@ -574,7 +574,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
             + GB 7718 Key Requirements
           </summary>
           <div className="mt-2 space-y-1">
-            {result.labelGuide.gb7718Highlights.map((h: any, i: number) => (
+            {result.labelGuide.gb7718Highlights.map((h, i) => (
               <p key={i} className="text-[11px] text-gray-600 flex items-start gap-1">
                 <span className="text-gold mt-0.5">•</span> {h}
               </p>
@@ -587,7 +587,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
             + GB 28050 Nutrition Label Requirements
           </summary>
           <div className="mt-2 space-y-1">
-            {result.labelGuide.gb28050Highlights.map((h: any, i: number) => (
+            {result.labelGuide.gb28050Highlights.map((h, i) => (
               <p key={i} className="text-[11px] text-gray-600 flex items-start gap-1">
                 <span className="text-gold mt-0.5">•</span> {h}
               </p>
@@ -610,7 +610,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         </div>
         
         <div className="space-y-3">
-          {result.timelinePhases.map((phase: any, i: number) => (
+          {result.timelinePhases.map((phase, i) => (
             <div key={i} className="flex items-start gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
                 i === result.timelinePhases.length - 1 ? 'bg-gold text-primary-navy' : 'bg-primary-navy text-white'
@@ -631,7 +631,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
                   }`}>
                     {phase.responsible === 'SinoTrade' ? '🤝 We handle' : phase.responsible === 'Both' ? '🔄 Joint' : '📋 Client'}
                   </span>
-                  {phase.dependencies.map((dep: any, j: number) => (
+                  {phase.dependencies.map((dep, j) => (
                     <span key={j} className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">← {dep}</span>
                   ))}
                 </div>
@@ -666,7 +666,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </tr>
             </thead>
             <tbody>
-              {result.timelinePhases.map((phase: any, i: number) => {
+              {result.timelinePhases.map((phase, i) => {
                 // Calculate bar width and offset based on phase index
                 const barWidths = [16, 20, 16, 12, 18, 12, 6]; // proportional widths
                 const offsets = [2, 20, 42, 58, 72, 84, 92]; // left offsets
@@ -739,7 +739,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </tr>
             </thead>
             <tbody>
-              {result.costBreakdown.map((item: any, i: number) => (
+              {result.costBreakdown.map((item, i) => (
                 <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="p-2 font-semibold text-gray-800">{item.item}</td>
                   <td className="p-2 text-right font-bold text-gray-900 whitespace-nowrap">{item.estimatedRange}</td>
@@ -826,7 +826,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-3">
             <p className="text-xs font-bold text-red-800 mb-1">🚨 Country-Specific Restrictions</p>
             <ul className="space-y-0.5">
-              {result.countryProfile.specialRestrictions.map((r: any, i: number) => (
+              {result.countryProfile.specialRestrictions.map((r, i) => (
                 <li key={i} className="text-xs text-red-700">• {r}</li>
               ))}
             </ul>
@@ -852,7 +852,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-gray-50 rounded-lg p-3">
             <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Top Competing Origins</p>
             <ul className="space-y-0.5">
-              {result.marketIntel.topOrigins.map((o: any, i: number) => (
+              {result.marketIntel.topOrigins.map((o, i) => (
                 <li key={i} className="text-xs text-gray-700">{o.country}</li>
               ))}
             </ul>
@@ -874,7 +874,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         </div>
         
         <div className="space-y-3">
-          {result.commonRejections.map((item: any, i: number) => (
+          {result.commonRejections.map((item, i) => (
             <div key={i} className="bg-red-50 border border-red-200 rounded-lg p-3">
               <div className="flex items-start gap-2">
                 <span className="text-lg">🚫</span>
@@ -919,7 +919,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </tr>
             </thead>
             <tbody>
-              {result.postApprovalObligations.map((ob: any, i: number) => (
+              {result.postApprovalObligations.map((ob, i) => (
                 <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="p-2 font-semibold text-gray-800">{ob.item}</td>
                   <td className="p-2 whitespace-nowrap">
@@ -942,7 +942,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         <p className="text-xs text-gray-500 mb-3">Upcoming regulatory changes that may affect your product category in the next 12-24 months:</p>
         
         <div className="space-y-2">
-          {result.horizonScan.map((item: any, i: number) => (
+          {result.horizonScan.map((item, i) => (
             <div key={i} className={`rounded-lg border p-3 ${
               item.impact === 'high' ? 'border-red-200 bg-red-50' :
               item.impact === 'medium' ? 'border-amber-200 bg-amber-50' :
@@ -1176,7 +1176,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
             <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 1: Preparation</p>
             <div className="space-y-1">
-              {["Confirm product HS code with customs broker", "Engage Chinese compliance agent", "Prepare company registration documents", "Collect product specifications and ingredients list"].map((item: any, i: number) => (
+              {["Confirm product HS code with customs broker", "Engage Chinese compliance agent", "Prepare company registration documents", "Collect product specifications and ingredients list"].map((item, i) => (
                 <label key={i} className="flex items-start gap-2 cursor-pointer group">
                   <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
                   <span className="text-xs text-gray-700 group-hover:text-primary-navy">{item}</span>
@@ -1187,7 +1187,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
             <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 2: Documentation</p>
             <div className="space-y-1">
-              {result.requiredDocuments.slice(0, 5).map((doc: any, i: number) => (
+              {result.requiredDocuments.slice(0, 5).map((doc, i) => (
                 <label key={i} className="flex items-start gap-2 cursor-pointer group">
                   <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
                   <span className="text-xs text-gray-700 group-hover:text-primary-navy">{doc}</span>
@@ -1198,7 +1198,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
             <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 3: Submission & Clearance</p>
             <div className="space-y-1">
-              {["Submit GACC/CCC/NMPA application", "Track application status weekly", "Prepare Chinese label artwork", "Arrange first shipment logistics", "Verify customs clearance documentation"].map((item: any, i: number) => (
+              {["Submit GACC/CCC/NMPA application", "Track application status weekly", "Prepare Chinese label artwork", "Arrange first shipment logistics", "Verify customs clearance documentation"].map((item, i) => (
                 <label key={i} className="flex items-start gap-2 cursor-pointer group">
                   <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
                   <span className="text-xs text-gray-700 group-hover:text-primary-navy">{item}</span>
@@ -1232,7 +1232,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
             {term: "MFN", def: "Most Favored Nation — Standard WTO tariff rate applied to trading partners."},
             {term: "CIFER No.", def: "Unique registration number assigned to overseas food manufacturers upon GACC approval."},
             {term: "Positive List", def: "CBEC-approved product categories eligible for cross-border e-commerce import."},
-          ].map((item: any, i: number) => (
+          ].map((item, i) => (
             <div key={i} className="bg-gray-50 rounded-lg p-2 border border-gray-100">
               <p className="text-[10px] font-bold text-primary-navy">{item.term}</p>
               <p className="text-[9px] text-gray-600 mt-0.5">{item.def}</p>
@@ -1248,7 +1248,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         <SectionTitle icon={<Icon svg={I.flag} w={5} h={5} />} label="RECOMMENDED ACTION PLAN" />
         
         <div className="space-y-3">
-          {props.nextSteps.map((step: any, i: number) => (
+          {props.nextSteps.map((step, i) => (
             <div key={i} className="flex items-start gap-3 bg-white rounded-lg p-3 border border-gray-100 hover:border-gold/30 transition-colors">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${
                 i === 0 ? 'bg-gold text-primary-navy' : 'bg-gray-100 text-gray-500'
