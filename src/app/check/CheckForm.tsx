@@ -56,9 +56,9 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
       const reportId = `${config.moduleKey.toUpperCase()}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
       // Store report data in localStorage before redirecting
-      if (result) {
+      try {
         const fullResult = config.getFullResult ? config.getFullResult(values) : result;
-        const docItems = (result.documents || []).map((d: string) => ({ label: d, value: 'Required' }));
+        if (!fullResult) { console.warn('fullResult is empty'); }
         const reportData = {
           id: reportId,
           module: config.moduleLabel,
@@ -79,9 +79,11 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
           ],
           generatedAt: new Date().toISOString(),
         };
-        try {
-          localStorage.setItem('compli…ort', JSON.stringify(reportData));
-        } catch {}
+        const json = JSON.stringify(reportData);
+        console.log('CheckForm: storing id=' + reportId + ' size=' + json.length);
+        localStorage.setItem('compli…ort', json);
+      } catch (e) {
+        console.error('CheckForm localStorage failed:', e);
       }
 
       const res = await fetch(`${API_BASE}/checkout`, {

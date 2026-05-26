@@ -59,8 +59,10 @@ function ReportContent() {
     // Try to load from localStorage first
     try {
       const stored = localStorage.getItem('compli…ort');
+      console.log('Report: reading localStorage, url id:', id, 'data found:', !!stored);
       if (stored) {
         const parsed = JSON.parse(stored);
+        console.log('Report: stored id:', parsed.id, 'url id:', id, 'match:', parsed.id === id);
         if (parsed.id === id) {
           // Regenerate full result from stored input
           const fullResult = rebuildResult(parsed);
