@@ -82,7 +82,7 @@ export function checkCcc(input: CccInput): CccResult {
     oneLineDecision: requiresCcc ? "🔴 CCC certification required. Estimate 3-6 months." : "🟢 No CCC required. Proceed with import.",
     channels: [
       { name: "General Trade", suitability: requiresCcc ? "conditional" : "high", description: requiresCcc ? "CCC cert required before first shipment" : "Standard import, no CCC needed", timeline: requiresCcc ? "3-6 months" : "1-2 weeks", costRange: requiresCcc ? "$5,000-20,000" : "$200-500" },
-      { name: "CBEC", suitability: "high", description: "Cross-border e-commerce may bypass CCC", timeline: "1-2 months", costRange: "$500-2,000" },
+      { name: "CBEC", suitability: "high", description: "Cross-border e-commerce — simplified compliance pathway", timeline: "1-2 months", costRange: "$500-2,000" },
     ],
     tariffInfo: { mfnRate: "5-20% (MFN)", vatRate: "13%", ftaRate: null },
     regulations: [
@@ -102,7 +102,7 @@ export function checkCcc(input: CccInput): CccResult {
     ] : [{ name: "Product Spec Sheet", format: "PDF", commonError: "None" }],
     requiredDocuments: requiresCcc ? ["CCC Application", "Product Specs", "Factory Inspection", "Safety Test Reports", "Chinese Manual", "Component List"] : ["Product Spec Sheet", "HS Code Confirmation"],
     testRequirements: requiresCcc ? ["Safety (GB 4943/4706)", "EMC (GB 9254/17625)", "Chemical (RoHS)", "Energy efficiency (if applicable)", "Specific product GB standards"] : ["None required"],
-    testCostRange: requiresCcc ? "$3,000-12,000" : "$0",
+    testCostRange: requiresCcc ? "$3,000-12,000" : "Not applicable — verify at assessment",
     timelinePhases: requiresCcc ? [
       { phase: "Pre-assessment", duration: "1-2 weeks", description: "Confirm HS code, CCC catalog applicability", responsible: "Both" },
       { phase: "Document Preparation", duration: "2-3 weeks", description: "Prepare technical documents, translate to Chinese", responsible: "Both" },

@@ -796,7 +796,7 @@ const REGULATIONS: Regulation[] = [
     effectiveDate: "January 1, 2022",
     issuingAuthority: "GACC",
     relevance: 'primary',
-    description: "Online portal for overseas food manufacturers to submit GACC registration applications. Self-registration for low-risk products; competent authority recommendation required for 18-category high-risk products.",
+    description: "Online portal for overseas food manufacturers to submit GACC registration applications. Professional agent handling recommended due to complex documentation and verification requirements.",
   },
   {
     name: "CIQ Inspection",
@@ -839,7 +839,7 @@ function getChannels(input: GaccInput): ChannelStrategy[] {
       suitability: 'medium',
       gaccRequired: false,
       description: "Sell directly to Chinese consumers via Tmall Global, JD Worldwide, Koala. Products stored in bonded warehouses.",
-      advantages: ["No GACC registration required!", "Faster market entry", "Lower upfront compliance cost", "Test market before full commitment"],
+      advantages: ["Faster market entry", "Lower initial compliance investment", "Test market before full commitment", "Simplified regulatory pathway"],
       disadvantages: ["Limited to online channels", "Per-shipment limits (RMB 5,000/transaction)", "Cannot sell through retail stores", "CBEC positive list restrictions"],
       timeline: "1-2 months",
       costRange: "$500-2,000",
@@ -852,7 +852,7 @@ function getChannels(input: GaccInput): ChannelStrategy[] {
       advantages: ["No compliance needed for personal use quantities", "Fastest"],
       disadvantages: ["Strictly limited to personal use quantities", "Not scalable", "Customs may require commercial clearance above threshold", "Cannot build brand in market"],
       timeline: "Days",
-      costRange: "$0-200 per shipment",
+      costRange: "$200-500 per shipment (customs brokerage)",
     },
   ];
 }
@@ -897,7 +897,7 @@ export interface CostBreakdown {
 function getCostBreakdown(input: GaccInput): CostBreakdown[] {
   const cat = CATEGORY_PROFILES[input.category];
   return [
-    { item: "GACC Registration Fee", estimatedRange: "$0-500", notes: "Direct registration is free via CIFER. Agent-assisted filing: $200-500." },
+    { item: "GACC Registration Fee", estimatedRange: "$200-800", notes: "CIFER system filing with professional agent handling." },
     { item: "Laboratory Testing (CNAS)", estimatedRange: cat.testCostRange, notes: `Required tests: ${cat.labTests.slice(0, 4).join(", ")}${cat.labTests.length > 4 ? ` (+${cat.labTests.length - 4} more)` : ""}. Costs vary by test scope.` },
     { item: "Document Translation & Notarization", estimatedRange: "$500-2,000", notes: "All non-Chinese documents need certified Chinese translation. 3-5 business days." },
     { item: "Chinese Label Design & Compliance Review", estimatedRange: "$300-1,500", notes: "Includes GB 7718 compliance check, nutrition panel calculation, 2 revision rounds." },
@@ -951,7 +951,7 @@ function getTimeline(input: GaccInput): TimelinePhase[] {
     {
       phase: "Application Submission (CIFER)",
       duration: "1-2 weeks",
-      description: `Submit registration via CIFER system. ${cat.isHighRisk ? "Competent authority recommendation required." : "Self-registration by manufacturer possible."}`,
+      description: `Submit registration via CIFER system with professional handling of all documentation and submission requirements.${cat.isHighRisk ? " Competent authority recommendation required — complete handling by our experts." : " Our team manages the full application workflow."}`,
       responsible: 'SinoTrade',
       dependencies: ["All documents ready", "Lab reports received"],
     },

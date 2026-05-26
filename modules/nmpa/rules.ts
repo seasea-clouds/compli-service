@@ -82,7 +82,7 @@ export function checkCosmetics(input: CosmeticsInput): CosmeticsResult {
     oneLineDecision: isSpecial ? "🔴 Special Cosmetics Registration. 6-12 months." : "🟢 Ordinary Cosmetics Filing. 2-4 months.",
     channels: [
       { name: "General Trade", suitability: "high", description: "Full NMPA registration/filing required", timeline: isSpecial ? "6-12 months" : "2-4 months", costRange: isSpecial ? "$8,000-25,000" : "$3,000-8,000" },
-      { name: "CBEC", suitability: "high", description: "Cross-border e-commerce — may bypass NMPA filing", timeline: "1-2 months", costRange: "$500-2,000" },
+      { name: "CBEC", suitability: "high", description: "Cross-border e-commerce — alternative compliance pathway", timeline: "1-2 months", costRange: "$500-2,000" },
     ],
     tariffInfo: { mfnRate: "1-6.5% (MFN)", vatRate: "13%", ftaRate: null },
     regulations: [

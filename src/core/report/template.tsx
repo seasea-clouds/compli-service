@@ -117,28 +117,43 @@ export function ReportTemplate(props: ReportTemplateProps) {
       {/* ═══════════════════════════════════════════════════════════════
           HEADER
       ═══════════════════════════════════════════════════════════════ */}
-      <div className="bg-primary-navy text-white px-8 py-8 print:bg-gray-900">
-        <div className="flex justify-between items-start">
-          <div>
-            <p className="text-gold text-sm font-semibold uppercase tracking-widest mb-1">{module}</p>
-            <h1 className="text-2xl font-bold">{labels.title}</h1>
-          </div>
-          <div className="text-right text-xs">
-            <p className="text-white/60">Report #{reportId}</p>
-            <p className="text-white/60">{formattedDate}</p>
-          </div>
+      <div className="bg-primary-navy text-white px-8 py-8 print:bg-gray-900 relative overflow-hidden">
+        {/* Premium background pattern */}
+        <div className="absolute top-0 right-0 w-64 h-64 opacity-5">
+          <svg viewBox="0 0 200 200"><path d="M100 0L200 100L100 200L0 100Z" fill="white"/></svg>
         </div>
-        <div className="mt-4 pt-4 border-t border-white/10 flex gap-4 text-sm text-white/80">
-          <span>CONFIDENTIAL</span>
-          <span>·</span>
-          <span>Prepared for: {productInfo.name || 'Client'}</span>
-        </div>
-        {/* Risk Score Banner */}
-        <div className="mt-4 p-3 rounded-lg bg-white/5 border border-white/10 flex items-center gap-3">
-          <span className="text-2xl">{result.riskScore >= 7 ? '🔴' : result.riskScore >= 4 ? '🟡' : '🟢'}</span>
-          <div>
-            <p className="text-sm font-semibold">Overall Risk Score: {result.riskScore}/10</p>
-            <p className="text-xs text-white/60">{result.oneLineDecision}</p>
+        <div className="relative z-10">
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 bg-gold rounded-full"></span>
+                <p className="text-gold text-sm font-semibold uppercase tracking-widest">{module}</p>
+              </div>
+              <h1 className="text-2xl font-bold">{labels.title}</h1>
+            </div>
+            <div className="text-right text-xs">
+              <p className="text-white/60">Report #{reportId}</p>
+              <p className="text-white/60">{formattedDate}</p>
+              <p className="text-white/40 mt-1">CONFIDENTIAL</p>
+            </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap gap-x-6 gap-y-1 text-xs text-white/70">
+            <span>Prepared for: <strong className="text-white">{productInfo.name || 'Client'}</strong></span>
+            <span>Category: <strong className="text-white">{productInfo.category}</strong></span>
+            <span>Origin: <strong className="text-white">{productInfo.originCountry}</strong></span>
+            {productInfo.hsCode && <span>HS Code: <strong className="text-white">{productInfo.hsCode}</strong></span>}
+          </div>
+          
+          {/* Risk Score Banner — Executive Dashboard */}
+          <div className="mt-5 grid grid-cols-4 gap-3">
+            <div className="col-span-1 bg-white/10 rounded-lg p-4 text-center border border-white/10">
+              <p className={`text-3xl font-bold mb-1 ${result.riskScore >= 7 ? 'text-red-400' : result.riskScore >= 4 ? 'text-amber-400' : 'text-green-400'}`}>{result.riskScore}</p>
+              <p className="text-[10px] text-white/60 uppercase tracking-wider">Risk Score</p>
+            </div>
+            <div className="col-span-3 bg-white/5 rounded-lg p-4 border border-white/10">
+              <p className="text-sm font-semibold mb-1">{result.oneLineDecision}</p>
+              <p className="text-xs text-white/70">{result.riskDimensions.map(d => d.color + ' ' + d.dimension).join(' · ')}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -355,28 +370,39 @@ export function ReportTemplate(props: ReportTemplateProps) {
           MODULE 7: RISK ASSESSMENT MATRIX
       ═══════════════════════════════════════════════════════════════ */}
       <div className="px-8 py-6 border-b border-gray-100">
-        <SectionTitle icon={<Icon svg={I.chart} w={5} h={5} />} label="RISK ASSESSMENT MATRIX (5×5)" />
+        <SectionTitle icon={<Icon svg={I.chart} w={5} h={5} />} label="RISK ASSESSMENT HEAT MAP (5×5)" />
         
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="text-left p-2 font-bold text-gray-700">Dimension</th>
-                <th className="text-center p-2 font-bold text-gray-700">Rating</th>
-                <th className="text-left p-2 font-bold text-gray-700">Assessment</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.riskMatrix.map((item, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  <td className="p-2 font-semibold text-gray-800">{item.dimension}</td>
-                  <td className="p-2 text-center text-lg">{item.rating}</td>
-                  <td className="p-2 text-gray-600">{item.explanation}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Visual heat map */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-4">
+          {result.riskMatrix.map((item, i) => (
+            <div key={i} className={`rounded-lg p-3 border-2 text-center ${
+              item.rating === '🔴' ? 'bg-red-50 border-red-300' :
+              item.rating === '🟡' ? 'bg-amber-50 border-amber-300' :
+              'bg-green-50 border-green-300'
+            }`}>
+              <p className="text-2xl mb-1">{item.rating}</p>
+              <p className="text-xs font-bold text-gray-800 leading-tight">{item.dimension.split(' ').slice(0,3).join(' ')}</p>
+              <p className="text-[10px] text-gray-500 mt-1">{item.explanation}</p>
+            </div>
+          ))}
         </div>
+        
+        <details>
+          <summary className="text-xs text-gray-500 cursor-pointer hover:text-primary-navy font-semibold">
+            + View risk mitigation strategies
+          </summary>
+          <div className="mt-2 space-y-1.5">
+            {result.riskMatrix.filter(r => r.rating !== '🟢').map((item, i) => (
+              <div key={i} className="bg-primary-navy/5 rounded p-2 text-xs">
+                <span className="font-bold text-primary-navy">{item.rating} {item.dimension}:</span>{' '}
+                <span className="text-gray-600">Mitigation recommended. {item.explanation}</span>
+              </div>
+            ))}
+            {result.riskMatrix.filter(r => r.rating === '🟢').length === result.riskMatrix.length && (
+              <p className="text-xs text-green-700">✅ All dimensions at low risk. Standard compliance pathway is sufficient.</p>
+            )}
+          </div>
+        </details>
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
@@ -557,11 +583,10 @@ export function ReportTemplate(props: ReportTemplateProps) {
           </table>
         </div>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-          <p className="text-xs text-amber-800">
-            💡 Cost-saving tip: If your product qualifies for the Cross-Border E-commerce (CBEC) channel, 
-            initial compliance costs are significantly lower (~$500-2,000) and GACC registration is not required. 
-            Consider this route for market testing before full general trade commitment.
+        <div className="bg-primary-navy/5 border border-primary-navy/20 rounded-lg p-3">
+          <p className="text-xs text-primary-navy">
+            💡 Our team provides comprehensive pricing assessment after reviewing your specific product, volume, and requirements. 
+            The ranges above are indicative. Contact us for a detailed, no-obligation quote.
           </p>
         </div>
       </div>
@@ -747,7 +772,67 @@ export function ReportTemplate(props: ReportTemplateProps) {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
-          NEXT STEPS (legacy)
+          PREMIUM: VALUE SUMMARY
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-gold/[0.03] to-transparent">
+        <div className="flex items-center gap-2 mb-4">
+          <svg className="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h2 className="text-sm font-bold text-primary-navy uppercase tracking-wider">FULL COMPLIANCE PACKAGE — WHAT'S INCLUDED</h2>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">📋</p>
+            <p className="text-[10px] font-bold text-primary-navy">Regulatory Gap Analysis</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">Full HS code & regulation mapping</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">📄</p>
+            <p className="text-[10px] font-bold text-primary-navy">Document Preparation</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">All forms & translations</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">🔬</p>
+            <p className="text-[10px] font-bold text-primary-navy">Lab Test Management</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">CNAS accredited lab coordination</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">🏛️</p>
+            <p className="text-[10px] font-bold text-primary-navy">Submission & Follow-up</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">End-to-end authority liaison</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">🏷️</p>
+            <p className="text-[10px] font-bold text-primary-navy">Label Design & Compliance</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">GB 7718/28050 compliant</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">🚢</p>
+            <p className="text-[10px] font-bold text-primary-navy">Customs Clearance</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">First shipment handling</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">📊</p>
+            <p className="text-[10px] font-bold text-primary-navy">Compliance Monitoring</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">Annual reporting & alerts</p>
+          </div>
+          <div className="bg-white rounded-lg border border-gray-100 p-3 text-center shadow-sm">
+            <p className="text-2xl mb-1">🛡️</p>
+            <p className="text-[10px] font-bold text-primary-navy">Post-Approval Support</p>
+            <p className="text-[9px] text-gray-400 mt-0.5">Renewal & compliance updates</p>
+          </div>
+        </div>
+        
+        <div className="mt-3 bg-primary-navy text-white rounded-lg p-3 text-center">
+          <p className="text-sm font-bold">Professional services from <span className="text-gold">{result.totalCostRange || '$3,500-9,500'}</span></p>
+          <p className="text-xs text-white/60 mt-0.5">Exact pricing depends on product complexity, origin country, and service scope</p>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          RECOMMENDED ACTION PLAN
       ═══════════════════════════════════════════════════════════════ */}
       <div className="px-8 py-6 border-b border-gray-100">
         <SectionTitle icon={<Icon svg={I.flag} w={5} h={5} />} label="RECOMMENDED ACTION PLAN" />
