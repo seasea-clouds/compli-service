@@ -115,11 +115,11 @@ export function ReportTemplate(props: ReportTemplateProps) {
     <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden print:shadow-none print:border-none">
       
       {/* ═══════════════════════════════════════════════════════════════
-          HEADER
+          HEADER + EXECUTIVE DASHBOARD
       ═══════════════════════════════════════════════════════════════ */}
-      <div className="bg-primary-navy text-white px-8 py-8 print:bg-gray-900 relative overflow-hidden">
+      <div className="bg-primary-navy text-white px-8 pt-8 pb-6 print:bg-gray-900 relative overflow-hidden">
         {/* Premium background pattern */}
-        <div className="absolute top-0 right-0 w-64 h-64 opacity-5">
+        <div className="absolute top-0 right-0 w-96 h-96 opacity-[0.03]">
           <svg viewBox="0 0 200 200"><path d="M100 0L200 100L100 200L0 100Z" fill="white"/></svg>
         </div>
         <div className="relative z-10">
@@ -134,7 +134,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
             <div className="text-right text-xs">
               <p className="text-white/60">Report #{reportId}</p>
               <p className="text-white/60">{formattedDate}</p>
-              <p className="text-white/40 mt-1">CONFIDENTIAL</p>
+              <p className="text-white/40 mt-1 uppercase tracking-wider">CONFIDENTIAL</p>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap gap-x-6 gap-y-1 text-xs text-white/70">
@@ -144,16 +144,47 @@ export function ReportTemplate(props: ReportTemplateProps) {
             {productInfo.hsCode && <span>HS Code: <strong className="text-white">{productInfo.hsCode}</strong></span>}
           </div>
           
-          {/* Risk Score Banner — Executive Dashboard */}
-          <div className="mt-5 grid grid-cols-4 gap-3">
-            <div className="col-span-1 bg-white/10 rounded-lg p-4 text-center border border-white/10">
-              <p className={`text-3xl font-bold mb-1 ${result.riskScore >= 7 ? 'text-red-400' : result.riskScore >= 4 ? 'text-amber-400' : 'text-green-400'}`}>{result.riskScore}</p>
-              <p className="text-[10px] text-white/60 uppercase tracking-wider">Risk Score</p>
+          {/* Executive Dashboard — 4 Key Metrics */}
+          <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+            {/* Risk Score */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+              <p className={`text-4xl font-bold mb-1 ${result.riskScore >= 7 ? 'text-red-400' : result.riskScore >= 4 ? 'text-amber-400' : 'text-green-400'}`}>{result.riskScore}</p>
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">Risk Score</p>
+              <div className="mt-2 w-full bg-white/10 rounded-full h-1.5">
+                <div className={`h-1.5 rounded-full ${result.riskScore >= 7 ? 'bg-red-400 w-3/4' : result.riskScore >= 4 ? 'bg-amber-400 w-1/2' : 'bg-green-400 w-1/4'}`}></div>
+              </div>
             </div>
-            <div className="col-span-3 bg-white/5 rounded-lg p-4 border border-white/10">
-              <p className="text-sm font-semibold mb-1">{result.oneLineDecision}</p>
-              <p className="text-xs text-white/70">{result.riskDimensions.map(d => d.color + ' ' + d.dimension).join(' · ')}</p>
+            {/* Decision */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+              <p className={`text-lg font-bold mb-1 ${result.riskScore >= 7 ? 'text-red-400' : result.riskScore >= 4 ? 'text-amber-400' : 'text-green-400'}`}>{result.riskScore >= 7 ? '🔴' : result.riskScore >= 4 ? '🟡' : '🟢'}</p>
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">Verdict</p>
+              <p className="text-[11px] text-white/80 mt-1">{result.riskScore >= 7 ? 'High Risk' : result.riskScore >= 4 ? 'Moderate' : 'Low Risk'}</p>
             </div>
+            {/* Estimated Timeline */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+              <p className="text-2xl font-bold text-gold mb-1">{result.estimatedTimeline?.split('-')[0] || '—'}<span className="text-sm text-white/60">-{result.estimatedTimeline?.split('-')[1] || ''}</span></p>
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">Est. Timeline</p>
+              <p className="text-[11px] text-white/60 mt-1">{result.isHighRisk ? 'High-risk pathway' : 'Standard pathway'}</p>
+            </div>
+            {/* Total Cost */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+              <p className="text-lg font-bold text-gold mb-0">{result.totalCostRange || 'Contact us'}</p>
+              <p className="text-[10px] text-white/50 uppercase tracking-wider">Est. Investment</p>
+              <p className="text-[11px] text-white/60 mt-1">Full compliance package</p>
+            </div>
+          </div>
+          
+          {/* Risk Dimension Bar */}
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {result.riskDimensions.map((d, i) => (
+              <span key={i} className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                d.score >= 7 ? 'bg-red-400/20 text-red-200 border-red-400/30' :
+                d.score >= 4 ? 'bg-amber-400/20 text-amber-200 border-amber-400/30' :
+                'bg-green-400/20 text-green-200 border-green-400/30'
+              }`}>
+                {d.color} {d.dimension}: {d.score}/10
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -568,16 +599,35 @@ export function ReportTemplate(props: ReportTemplateProps) {
         </div>
         
         {/* Visual timeline bar — connects to implementation phases above */}
-        <div className="relative pt-2 pb-4">
-          <div className="flex items-center">
+        <div className="relative pt-2 pb-5">
+          {/* Timeline bar */}
+          <div className="flex items-center mb-3">
             {result.timelinePhases.map((phase, i) => (
-              <div key={i} className="flex-1 text-center">
-                <div className={`h-2 rounded-full mx-0.5 ${
-                  i < 2 ? 'bg-blue-300' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
+              <div key={i} className="flex-1 text-center relative">
+                <div className={`h-2.5 rounded-full mx-0.5 ${
+                  i < 2 ? 'bg-blue-400' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
                 }`} />
-                <p className="text-[9px] text-gray-500 mt-1 truncate px-0.5">{phase.duration}</p>
+                {/* Milestone markers */}
+                <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 bg-white ${
+                  i < 2 ? 'border-blue-400' : i < 4 ? 'border-gold' : i < 5 ? 'border-green-400' : 'border-primary-navy'
+                }`}>
+                  <div className={`w-2 h-2 rounded-full mx-auto mt-[2px] ${
+                    i < 2 ? 'bg-blue-400' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
+                  }`}></div>
+                </div>
+                {/* Phase label */}
+                <p className="text-[9px] text-gray-600 mt-2 leading-tight px-0.5 font-medium">{phase.phase.split(' ').slice(0,2).join(' ')}</p>
+                <p className="text-[8px] text-gray-400 mt-0.5">{phase.duration}</p>
               </div>
             ))}
+          </div>
+          {/* Legend */}
+          <div className="flex flex-wrap gap-3 justify-center mt-2 pt-2 border-t border-gray-100">
+            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-400"></span> Assessment</span>
+            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-gold"></span> Documentation</span>
+            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400"></span> Approval</span>
+            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-primary-navy"></span> Market Entry</span>
+            <span className="text-[9px] text-gray-500 flex items-center gap-1">● Milestone</span>
           </div>
         </div>
       </div>
@@ -621,6 +671,47 @@ export function ReportTemplate(props: ReportTemplateProps) {
             💡 Our team provides comprehensive pricing assessment after reviewing your specific product, volume, and requirements. 
             The ranges above are indicative. Contact us for a detailed, no-obligation quote.
           </p>
+        </div>
+        
+        <div className="mt-4 overflow-x-auto">
+          <p className="text-[10px] font-bold text-primary-navy uppercase mb-2">📊 DIY vs Professional Service: Cost of Getting It Wrong</p>
+          <table className="w-full text-xs border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="text-left p-2 font-semibold text-gray-700">Risk Factor</th>
+                <th className="text-right p-2 font-semibold text-red-700">Cost of DIY Error</th>
+                <th className="text-right p-2 font-semibold text-green-700">With Professional Service</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="bg-white">
+                <td className="p-2 font-semibold text-gray-800">Wrong HS code classification</td>
+                <td className="p-2 text-right text-red-600">$2,000-10,000 (penalties + delays)</td>
+                <td className="p-2 text-right text-green-600">Pre-classification ruling included</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="p-2 font-semibold text-gray-800">Label non-compliance at customs</td>
+                <td className="p-2 text-right text-red-600">$1,000-5,000 (detention + re-labeling)</td>
+                <td className="p-2 text-right text-green-600">Pre-approved label design included</td>
+              </tr>
+              <tr className="bg-white">
+                <td className="p-2 font-semibold text-gray-800">Incomplete application rejection</td>
+                <td className="p-2 text-right text-red-600">$3,000-8,000 (re-apply + 2-4 month delay)</td>
+                <td className="p-2 text-right text-green-600">First-time approval rate &gt;95%</td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="p-2 font-semibold text-gray-800">Incorrect documentation format</td>
+                <td className="p-2 text-right text-red-600">$500-3,000 (rejection + courier costs)</td>
+                <td className="p-2 text-right text-green-600">Document templates + pre-check</td>
+              </tr>
+              <tr className="bg-gold/10">
+                <td className="p-2 font-bold text-primary-navy">TOTAL POTENTIAL SAVINGS</td>
+                <td className="p-2 text-right font-bold text-red-700">—</td>
+                <td className="p-2 text-right font-bold text-green-700">$6,500-26,000+</td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="text-[9px] text-gray-400 mt-1 italic">* Estimates based on industry averages. Actual costs vary by product category and complexity.</p>
         </div>
       </div>
 
@@ -965,6 +1056,83 @@ export function ReportTemplate(props: ReportTemplateProps) {
         <div className="mt-3 bg-primary-navy text-white rounded-lg p-3 text-center">
           <p className="text-sm font-bold">Professional services from <span className="text-gold">{result.totalCostRange || '$3,500-9,500'}</span></p>
           <p className="text-xs text-white/60 mt-0.5">Exact pricing depends on product complexity, origin country, and service scope</p>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MODULE 22: COMPLIANCE CHECKLIST
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100 print:break-inside-avoid">
+        <SectionTitle icon={<Icon svg={I.check} w={5} h={5} />} label="COMPLIANCE CHECKLIST — PRINTABLE ACTION PLAN" />
+        
+        <p className="text-xs text-gray-500 mb-3">Check off each item as completed. This checklist can be printed and shared with your team.</p>
+        
+        <div className="space-y-2">
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+            <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 1: Preparation</p>
+            <div className="space-y-1">
+              {["Confirm product HS code with customs broker", "Engage Chinese compliance agent", "Prepare company registration documents", "Collect product specifications and ingredients list"].map((item, i) => (
+                <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                  <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
+                  <span className="text-xs text-gray-700 group-hover:text-primary-navy">{item}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+            <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 2: Documentation</p>
+            <div className="space-y-1">
+              {result.requiredDocuments.slice(0, 5).map((doc, i) => (
+                <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                  <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
+                  <span className="text-xs text-gray-700 group-hover:text-primary-navy">{doc}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+            <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 3: Submission & Clearance</p>
+            <div className="space-y-1">
+              {["Submit GACC/CCC/NMPA application", "Track application status weekly", "Prepare Chinese label artwork", "Arrange first shipment logistics", "Verify customs clearance documentation"].map((item, i) => (
+                <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                  <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
+                  <span className="text-xs text-gray-700 group-hover:text-primary-navy">{item}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MODULE 23: GLOSSARY
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <SectionTitle icon={<Icon svg={I.doc} w={5} h={5} />} label="CHINA COMPLIANCE GLOSSARY" />
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+          {[
+            {term: "GACC", def: "General Administration of Customs — China's customs authority. Oversees import/export regulations, including Decree 248/249."},
+            {term: "CNCA", def: "Certification and Accreditation Administration — Manages CCC certification and accreditation of testing labs."},
+            {term: "NMPA", def: "National Medical Products Administration — Regulates cosmetics, drugs, and medical devices."},
+            {term: "SAMR", def: "State Administration for Market Regulation — Enforces food safety law, trademark law, and market surveillance."},
+            {term: "CIFER", def: "China Import Food Enterprise Registration — Online portal for GACC food registration applications."},
+            {term: "CIQ", def: "China Inspection and Quarantine — Inspects imported goods at ports for compliance."},
+            {term: "HS Code", def: "Harmonized System Code — Internationally standardized product classification used for tariffs."},
+            {term: "GB Standard", def: "Guobiao (National Standard) — Mandatory Chinese product and safety standards."},
+            {term: "NRV%", def: "Nutrient Reference Value % — Mandatory nutrition labeling format per GB 28050."},
+            {term: "CBEC", def: "Cross-Border E-Commerce — Simplified import channel via bonded warehouses."},
+            {term: "CCC", def: "China Compulsory Certification — Mandatory safety certification for specified product categories."},
+            {term: "FTA", def: "Free Trade Agreement — Bilateral agreement reducing tariffs between countries."},
+            {term: "MFN", def: "Most Favored Nation — Standard WTO tariff rate applied to trading partners."},
+            {term: "CIFER No.", def: "Unique registration number assigned to overseas food manufacturers upon GACC approval."},
+            {term: "Positive List", def: "CBEC-approved product categories eligible for cross-border e-commerce import."},
+          ].map((item, i) => (
+            <div key={i} className="bg-gray-50 rounded-lg p-2 border border-gray-100">
+              <p className="text-[10px] font-bold text-primary-navy">{item.term}</p>
+              <p className="text-[9px] text-gray-600 mt-0.5">{item.def}</p>
+            </div>
+          ))}
         </div>
       </div>
 
