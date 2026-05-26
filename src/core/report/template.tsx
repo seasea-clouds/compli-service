@@ -550,7 +550,35 @@ export function ReportTemplate(props: ReportTemplateProps) {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
-          MODULE 12: COST ESTIMATION
+          MODULE 12: TIMELINE ANALYSIS
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <SectionTitle icon={<Icon svg={I.clock} w={5} h={5} />} label="TIMELINE ANALYSIS" />
+        
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <p className="text-lg font-bold text-blue-800">
+            Estimated Total: {result.estimatedTimeline}
+          </p>
+          <p className="text-sm text-gray-700 mt-1">{result.detailedTimeline}</p>
+        </div>
+        
+        {/* Visual timeline bar — connects to implementation phases above */}
+        <div className="relative pt-2 pb-4">
+          <div className="flex items-center">
+            {result.timelinePhases.map((phase, i) => (
+              <div key={i} className="flex-1 text-center">
+                <div className={`h-2 rounded-full mx-0.5 ${
+                  i < 2 ? 'bg-blue-300' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
+                }`} />
+                <p className="text-[9px] text-gray-500 mt-1 truncate px-0.5">{phase.duration}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MODULE 13: COST ESTIMATION
       ═══════════════════════════════════════════════════════════════ */}
       <div className="px-8 py-6 border-b border-gray-100">
         <SectionTitle icon={<Icon svg={I.dollar} w={5} h={5} />} label="TOTAL COST OF COMPLIANCE" />
@@ -588,34 +616,6 @@ export function ReportTemplate(props: ReportTemplateProps) {
             💡 Our team provides comprehensive pricing assessment after reviewing your specific product, volume, and requirements. 
             The ranges above are indicative. Contact us for a detailed, no-obligation quote.
           </p>
-        </div>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          MODULE 13: TIMELINE ANALYSIS
-      ═══════════════════════════════════════════════════════════════ */}
-      <div className="px-8 py-6 border-b border-gray-100">
-        <SectionTitle icon={<Icon svg={I.clock} w={5} h={5} />} label="TIMELINE ANALYSIS" />
-        
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-          <p className="text-lg font-bold text-blue-800">
-            Estimated Total: {result.estimatedTimeline}
-          </p>
-          <p className="text-sm text-gray-700 mt-1">{result.detailedTimeline}</p>
-        </div>
-        
-        {/* Visual timeline bar */}
-        <div className="relative pt-2 pb-4">
-          <div className="flex items-center">
-            {result.timelinePhases.map((phase, i) => (
-              <div key={i} className="flex-1 text-center">
-                <div className={`h-2 rounded-full mx-0.5 ${
-                  i < 2 ? 'bg-blue-300' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
-                }`} />
-                <p className="text-[9px] text-gray-500 mt-1 truncate px-0.5">{phase.duration}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -878,7 +878,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           </div>
 
           <a
-            href={href('/compli-service/quote')}
+            href={href('/quote')}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-gold hover:bg-gold/90 text-primary-navy font-bold px-8 py-3 rounded-lg transition-all shadow-lg hover:shadow-xl text-sm"
