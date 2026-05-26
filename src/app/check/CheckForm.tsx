@@ -53,6 +53,33 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
     setError("");
     try {
       const reportId = `${config.moduleKey.toUpperCase()}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+
+      // Store report data in localStorage before redirecting
+      if (result) {
+        const reportData = {
+          id: reportId,
+          module: config.moduleLabel,
+          productInfo: {
+            name: values.productName || '',
+            category: values.category || '',
+            hsCode: values.hsCode || '',
+            originCountry: '',
+          },
+          result: {
+            requiresRegistration: result.isActionNeeded,
+            isHighRisk: false,
+            riskCategory: '',
+            summary: result.summary || '',
+            requiredDocuments: result.documents || [],
+          },
+          nextSteps: result.details?.map((d: any) => `${d.label}: ${d.value}`) || [],
+          generatedAt: new Date().toISOString(),
+        };
+        try {
+          localStorage.setItem('compli…ort', JSON.stringify(reportData));
+        } catch {}
+      }
+
       const res = await fetch(`${API_BASE}/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

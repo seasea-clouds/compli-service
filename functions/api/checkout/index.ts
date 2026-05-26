@@ -32,32 +32,13 @@ export async function onRequest(context: {
 
     const pid = productId ?? context.env.CREEM_PRODUCT_ID_SINGLE;
 
-    // ── Insert report record immediately ───────────────────────────
-    if (context.env.DB) {
-      const module = (metadata?.module as string) ?? "gacc";
-      const now = new Date().toISOString();
-      await context.env.DB.prepare(`
-        INSERT OR IGNORE INTO reports (id, module, product_name, hs_code, origin_country, input_data, user_email, locale, payment_status, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
-      `).bind(
-        reportId,
-        module,
-        metadata?.productName ?? null,
-        metadata?.hsCode ?? null,
-        metadata?.originCountry ?? null,
-        metadata ? JSON.stringify(metadata) : null,
-        email ?? null,
-        locale ?? 'en',
-        now
-      ).run();
-    }
-
     // ── Build Creem checkout session ──────────────────────────────
     const body: Record<string, unknown> = {
       product_id: pid,
       success_url: `https://sinotradecompliance.com/${locale ?? 'en'}/compli-service/report/?id=${reportId}`,
       metadata: {
         report_id: reportId,
+        locale: locale ?? 'en',
         ...(email && { email }),
         ...(metadata ?? {}),
       },
@@ -79,13 +60,6 @@ export async function onRequest(context: {
     }
 
     const data = await res.json();
-
-    // Update payment_id on the report record
-    if (context.env.DB) {
-      await context.env.DB.prepare(
-        `UPDATE reports SET payment_id = ? WHERE id = ?`
-      ).bind(data.id, reportId).run();
-    }
 
     return Response.json({
       checkoutUrl: data.checkout_url,

@@ -31,6 +31,32 @@ export default function GaccCheckPage() {
     try {
       const reportId = `GACC-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
+      // Store report data in localStorage before redirecting to payment
+      if (freeData) {
+        const reportData = {
+          id: reportId,
+          module: 'GACC Food Registration',
+          productInfo: {
+            name: input.productName || '',
+            category: CATEGORY_LABELS[input.category as GaccCategory] || input.category || '',
+            hsCode: input.hsCode || '',
+            originCountry: input.originCountry || '',
+          },
+          result: {
+            requiresRegistration: freeData.requiresRegistration,
+            isHighRisk: false,
+            riskCategory: '',
+            summary: freeData.summary || '',
+            requiredDocuments: freeData.requiredDocuments || [],
+          },
+          nextSteps: freeData.requiredDocuments?.map((d: any) => `${d.label}: ${d.value}`) || [],
+          generatedAt: new Date().toISOString(),
+        };
+        try {
+          localStorage.setItem('compli…ort', JSON.stringify(reportData));
+        } catch {}
+      }
+
       const res = await fetch(`${API_BASE}/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

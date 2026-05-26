@@ -26,6 +26,20 @@ function ReportContent() {
       return;
     }
 
+    // Try to load from localStorage first (stored before Creem redirect)
+    try {
+      const stored = localStorage.getItem('compli…ort');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.id === id) {
+          setReport(parsed);
+          setLoading(false);
+          localStorage.removeItem('compli…ort');
+          return;
+        }
+      }
+    } catch {}
+
     const fetchReport = async (): Promise<void> => {
       try {
         const res = await fetch(`${API_BASE}/report/${id}`);
