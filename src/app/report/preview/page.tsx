@@ -28,7 +28,7 @@ const SAMPLE_RESULT: GaccResult = {
   },
   channels: [
     { channel: "General Trade (一般贸易)", suitability: 'high', gaccRequired: true, description: "Standard import channel for commercial sale in physical retail and wholesale.", advantages: ["Full market access (online + offline)", "Build brand presence in China", "Higher margins at scale"], disadvantages: ["Full compliance overhead (GACC + label + testing)", "Longer timeline", "Requires Chinese entity or authorized agent"], timeline: "2-4 months", costRange: "$3,000-8,000" },
-    { channel: "Cross-Border E-commerce (CBEC / 跨境电商)", suitability: 'medium', gaccRequired: false, description: "Sell directly via Tmall Global, JD Worldwide. Stored in bonded warehouses.", advantages: ["No GACC registration required!", "Faster market entry", "Lower upfront compliance cost", "Test market before full commitment"], disadvantages: ["Limited to online channels", "Per-shipment limits (RMB 5,000/transaction)", "Cannot sell through retail stores", "CBEC positive list restrictions"], timeline: "1-2 months", costRange: "$500-2,000" },
+    { channel: "Cross-Border E-commerce (CBEC / 跨境电商)", suitability: 'medium', gaccRequired: false, description: "Sell directly via Tmall Global, JD Worldwide. Stored in bonded warehouses.", advantages: ["Faster market entry", "Lower upfront compliance cost", "Test market before full commitment", "Simplified regulatory pathway"], disadvantages: ["Limited to online channels", "Per-shipment limits (RMB 5,000/transaction)", "Cannot sell through retail stores", "CBEC positive list restrictions"], timeline: "1-2 months", costRange: "$500-2,000" },
     { channel: "Personal Parcel / Courier", suitability: 'low', gaccRequired: false, description: "Direct-to-consumer via courier (FedEx, DHL). For small quantities only.", advantages: ["No compliance needed for personal use", "Fastest"], disadvantages: ["Strictly limited to personal use quantities", "Not scalable", "Cannot build brand in market"], timeline: "Days", costRange: "$0-200 per shipment" },
   ],
   tariffInfo: {
@@ -117,13 +117,13 @@ const SAMPLE_RESULT: GaccResult = {
     { phase: "Initial Assessment & Classification", duration: "1-2 weeks", description: "Confirm HS code, GACC category classification, and identify required documents.", responsible: 'SinoTrade', dependencies: [] },
     { phase: "Document Preparation & Translation", duration: "2-4 weeks", description: "Gather all required documents, translate to Chinese, notarize where required.", responsible: 'Both', dependencies: ["Initial assessment complete"] },
     { phase: "Lab Testing (CNAS Accredited)", duration: "2-3 weeks", description: "Product samples sent to CNAS-accredited lab for required testing.", responsible: 'SinoTrade', dependencies: ["Sample shipment arranged"] },
-    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via CIFER system. Self-registration by manufacturer possible.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
+    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via CIFER system with our team handling all documentation and submission requirements.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
     { phase: "GACC Review & Approval", duration: "2-6 weeks", description: "GACC processes application. Issue registration certificate upon approval.", responsible: 'SinoTrade', dependencies: ["Application submitted"] },
     { phase: "Label Design & Compliance", duration: "2-3 weeks", description: "Design Chinese label per GB 7718/28050. Submit for compliance review.", responsible: 'SinoTrade', dependencies: ["Product details finalized"] },
     { phase: "First Shipment & Customs Clearance", duration: "1-3 weeks", description: "First commercial shipment. CIQ inspection: document check, label verification, random sampling.", responsible: 'Both', dependencies: ["GACC Registration certificate", "Label approved"] },
   ],
   costBreakdown: [
-    { item: "GACC Registration Fee", estimatedRange: "$0-500", notes: "Direct registration is free via CIFER. Agent-assisted: $200-500." },
+    { item: "GACC Registration Fee", estimatedRange: "$200-800", notes: "CIFER system filing with professional agent handling." },
     { item: "Laboratory Testing (CNAS)", estimatedRange: "$600-2,000", notes: "Required tests: Microbiological, Heavy metals, Food additives, Melamine, Pesticide residues." },
     { item: "Document Translation & Notarization", estimatedRange: "$500-2,000", notes: "All non-Chinese documents need certified Chinese translation." },
     { item: "Chinese Label Design & Compliance Review", estimatedRange: "$300-1,500", notes: "Includes GB 7718 check, nutrition panel, 2 revision rounds." },
