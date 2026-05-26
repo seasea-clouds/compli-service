@@ -106,21 +106,19 @@ export function ReportTemplate(props: ReportTemplateProps) {
     productInfo, result: rawResult, generatedAt,
   } = props;
   const href = (path: string) => `/${locale || 'en'}${path}`;
-
-  // Defaults for optional fields — supports all module types
   const result = {
-    riskScore: 0, riskDimensions: [], oneLineDecision: 'Assessment required', isHighRisk: false,
-    estimatedTimeline: 'Contact us', totalCostRange: 'Contact us', executiveSummary: '', summary: '',
-    requiredDocuments: [], documentGuide: [], labTests: [], testCostRange: '', labGuide: '',
-    costBreakdown: [], postApprovalObligations: [], horizonScan: [], regulations: [],
-    timelinePhases: [], riskMatrix: [], commonRejections: [],
-    labelGuide: { requiredItems: [], gb7718Highlights: [], gb28050Highlights: [] },
-    channels: [],
-    tariffInfo: { mfnRate: 'Varies', vatRate: 'Varies', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: 'Varies' },
-    countryProfile: { region: '—', ftaWithChina: false, ftaDetails: '', specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: 'moderate', languageNote: '', commonIssues: [], importVolumeNote: '' },
-    marketIntel: { chinaImportTrend: '', keyDrivers: [], barriers: [], consumerPerception: '', topOrigins: [], recommendation: '' },
-    competitiveAnalysis: '',
-    classification: { assignedHsChapter: '', ciqCode: '', isHighRisk: false, riskReason: '', alternativeClassificationNote: '' },
+    riskScore: 0, riskDimensions: [], oneLineDecision: '', isHighRisk: false,
+    estimatedTimeline: '', totalCostRange: '',
+    channels: [], regulations: [], riskMatrix: [], documentGuide: [], requiredDocuments: [],
+    timelinePhases: [], costBreakdown: [], postApprovalObligations: [], horizonScan: [],
+    testRequirements: [], testCostRange: '', labGuide: '',
+    labelGuide: {requiredItems:[], gb7718Highlights:[], gb28050Highlights:[]},
+    tariffInfo: {mfnRate:'', vatRate:'', consumptionTax:'', ftaRate:null, totalTaxBurden:''},
+    countryProfile: {region:'', ftaWithChina:false, ftaDetails:'', specialRestrictions:[],
+      bilateralMeatAccess:false, bilateralAquaticAccess:false, dairyApproved:false,
+      gaccDifficulty:'moderate', languageNote:'', commonIssues:[], importVolumeNote:''},
+    marketIntel: {chinaImportTrend:'', keyDrivers:[], barriers:[], consumerPerception:'', topOrigins:[], recommendation:''},
+    competitiveAnalysis: '', summary: '', executiveSummary: '', classification: {},
     ...rawResult,
   };
   const formattedDate = generatedAt ? new Date(generatedAt).toLocaleDateString('en-US', {
