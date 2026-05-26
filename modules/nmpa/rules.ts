@@ -1,11 +1,8 @@
-/**
- * NMPA 化妆品备案 — 深度报告规则引擎
- * 覆盖：护肤品、彩妆、洗护、香水、防晒、口腔护理等
- */
+/** NMPA 化妆品 — 深度规则引擎 */
 
 export type CosmeticsCategory =
-  | "skincare" | "makeup" | "haircare" | "fragrance"
-  | "sunscreen" | "oral_care" | "body_care" | "baby" | "other";
+  | "skincare" | "makeup" | "sunscreen" | "haircare" | "fragrance"
+  | "oral_care" | "body_care" | "baby" | "other";
 
 export interface CosmeticsInput {
   category: CosmeticsCategory;
@@ -15,132 +12,77 @@ export interface CosmeticsInput {
   originCountry?: string;
 }
 
-export interface CosmeticsResult {
-  requiresFiling: boolean;
-  isSpecialCosmetics: boolean;
-  riskCategory: "high" | "medium" | "low";
-  riskScore: number;
-  riskDimensions: { dimension: string; score: number; color: string; note: string }[];
-  executiveSummary: string;
-  oneLineDecision: string;
-  channels: any[];
-  tariffInfo: { mfnRate: string; vatRate: string; ftaRate: string | null };
-  regulations: any[];
-  classification: { code: string; riskLevel: string; description: string };
-  documentGuide: { name: string; format: string; commonError: string }[];
-  requiredDocuments: string[];
-  testRequirements: string[];
-  testCostRange: string;
-  timelinePhases: { phase: string; duration: string; description: string; responsible: string }[];
-  estimatedTimeline: string;
-  costBreakdown: { item: string; range: string; note: string }[];
-  totalCostRange: string;
-  countryNotes: string[];
-  commonIssues: { problem: string; cause: string; solution: string }[];
-  postApproval: { item: string; freq: string; desc: string }[];
-  summary: string;
-}
-
 export const CATEGORY_LABELS: Record<CosmeticsCategory, string> = {
-  skincare: "Skincare / Face Care (HS 33.04)",
-  makeup: "Makeup / Color Cosmetics (HS 33.04, 33.05)",
-  haircare: "Hair Care Products (HS 33.05)",
+  skincare: "Skincare (HS 33.04)",
+  makeup: "Makeup (HS 33.04)",
+  sunscreen: "Sunscreen (HS 33.04) — SPECIAL",
+  haircare: "Hair Care (HS 33.05)",
   fragrance: "Fragrance / Perfume (HS 33.03)",
-  sunscreen: "Sunscreen / UV Protection (HS 33.04) — SPECIAL COSMETICS",
-  oral_care: "Oral Care / Toothpaste (HS 33.06)",
-  body_care: "Body / Hand Care (HS 33.04)",
-  baby: "Baby / Children's Products (HS 33.04, 34.01)",
-  other: "Other Cosmetics / Personal Care",
+  oral_care: "Oral Care (HS 33.06)",
+  body_care: "Body Care (HS 33.04)",
+  baby: "Baby Products (HS 33.04)",
+  other: "Other Cosmetics",
 };
 
-const SPECIAL_COSMETICS: Record<CosmeticsCategory, boolean> = {
-  sunscreen: true, skincare: false, makeup: false, haircare: false,
-  fragrance: false, oral_care: false, body_care: false, baby: false, other: false,
+const PROFILES: Record<string, any> = {
+  "skincare": {"label": "Skincare (HS 33.04)", "isSpecial": false, "riskReason": "Ordinary cosmetics. NMPA filing required.", "mfnRate": "1-5%", "testing": ["Microbiological", "Heavy metals", "Stability"], "testCost": "$1,000-3,000", "rejections": [{"problem": "Ingredient not in ICSC", "cause": "Novel ingredient", "solution": "Check INCI against ICSC"}], "timeline": "2-4 months"},
+  "makeup": {"label": "Makeup (HS 33.04)", "isSpecial": false, "riskReason": "Ordinary cosmetics. Color additives monitored.", "mfnRate": "1-5%", "testing": ["Microbiological", "Heavy metals", "Colorants"], "testCost": "$1,500-4,000", "rejections": [{"problem": "Color additive not approved", "cause": "Not on China positive list", "solution": "Verify colorant against CosIng China list"}], "timeline": "2-4 months"},
+  "sunscreen": {"label": "Sunscreen (HS 33.04) — SPECIAL", "isSpecial": true, "riskReason": "SPECIAL cosmetics. Full NMPA registration required.", "mfnRate": "1-5%", "testing": ["Safety assessment", "Efficacy (SPF)", "Microbiological", "Heavy metals", "Stability"], "testCost": "$3,000-10,000", "rejections": [{"problem": "SPF test method not per GB/T", "cause": "Different test protocol", "solution": "Use CNAS lab per GB/T 35954"}], "timeline": "6-12 months"},
+  "haircare": {"label": "Hair Care (HS 33.05)", "isSpecial": false, "riskReason": "Ordinary cosmetics.", "mfnRate": "1-5%", "testing": ["Microbiological", "Heavy metals"], "testCost": "$800-2,500", "rejections": [], "timeline": "2-4 months"},
+  "fragrance": {"label": "Fragrance / Perfume (HS 33.03)", "isSpecial": false, "riskReason": "Ordinary cosmetics. Alcohol content monitored.", "mfnRate": "3-6.5%", "testing": ["Microbiological", "Heavy metals", "Alcohol content"], "testCost": "$1,000-3,000", "rejections": [{"problem": "Allergen declaration", "cause": "EU allergens vs China list differ", "solution": "Check China fragrance allergen list"}], "timeline": "2-4 months"},
+  "oral_care": {"label": "Oral Care (HS 33.06)", "isSpecial": false, "riskReason": "Ordinary cosmetics.", "mfnRate": "1-5%", "testing": ["Microbiological", "Heavy metals", "Fluoride"], "testCost": "$800-2,000", "rejections": [], "timeline": "2-4 months"},
+  "body_care": {"label": "Body Care (HS 33.04)", "isSpecial": false, "riskReason": "Ordinary cosmetics.", "mfnRate": "1-5%", "testing": ["Microbiological", "Heavy metals"], "testCost": "$800-2,000", "rejections": [], "timeline": "2-4 months"},
+  "baby": {"label": "Baby Products (HS 33.04)", "isSpecial": false, "riskReason": "Ordinary cosmetics. Stricter safety requirements.", "mfnRate": "1-5%", "testing": ["Microbiological", "Heavy metals", "Skin irritation", "PH"], "testCost": "$1,000-3,000", "rejections": [], "timeline": "2-4 months"},
+  "other": {"label": "Other Cosmetics", "isSpecial": false, "riskReason": "Varies by type.", "mfnRate": "1-6.5%", "testing": ["Microbiological", "Heavy metals"], "testCost": "$800-2,000", "rejections": [], "timeline": "2-4 months"}
 };
 
-export function checkCosmetics(input: CosmeticsInput): CosmeticsResult {
-  const isSpecial = input.category === 'sunscreen' || (input.hasNewIngredient && input.category === 'skincare');
-  const requiresFiling = true;
-  const riskScore = isSpecial ? 7.5 : 4.2;
-  const riskDimensions = [
-    { dimension: "Product Category", score: isSpecial ? 8 : 3, color: isSpecial ? "🔴" : "🟢", note: CATEGORY_LABELS[input.category] },
-    { dimension: "Registration Type", score: isSpecial ? 8 : 3, color: isSpecial ? "🔴" : "🟢", note: isSpecial ? "Special cosmetics: NMPA registration" : "Ordinary: NMPA filing" },
-    { dimension: "Ingredient Complexity", score: input.hasNewIngredient ? 8 : 4, color: input.hasNewIngredient ? "🔴" : "🟢", note: input.hasNewIngredient ? "Novel ingredient requires safety assessment" : "Standard ingredients" },
-    { dimension: "Testing Requirements", score: isSpecial ? 7 : 4, color: isSpecial ? "🔴" : "🟢", note: isSpecial ? "Full safety + efficacy testing required" : "Standard microbiological + heavy metals" },
-    { dimension: "Timeline", score: isSpecial ? 8 : 3, color: isSpecial ? "🔴" : "🟢", note: isSpecial ? "6-12 months" : "2-4 months" },
-  ];
-  const summary = isSpecial
-    ? `Your product (${CATEGORY_LABELS[input.category]}) is classified as SPECIAL cosmetics. Requires NMPA registration with full safety assessment and efficacy testing.`
-    : `Your product (${CATEGORY_LABELS[input.category]}) is classified as ordinary cosmetics. Requires NMPA filing (simplified process).`;
-
+export function checkCosmetics(input: CosmeticsInput): any {
+  const cat = PROFILES[input.category];
+  if (!cat) return {};
+  const isSpecial = cat.isSpecial;
+  const riskScore = isSpecial ? 7.5 : 4.0;
   return {
-    requiresFiling, isSpecialCosmetics: isSpecial,
-    riskCategory: isSpecial ? "high" : "low",
-    riskScore,
-    riskDimensions,
-    executiveSummary: `NMPA assessment for ${input.productName}. Risk: ${riskScore}/10. ${isSpecial ? "🔴 Special cosmetics — full registration required." : "🟢 Ordinary cosmetics — simplified filing."}`,
-    oneLineDecision: isSpecial ? "🔴 Special Cosmetics Registration. 6-12 months." : "🟢 Ordinary Cosmetics Filing. 2-4 months.",
-    channels: [
-      { name: "General Trade", suitability: "high", description: "Full NMPA registration/filing required", timeline: isSpecial ? "6-12 months" : "2-4 months", costRange: isSpecial ? "$8,000-25,000" : "$3,000-8,000" },
-      { name: "CBEC", suitability: "high", description: "Cross-border e-commerce — alternative compliance pathway", timeline: "1-2 months", costRange: "$500-2,000" },
-    ],
-    tariffInfo: { mfnRate: "1-6.5% (MFN)", vatRate: "13%", ftaRate: null },
-    regulations: [
-      { name: "Cosmetics Supervision & Administration Regulation", number: "State Council Decree 727 (2020)", authority: "NMPA/SAMR", relevance: "primary", description: "Primary regulation governing cosmetics in China." },
-      { name: "Cosmetics Registration & Filing Management Measures", number: "NMPA 2021", authority: "NMPA", relevance: "primary", description: "Detailed procedures for cosmetics registration/filing." },
-      { name: "Cosmetic Ingredients Safety Assessment Guidelines", number: "NMPA 2021 Tech Specs", authority: "NMPA", relevance: "primary", description: "Required safety assessment report format." },
-      { name: "GB/T 35914-2018", number: "GB/T 35914", authority: "NHC", relevance: "primary", description: "Hygienic standard for cosmetics." },
-    ],
-    classification: { code: input.category, riskLevel: isSpecial ? "🔴 Special Cosmetics" : "🟢 Ordinary Cosmetics", description: `${CATEGORY_LABELS[input.category]} — ${isSpecial ? "NMPA registration required. Safety + efficacy testing." : "NMPA filing required. Standard documentation."}` },
-    documentGuide: [
-      { name: "Product Formula & Ingredient List", format: "Excel/PDF, full INCI names", commonError: "INGI names not matching Chinese catalogue" },
-      { name: "Safety Assessment Report", format: "PDF, by qualified safety assessor", commonError: "Assessor not NMPA-recognized" },
-      { name: "Microbiological Test Report", format: "CNAS lab report", commonError: "Test items not per GB 7918" },
-      { name: "Heavy Metals Test Report", format: "CNAS lab report", commonError: "Testing scope incomplete" },
-      { name: "Product Label & Package Images", format: "JPEG/PDF, all sides", commonError: "Missing Chinese ingredient names" },
-      { name: "GMP Certificate", format: "PDF, ISO 22716 preferred", commonError: "Certificate expired" },
-      ...(isSpecial ? [{ name: "Efficacy Evaluation Report", format: "PDF, NMPA format", commonError: "Method not per NMPA guidelines" }] : []),
-    ],
-    requiredDocuments: isSpecial ? ["Formula & INCI", "Safety Assessment", "Efficacy Report", "Microbiological Test", "Heavy Metals", "Label Artwork", "GMP Cert"] : ["Formula & INCI", "Safety Assessment", "Microbiological Test", "Heavy Metals", "Label Artwork", "GMP Cert"],
-    testRequirements: isSpecial ? ["Microbiological (GB 7918)", "Heavy Metals (Pb, As, Hg, Cd)", "Safety Assessment (NMPA 2021)", "Efficacy Test (if claiming)", "Stability Testing", "Skin Irritation Test (for new ingredients)"] : ["Microbiological (GB 7918)", "Heavy Metals (Pb, As, Hg)", "Stability Testing"],
-    testCostRange: isSpecial ? "$3,000-10,000" : "$1,000-3,000",
-    timelinePhases: isSpecial ? [
-      { phase: "Pre-assessment", duration: "1-2 weeks", description: "Confirm classification: special vs ordinary", responsible: "SinoTrade" },
-      { phase: "Formula Review", duration: "2-4 weeks", description: "Full ingredient check against China's ICSC database", responsible: "Both" },
-      { phase: "Testing", duration: "6-10 weeks", description: "Safety + efficacy + microbiological + stability", responsible: "SinoTrade" },
-      { phase: "Document Compilation", duration: "2-3 weeks", description: "Assemble full dossier incl. safety assessment", responsible: "SinoTrade" },
-      { phase: "NMPA Submission", duration: "2-3 weeks", description: "Submit to NMPA. Technical review (can be 3+ months)", responsible: "SinoTrade" },
-      { phase: "Certificate Issuance", duration: "4-8 weeks", description: "NMPA review approval + certificate", responsible: "NMPA" },
-    ] : [
-      { phase: "Pre-assessment", duration: "1 week", description: "Confirm ordinary cosmetics classification", responsible: "SinoTrade" },
-      { phase: "Formula Review", duration: "1-2 weeks", description: "Ingredient check", responsible: "Both" },
-      { phase: "Testing", duration: "2-4 weeks", description: "Standard microbiological + heavy metals", responsible: "SinoTrade" },
-      { phase: "Filing Submission", duration: "2-4 weeks", description: "Submit filing via NMPA online system", responsible: "SinoTrade" },
-    ],
-    estimatedTimeline: isSpecial ? "6-14 months" : "2-4 months",
-    costBreakdown: isSpecial ? [
-      { item: "Safety Assessment Report", range: "$2,000-5,000", note: "Qualified assessor per NMPA 2021" },
-      { item: "Testing (Full)", range: "$3,000-10,000", note: "Micro + heavy metals + efficacy" },
-      { item: "Translation & Notarization", range: "$500-1,500", note: "Chinese translation of all documents" },
-      { item: "Professional Service", range: "$5,000-12,000", note: "End-to-end registration management" },
-    ] : [
-      { item: "Testing (Standard)", range: "$1,000-3,000", note: "Micro + heavy metals" },
-      { item: "Translation", range: "$300-1,000", note: "Chinese translation" },
-      { item: "Filing Service", range: "$2,000-5,000", note: "End-to-end filing management" },
-    ],
+    requiresFiling: true, isSpecialCosmetics: isSpecial,
+    riskCategory: isSpecial ? "high" : "low", isHighRisk: isSpecial,
+    riskScore, estimatedTimeline: cat.timeline,
     totalCostRange: isSpecial ? "$8,000-25,000" : "$3,000-8,000",
-    countryNotes: input.brandCountry ? [`Brand origin: ${input.brandCountry}. Imported cosmetics may need additional country-specific documentation.`] : [],
-    commonIssues: [
-      { problem: "Ingredient not in ICSC catalogue", cause: "Novel ingredient not approved for cosmetics use in China", solution: "Pre-check all INCI names against ICSC before submission" },
-      { problem: "Safety assessor qualifications rejected", cause: "Assessor not NMPA-recognized", solution: "Use NMPA-registered safety assessors only" },
-      { problem: "Label claims not substantiated", cause: "Efficacy claims without supporting test data", solution: "Pre-review of all label claims against approved claim list" },
+    executiveSummary: `NMPA assessment for ${input.productName}. Risk: ${riskScore}/10. ${isSpecial ? "🔴 Special cosmetics" : "🟢 Ordinary cosmetics"}.`,
+    oneLineDecision: isSpecial ? "🔴 Special — full registration" : "🟢 Ordinary — filing",
+    riskDimensions: [
+      { dimension: "Product Category", score: isSpecial ? 8 : 3, color: isSpecial ? "🔴" : "🟢", note: cat.label },
+      { dimension: "Registration Type", score: isSpecial ? 8 : 3, color: isSpecial ? "🔴" : "🟢", note: isSpecial ? "Full registration" : "Simplified filing" },
+      { dimension: "Testing", score: isSpecial ? 7 : 4, color: isSpecial ? "🟡" : "🟢", note: `${cat.testing.length} required` },
+      { dimension: "Timeline", score: isSpecial ? 8 : 3, color: isSpecial ? "🔴" : "🟢", note: cat.timeline },
+      { dimension: "Ingredient Risk", score: input.hasNewIngredient ? 8 : 3, color: input.hasNewIngredient ? "🔴" : "🟢", note: input.hasNewIngredient ? "Novel ingredient" : "Standard" },
     ],
-    postApproval: [
-      { item: "Annual Reporting", freq: "Yearly", desc: "Submit production/manufacturing data to NMPA" },
-      { item: "Formula Change Notification", freq: "When applicable", desc: "Any formula change requires re-filing" },
-      { item: "Label Updates", freq: "Per regulation", desc: "Monitor cosmetics labeling guideline updates" },
-      { item: "Registration Renewal", freq: "Every 5 years", desc: "Re-submit safety assessment for renewal" },
+    channels: [
+      { name: "General Trade", suitability: "high", description: isSpecial ? "Full NMPA registration" : "NMPA filing", advantages: ["Full market access"], disadvantages: [cat.timeline + " timeline"], timeline: cat.timeline, costRange: isSpecial ? "$8,000-25,000" : "$3,000-8,000" },
+      { name: "CBEC", suitability: "high", description: "Cross-border e-commerce alternative", advantages: ["Faster entry"], disadvantages: ["Online only"], timeline: "1-2 months", costRange: "$500-2,000" },
     ],
-    summary,
+    tariffInfo: { mfnRate: cat.mfnRate, vatRate: "13%", consumptionTax: "N/A", ftaRate: null, totalTaxBurden: cat.mfnRate + " + 13%" },
+    regulations: [{"name": "Cosmetics Supervision Regulation", "number": "State Council Decree 727", "authority": "NMPA", "relevance": "primary", "description": "Primary cosmetics regulation. Effective 2021."}, {"name": "Cosmetics Registration & Filing Measures", "number": "NMPA 2021", "authority": "NMPA", "relevance": "primary", "description": "Detailed procedures for registration/filing."}, {"name": "Safety Assessment Guidelines", "number": "NMPA 2021 Tech Specs", "authority": "NMPA", "relevance": "primary", "description": "Required safety assessment format."}, {"name": "GB/T 35914-2018", "number": "GB/T 35914", "authority": "NHC", "relevance": "secondary", "description": "Cosmetics hygiene standard."}],
+    classification: { assignedHsChapter: "3303-3307", ciqCode: "Varies", isHighRisk: isSpecial, riskReason: cat.riskReason, alternativeClassificationNote: "" },
+    riskMatrix: [
+      { dimension: "Category Risk", rating: isSpecial ? "🔴" : "🟢", explanation: cat.riskReason },
+      { dimension: "Registration", rating: isSpecial ? "🔴" : "🟢", explanation: isSpecial ? "Full registration" : "Filing" },
+      { dimension: "Testing", rating: isSpecial ? "🟡" : "🟢", explanation: `${cat.testing.length} tests. Cost: ${cat.testCost}` },
+      { dimension: "Timeline", rating: isSpecial ? "🔴" : "🟢", explanation: cat.timeline },
+      { dimension: "Ingredient", rating: input.hasNewIngredient ? "🔴" : "🟢", explanation: input.hasNewIngredient ? "Novel ingredient" : "Standard" },
+    ],
+    documentGuide: [{"name": "Product Formula", "format": "Excel/PDF", "notarization": "No", "commonError": "INCI not matching ICSC"}, {"name": "Safety Assessment", "format": "PDF", "notarization": "Yes", "commonError": "Assessor not NMPA-recognized"}, {"name": "Microbiological Test", "format": "CNAS report", "notarization": "Yes", "commonError": "Items not per GB 7918"}, {"name": "Heavy Metals Test", "format": "CNAS report", "notarization": "Yes", "commonError": "Incomplete scope"}, {"name": "Label Artwork", "format": "JPEG/PDF", "notarization": "No", "commonError": "Missing Chinese INCI"}, {"name": "GMP Certificate", "format": "PDF", "notarization": "Yes", "commonError": "Expired"}],
+    requiredDocuments: ["Formula", "Safety Assessment", "Micro Test", "Heavy Metals", "Label Artwork", "GMP Cert"],
+    testRequirements: cat.testing,
+    testCostRange: cat.testCost,
+    labGuide: `Testing must be at CNAS-accredited lab. Scope: ${cat.testing.join(", ")}.`,
+    labelGuide: { requiredItems: [], gb7718Highlights: [], gb28050Highlights: [] },
+    timelinePhases: [{"phase": "Formula Review", "duration": "1-3 weeks", "description": "Check ingredients against ICSC database.", "responsible": "Both", "dependencies": []}, {"phase": "Testing", "duration": "3-8 weeks", "description": "Microbiological, heavy metals, stability.", "responsible": "SinoTrade", "dependencies": []}, {"phase": "Document Compilation", "duration": "2-4 weeks", "description": "Safety assessment + dossier preparation.", "responsible": "SinoTrade", "dependencies": []}, {"phase": "NMPA Submission", "duration": "4-16 weeks", "description": "Submit filing or registration.", "responsible": "SinoTrade", "dependencies": []}],
+    costBreakdown: [{"item": "Safety Assessment Report", "estimatedRange": "$2,000-5,000", "notes": "Qualified assessor per NMPA."}, {"item": "Testing", "estimatedRange": "$1,000-10,000", "notes": "Micro + heavy metals + efficacy if special."}, {"item": "Translation & Notarization", "estimatedRange": "$300-1,500", "notes": "Chinese translation of all docs."}, {"item": "Professional Service", "estimatedRange": "$3,000-12,000", "notes": "End-to-end filing/registration."}],
+    countryProfile: { region: "—", ftaWithChina: false, ftaDetails: "", specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: "moderate", languageNote: "", commonIssues: [], importVolumeNote: "" },
+    marketIntel: { chinaImportTrend: "China cosmetics market growing 10%+ annually.", keyDrivers: ["Beauty consciousness", "Premium demand"], barriers: ["Brand competition", "NMPA timeline"], consumerPerception: "International brands preferred for quality.", topOrigins: [], recommendation: isSpecial ? "Start NMPA registration process." : "Begin filing." },
+    competitiveAnalysis: "French, Japanese, Korean brands lead premium segment.",
+    commonRejections: [{"problem": "Ingredient not in ICSC", "cause": "Novel ingredient", "solution": "Check INCI against ICSC"}],
+    postApprovalObligations: [{"item": "Annual Reporting", "freq": "Yearly", "desc": "Production data to NMPA"}, {"item": "Formula Change Notice", "freq": "When applicable", "desc": "Re-filing required"}, {"item": "Renewal", "freq": "Every 5 years", "desc": "Re-submit safety assessment"}],
+    horizonScan: [{"topic": "GB 7718 Cosmetics Label Update", "impact": "high", "timeframe": "2025-2026", "description": "New labeling requirements expected.", "actionRequired": true}],
+    summary: isSpecial ? "Special cosmetics. Full NMPA registration required." : "Ordinary cosmetics. NMPA filing.",
   };
 }
