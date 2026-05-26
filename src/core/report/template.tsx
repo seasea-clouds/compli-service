@@ -110,8 +110,8 @@ export function ReportTemplate(props: ReportTemplateProps) {
     riskScore: 0, riskDimensions: [], oneLineDecision: '', isHighRisk: false,
     estimatedTimeline: '', totalCostRange: '',
     channels: [], regulations: [], riskMatrix: [], documentGuide: [], requiredDocuments: [],
-    timelinePhases: [], costBreakdown: [], postApprovalObligations: [], horizonScan: [],
-    testRequirements: [], testCostRange: '', labGuide: '',
+    timelinePhases: [], costBreakdown: [], postApprovalObligations: [], horizonScan: [], commonRejections: [],
+    testRequirements: [], testCostRange: '', labGuide: '', labTests: [], viability: '', detailedTimeline: '',
     labelGuide: {requiredItems:[], gb7718Highlights:[], gb28050Highlights:[]},
     tariffInfo: {mfnRate:'', vatRate:'', consumptionTax:'', ftaRate:null, totalTaxBurden:''},
     countryProfile: {region:'', ftaWithChina:false, ftaDetails:'', specialRestrictions:[],
@@ -540,7 +540,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
         <p className="text-sm text-gray-700 mb-3">{result.labGuide}</p>
         
         <div className="grid grid-cols-2 gap-2">
-          {result.labTests.map((test: any, i: number) => (
+          {(result.labTests || []).map((test: any, i: number) => (
             <div key={i} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2 border border-gray-100">
               <span className="w-5 h-5 bg-gold/10 text-gold rounded flex items-center justify-center text-xs font-bold flex-shrink-0">🔬</span>
               <span className="text-xs text-gray-700">{test}</span>
