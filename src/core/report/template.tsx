@@ -304,6 +304,8 @@ export function ReportTemplate(props: ReportTemplateProps) {
       <div className="px-8 py-6 border-b border-gray-100">
         <SectionTitle icon={<Icon svg={I.flag} w={5} h={5} />} label="REGULATORY FRAMEWORK DEEP DIVE" />
         
+        <p className="text-xs text-gray-500 mb-3">The following regulations form the legal basis for importing your product into China. Each citation includes specific articles relevant to your product category.</p>
+        
         <div className="space-y-2">
           {result.regulations.filter(r => r.relevance === 'primary').map((reg, i) => (
             <div key={i} className="bg-gray-50 rounded-lg p-3 border border-gray-100">
@@ -315,6 +317,9 @@ export function ReportTemplate(props: ReportTemplateProps) {
                 <span className="text-[10px] bg-primary-navy text-white px-1.5 py-0.5 rounded font-bold">PRIMARY</span>
               </div>
               <p className="text-xs text-gray-700 mt-1">{reg.description}</p>
+              {i === 0 && <p className="text-[10px] text-gray-500 mt-1 italic">Key provisions: Art. 7 (registration scope), Art. 11 (document requirements), Art. 15 (certificate validity — 5 years), Art. 18 (renewal procedures). Products from 18-category high-risk list require competent authority recommendation (Art. 9).</p>}
+              {i === 1 && <p className="text-[10px] text-gray-500 mt-1 italic">Key provisions: Ch. 2 (label inspection standards), Ch. 3 (document review), Ch. 4 (random sampling protocol), Art. 39 (penalties for non-compliance), Art. 42 (recall procedures).</p>}
+              {i === 2 && <p className="text-[10px] text-gray-500 mt-1 italic">Key provisions: Ch. 3, Art. 42-47 (label requirements), Ch. 4, Art. 62-64 (import food control), Ch. 6 (recall system), Ch. 9 (legal liability — fines up to 3× product value for violations).</p>}
             </div>
           ))}
         </div>
@@ -768,6 +773,138 @@ export function ReportTemplate(props: ReportTemplateProps) {
               )}
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MODULE 19: CUSTOMS CLEARANCE & PORT ENTRY
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <SectionTitle icon={<Icon svg={I.doc} w={5} h={5} />} label="CUSTOMS CLEARANCE & PORT ENTRY GUIDE" />
+        
+        <p className="text-xs text-gray-500 mb-3">Understanding the customs clearance process is critical to avoiding delays and penalties at Chinese ports.</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+            <p className="text-[10px] font-bold text-primary-navy uppercase mb-1">📄 Required Clearance Documents</p>
+            <ul className="space-y-0.5">
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Bill of Lading / Air Waybill</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Commercial Invoice (Chinese customs format)</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Packing List</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> GACC Registration Certificate / Filing No.</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Certificate of Origin</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Health Certificate / Phytosanitary Certificate</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Lab Test Report</li>
+              <li className="text-[10px] text-gray-600 flex items-start gap-1"><span className="text-gold">•</span> Chinese Label Compliance Certificate</li>
+            </ul>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+            <p className="text-[10px] font-bold text-primary-navy uppercase mb-1">🔍 CIQ Inspection Process</p>
+            <ol className="space-y-0.5 list-decimal list-inside">
+              <li className="text-[10px] text-gray-600"><strong>Document Review</strong> — Verify all paperwork matches shipment</li>
+              <li className="text-[10px] text-gray-600"><strong>Label Verification</strong> — Chinese label checked against GB 7718</li>
+              <li className="text-[10px] text-gray-600"><strong>Random Sampling</strong> — ~5-15% of shipments pulled for lab testing</li>
+              <li className="text-[10px] text-gray-600"><strong>Lab Analysis</strong> — 7-15 working days for test results</li>
+              <li className="text-[10px] text-gray-600"><strong>Release or Detention</strong> — Pass: goods released. Fail: detention/re-export/destruction</li>
+            </ol>
+          </div>
+        </div>
+        
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
+          <p className="text-[10px] font-bold text-amber-800">⚡ Port-Specific Notes</p>
+          <p className="text-[10px] text-amber-700 mt-0.5">Major ports (Shanghai, Ningbo, Shenzhen, Tianjin) handle CIQ inspection differently. Shanghai is fastest (avg 3-5 days), while inland ports may take 7-14 days. Random sampling rates vary by product category and origin country. High-risk foods from certain origins face higher sampling rates (up to 100%).</p>
+        </div>
+
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <p className="text-[10px] font-bold text-red-800">🚨 Common Clearance Issues</p>
+          <ul className="space-y-0.5 mt-1">
+            <li className="text-[10px] text-red-700 flex items-start gap-1"><span className="text-red-500 mt-0.5">!</span> <strong>HS Code mismatch</strong> — Customs reclassifies, causing delays. Prevention: pre-classification ruling.</li>
+            <li className="text-[10px] text-red-700 flex items-start gap-1"><span className="text-red-500 mt-0.5">!</span> <strong>Label non-compliance</strong> — 30%+ of import food shipments flagged. Prevention: pre-approval label review.</li>
+            <li className="text-[10px] text-red-700 flex items-start gap-1"><span className="text-red-500 mt-0.5">!</span> <strong>Incomplete documentation</strong> — Missing COO or health cert. Prevention: document checklist before shipping.</li>
+            <li className="text-[10px] text-red-700 flex items-start gap-1"><span className="text-red-500 mt-0.5">!</span> <strong>Lab test failure</strong> — Random sample fails. Prevention: pre-shipment testing at CNAS lab.</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MODULE 20: IP & BRAND PROTECTION
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <SectionTitle icon={<Icon svg={I.shield} w={5} h={5} />} label="INTELLECTUAL PROPERTY & BRAND RISK ASSESSMENT" />
+        
+        <p className="text-xs text-gray-500 mb-3">China operates a first-to-file trademark system. If your brand is not registered in China, third parties can legally register it.</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+          <div className="bg-red-50 rounded-lg p-3 border border-red-200">
+            <p className="text-[10px] font-bold text-red-800 uppercase">🔴 First-to-File Risk</p>
+            <p className="text-[9px] text-red-700 mt-1">China awards trademark rights to the first filer, not the first user. If a squatter registers your brand, you cannot use it in China without licensing or litigation. Estimated 15-25% of foreign brands entering China face squatting issues.</p>
+          </div>
+          <div className="bg-amber-50 rounded-lg p-3 border border-amber-200">
+            <p className="text-[10px] font-bold text-amber-800 uppercase">🟡 Customs IP Recordal</p>
+            <p className="text-[9px] text-amber-700 mt-1">Register your trademark with China Customs to enable border enforcement. Customs can detain suspected counterfeit/unauthorized imports without a court order. Recordal is valid for 10 years. Cost: ~$500-1,000 per recordal.</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+            <p className="text-[10px] font-bold text-green-800 uppercase">🟢 Recommended Actions</p>
+            <p className="text-[9px] text-green-700 mt-1">① Register trademark in China before market entry ② Record with Customs ③ Monitor CNIPA filings for conflicting marks ④ Consider defensive registrations for Chinese transliteration and logo designs.</p>
+          </div>
+        </div>
+
+        <details className="mt-2">
+          <summary className="text-xs text-gray-500 cursor-pointer hover:text-primary-navy font-semibold">
+            + China IP legal framework & enforcement options
+          </summary>
+          <div className="mt-2 space-y-1.5">
+            <p className="text-[10px] text-gray-600">• <strong>Trademark Law Art. 32:</strong> "No applicant may infringe upon the prior rights of others, or use unfair means to preemptively register a mark already used by another." — Basis for opposing bad-faith filings.</p>
+            <p className="text-[10px] text-gray-600">• <strong>Trademark Law Art. 57:</strong> Defines infringement. Enables civil litigation, administrative complaints, and customs actions.</p>
+            <p className="text-[10px] text-gray-600">• <strong>Customs IP Protection Regulations (State Council Decree 395):</strong> Provides framework for border enforcement of IP rights.</p>
+            <p className="text-[10px] text-gray-600">• <strong>Duration:</strong> Trademark valid 10 years from registration date. Renew indefinitely.</p>
+            <p className="text-[10px] text-gray-600">• <strong>Enforcement timeline:</strong> Opposition (3-6 months) → Invalidation (6-12 months) → Civil litigation (6-18 months). Cost range: $2,000-15,000 depending on route.</p>
+          </div>
+        </details>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MODULE 21: EMERGENCY RESPONSE PLAN
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <SectionTitle icon={<Icon svg={I.alert} w={5} h={5} />} label="EMERGENCY RESPONSE & CONTINGENCY PLAN" />
+        
+        <div className="space-y-3">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <span className="text-lg">🚫</span>
+              <div>
+                <h3 className="text-xs font-bold text-red-800">Shipment Detained at Customs</h3>
+                <p className="text-[10px] text-red-700 mt-0.5"><strong>Cause:</strong> Label non-compliance, missing document, random sampling, or HS code dispute.</p>
+                <p className="text-[10px] text-green-700 mt-0.5"><strong>Response:</strong> Engage customs broker → Identify issue → Submit correction documentation → Request re-inspection (3-5 working days). If testing required, expect 10-15 day additional delay.</p>
+                <p className="text-[9px] text-gray-500 mt-0.5">📋 <strong>Regulatory basis:</strong> GACC Decree 249, Article 16 — Goods failing inspection may be subject to return, destruction, or corrective action depending on violation severity.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <span className="text-lg">❌</span>
+              <div>
+                <h3 className="text-xs font-bold text-red-800">GACC Registration Denied / Rejected</h3>
+                <p className="text-[10px] text-red-700 mt-0.5"><strong>Cause:</strong> Incomplete documentation, misclassified product, or authority recommendation not obtained for high-risk products.</p>
+                <p className="text-[10px] text-green-700 mt-0.5"><strong>Response:</strong> Review rejection reason → Address deficiencies → Re-submit. No formal appeal process — re-application is the standard remedy. Most rejections resolved within 30-60 days.</p>
+                <p className="text-[9px] text-gray-500 mt-0.5">📋 <strong>Regulatory basis:</strong> GACC Decree 248, Article 9 — GACC may reject registration if documents are incomplete or products fail to meet Chinese standards.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <span className="text-lg">⚠️</span>
+              <div>
+                <h3 className="text-xs font-bold text-amber-800">Product Recall / Market Withdrawal</h3>
+                <p className="text-[10px] text-amber-700 mt-0.5"><strong>Cause:</strong> Contamination detected post-clearance, label errors found by market surveillance, or consumer complaints.</p>
+                <p className="text-[10px] text-green-700 mt-0.5"><strong>Response:</strong> Voluntary recall preferred over mandatory. Notify SAMR/Local AIC → Implement recall plan → Submit corrective action report. Failure to cooperate can result in fines up to 3× product value.</p>
+                <p className="text-[9px] text-gray-500 mt-0.5">📋 <strong>Regulatory basis:</strong> Food Safety Law, Chapter 6, Articles 63-67, and GACC Decree 249, Article 21.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
