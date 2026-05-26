@@ -33,6 +33,7 @@ export default function GaccCheckPage() {
 
       // Store report data in localStorage before redirecting to payment
       if (freeData) {
+        const docItems = (freeData.requiredDocuments || []).map((d: string) => ({ label: d, value: 'Required' }));
         const reportData = {
           id: reportId,
           module: 'GACC Food Registration',
@@ -44,12 +45,19 @@ export default function GaccCheckPage() {
           },
           result: {
             requiresRegistration: freeData.requiresRegistration,
-            isHighRisk: false,
-            riskCategory: '',
+            isHighRisk: freeData.isHighRisk || false,
+            riskCategory: freeData.riskCategory || '',
             summary: freeData.summary || '',
             requiredDocuments: freeData.requiredDocuments || [],
+            estimatedTimeline: freeData.estimatedTimeline || 'Contact us for a timeline tailored to your product',
           },
-          nextSteps: freeData.requiredDocuments?.map((d: any) => `${d.label}: ${d.value}`) || [],
+          nextSteps: [
+            'Submit completed application form with all supporting documents',
+            'Engage a certified Chinese label review agency for label compliance',
+            'Await GACC review and registration certificate (typically 3-6 months)',
+            'Arrange customs clearance documentation for first shipment',
+            'Schedule annual compliance review and renewal',
+          ],
           generatedAt: new Date().toISOString(),
         };
         try {

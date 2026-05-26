@@ -56,6 +56,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
 
       // Store report data in localStorage before redirecting
       if (result) {
+        const docItems = (result.documents || []).map((d: string) => ({ label: d, value: 'Required' }));
         const reportData = {
           id: reportId,
           module: config.moduleLabel,
@@ -68,11 +69,18 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
           result: {
             requiresRegistration: result.isActionNeeded,
             isHighRisk: false,
-            riskCategory: '',
+            riskCategory: result.isActionNeeded ? 'high' : 'low',
             summary: result.summary || '',
             requiredDocuments: result.documents || [],
+            estimatedTimeline: result.isActionNeeded ? 'Estimated 3-6 months for standard processing' : 'No immediate action required',
           },
-          nextSteps: result.details?.map((d: any) => `${d.label}: ${d.value}`) || [],
+          nextSteps: [
+            'Submit completed application form with all supporting documents',
+            'Engage a certified Chinese label review agency for label compliance',
+            'Await regulatory review and approval (typically 3-6 months)',
+            'Arrange customs clearance documentation for first shipment',
+            'Schedule annual compliance review and renewal',
+          ],
           generatedAt: new Date().toISOString(),
         };
         try {
