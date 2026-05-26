@@ -103,10 +103,26 @@ function ValueCard({ label, value, className = '' }: { label: string; value: str
 export function ReportTemplate(props: ReportTemplateProps) {
   const {
     reportId, module, locale, labels,
-    productInfo, result, generatedAt,
+    productInfo, result: rawResult, generatedAt,
   } = props;
   const href = (path: string) => `/${locale || 'en'}${path}`;
-  const riskLevel = result.isHighRisk ? 'high' : 'low';
+
+  // Defaults for optional fields — supports all module types
+  const result = {
+    riskScore: 0, riskDimensions: [], oneLineDecision: 'Assessment required', isHighRisk: false,
+    estimatedTimeline: 'Contact us', totalCostRange: 'Contact us', executiveSummary: '', summary: '',
+    requiredDocuments: [], documentGuide: [], labTests: [], testCostRange: '', labGuide: '',
+    costBreakdown: [], postApprovalObligations: [], horizonScan: [], regulations: [],
+    timelinePhases: [], riskMatrix: [], commonRejections: [],
+    labelGuide: { requiredItems: [], gb7718Highlights: [], gb28050Highlights: [] },
+    channels: [],
+    tariffInfo: { mfnRate: 'Varies', vatRate: 'Varies', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: 'Varies' },
+    countryProfile: { region: '—', ftaWithChina: false, ftaDetails: '', specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: 'moderate', languageNote: '', commonIssues: [], importVolumeNote: '' },
+    marketIntel: { chinaImportTrend: '', keyDrivers: [], barriers: [], consumerPerception: '', topOrigins: [], recommendation: '' },
+    competitiveAnalysis: '',
+    classification: { assignedHsChapter: '', ciqCode: '', isHighRisk: false, riskReason: '', alternativeClassificationNote: '' },
+    ...rawResult,
+  };
   const formattedDate = generatedAt ? new Date(generatedAt).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric',
   }) : '—';
@@ -304,10 +320,10 @@ export function ReportTemplate(props: ReportTemplateProps) {
               </div>
 
               <div className="mt-2 flex flex-wrap gap-1">
-                {ch.advantages.slice(0, 2).map((a: any, j: number) => (
+                {(ch.advantages || []).slice(0, 2).map((a: any, j: number) => (
                   <span key={j} className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded">+ {a}</span>
                 ))}
-                {ch.disadvantages.slice(0, 1).map((d: any, j: number) => (
+                {(ch.disadvantages || []).slice(0, 1).map((d: any, j: number) => (
                   <span key={j} className="text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded">− {d}</span>
                 ))}
               </div>
@@ -1187,7 +1203,7 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
             <p className="text-[10px] font-bold text-primary-navy uppercase mb-1.5">📋 Phase 2: Documentation</p>
             <div className="space-y-1">
-              {result.requiredDocuments.slice(0, 5).map((doc: any, i: number) => (
+              {(result.requiredDocuments || []).slice(0, 5).map((doc: any, i: number) => (
                 <label key={i} className="flex items-start gap-2 cursor-pointer group">
                   <input type="checkbox" className="mt-0.5 rounded border-gray-300 text-gold focus:ring-gold" />
                   <span className="text-xs text-gray-700 group-hover:text-primary-navy">{doc}</span>
