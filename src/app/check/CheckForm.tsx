@@ -59,6 +59,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
         body: JSON.stringify({
           reportId,
           email: email || undefined,
+          locale,
           productId: undefined,
           metadata: { ...values, module: config.moduleKey },
         }),

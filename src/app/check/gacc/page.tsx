@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { checkGacc, CATEGORY_LABELS, type GaccCategory, type GaccInput } from "../../../../modules/gacc/rules";
 import { API_BASE } from "@/lib/constants";
+import useClientLocale from '@/lib/useClientLocale';
 
 type Step = "form" | "free-result";
 
@@ -13,6 +14,7 @@ export default function GaccCheckPage() {
   const [freeData, setFreeData] = useState<ReturnType<typeof checkGacc> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const locale = useClientLocale();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ export default function GaccCheckPage() {
         body: JSON.stringify({
           reportId,
           email: email || undefined,
+          locale,
           productId: undefined, // uses default Single Report product
           metadata: {
             module: "gacc",

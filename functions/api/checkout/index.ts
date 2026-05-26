@@ -5,7 +5,7 @@
  * Frontend calls this when user clicks "Get Report — $1"
  *
  * POST /api/checkout
- * Body: { productId, reportId, email?, metadata }
+ * Body: { productId, reportId, email?, locale?, metadata }
  */
 
 interface Env {
@@ -24,28 +24,44 @@ export async function onRequest(context: {
   }
 
   try {
-    const { productId, reportId, email, metadata } = await context.request.json();
+    const { productId, reportId, email, locale, metadata } = await context.request.json();
 
     if (!reportId) {
       return Response.json({ error: "Missing reportId" }, { status: 400 });
     }
 
-    // Determine which product to use
     const pid = productId ?? context.env.CREEM_PRODUCT_ID_SINGLE;
 
-    // Creem checkout API - test env rejects cancel_url
+    // ── Insert report record immediately ───────────────────────────
+    if (context.env.DB) {
+      const module = (metadata?.module as string) ?? "gacc";
+      const now = new Date().toISOString();
+      await context.env.DB.prepare(`
+        INSERT OR IGNORE INTO reports (id, module, product_name, hs_code, origin_country, input_data, user_email, locale, payment_status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)
+      `).bind(
+        reportId,
+        module,
+        metadata?.productName ?? null,
+        metadata?.hsCode ?? null,
+        metadata?.originCountry ?? null,
+        metadata ? JSON.stringify(metadata) : null,
+        email ?? null,
+        locale ?? 'en',
+        now
+      ).run();
+    }
+
+    // ── Build Creem checkout session ──────────────────────────────
     const body: Record<string, unknown> = {
       product_id: pid,
-      success_url: `https://sinotradecompliance.com/compli-service/report/?id=${reportId}`,
+      success_url: `https://sinotradecompliance.com/${locale ?? 'en'}/compli-service/report/?id=${reportId}`,
       metadata: {
         report_id: reportId,
         ...(email && { email }),
         ...(metadata ?? {}),
       },
     };
-
-    // For subscription, pass additional params
-    // (Creem handles recurring via product config)
 
     const res = await fetch("https://test-api.creem.io/v1/checkouts", {
       method: "POST",
@@ -64,7 +80,7 @@ export async function onRequest(context: {
 
     const data = await res.json();
 
-    // Save checkout session to D1
+    // Update payment_id on the report record
     if (context.env.DB) {
       await context.env.DB.prepare(
         `UPDATE reports SET payment_id = ? WHERE id = ?`
