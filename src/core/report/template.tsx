@@ -654,36 +654,71 @@ export function ReportTemplate(props: ReportTemplateProps) {
           <p className="text-sm text-gray-700 mt-1">{result.detailedTimeline}</p>
         </div>
         
-        {/* Visual timeline bar — connects to implementation phases above */}
-        <div className="relative pt-2 pb-5">
-          {/* Timeline bar */}
-          <div className="flex items-center mb-3">
-            {result.timelinePhases.map((phase, i) => (
-              <div key={i} className="flex-1 text-center relative">
-                <div className={`h-2.5 rounded-full mx-0.5 ${
-                  i < 2 ? 'bg-blue-400' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
-                }`} />
-                {/* Milestone markers */}
-                <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 bg-white ${
-                  i < 2 ? 'border-blue-400' : i < 4 ? 'border-gold' : i < 5 ? 'border-green-400' : 'border-primary-navy'
-                }`}>
-                  <div className={`w-2 h-2 rounded-full mx-auto mt-[2px] ${
-                    i < 2 ? 'bg-blue-400' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy'
-                  }`}></div>
-                </div>
-                {/* Phase label */}
-                <p className="text-[9px] text-gray-600 mt-2 leading-tight px-0.5 font-medium">{phase.phase.split(' ').slice(0,2).join(' ')}</p>
-                <p className="text-[8px] text-gray-400 mt-0.5">{phase.duration}</p>
-              </div>
-            ))}
-          </div>
+        {/* Professional Gantt-style timeline chart */}
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full text-xs border-collapse" style={{ minWidth: '650px' }}>
+            <thead>
+              <tr>
+                <th className="text-left p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider w-[30%]">Phase</th>
+                <th className="text-left p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider">Timeline</th>
+                <th className="text-center p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider w-[12%]">Duration</th>
+                <th className="text-center p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider w-[10%]">Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.timelinePhases.map((phase, i) => {
+                // Calculate bar width and offset based on phase index
+                const barWidths = [16, 20, 16, 12, 18, 12, 6]; // proportional widths
+                const offsets = [2, 20, 42, 58, 72, 84, 92]; // left offsets
+                const w = barWidths[i % barWidths.length];
+                const off = offsets[i % offsets.length];
+                const colorGroup = i < 2 ? 'bg-blue-400' : i < 4 ? 'bg-gold' : i < 5 ? 'bg-green-400' : 'bg-primary-navy';
+                const borderGroup = i < 2 ? 'border-blue-400' : i < 4 ? 'border-gold' : i < 5 ? 'border-green-400' : 'border-primary-navy';
+                return (
+                  <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
+                    <td className="p-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <div className={`w-1.5 h-1.5 rounded-full ${colorGroup.replace('bg-', 'bg-')}`}></div>
+                        <span className="text-[10px] font-medium text-gray-800">{phase.phase}</span>
+                      </div>
+                      <p className="text-[8px] text-gray-400 ml-3 truncate max-w-[180px]">{phase.description}</p>
+                    </td>
+                    <td className="p-1.5 relative">
+                      {/* Timeline bar background */}
+                      <div className="h-6 bg-gray-100 rounded relative overflow-hidden w-full">
+                        {/* Week markers */}
+                        <div className="absolute inset-0 flex" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 10%, rgba(0,0,0,0.03) 10%, rgba(0,0,0,0.03) 10.1%)' }}></div>
+                        {/* Phase bar */}
+                        <div className={`absolute top-1 h-4 rounded-sm ${colorGroup} opacity-80`} style={{ left: `${off}%`, width: `${w}%`, minWidth: '20px' }}>
+                          <div className="h-full w-full rounded-sm opacity-20 bg-white" style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3) 50%, transparent)' }}></div>
+                        </div>
+                        {/* Milestone diamond */}
+                        <div className={`absolute top-0.5 w-5 h-5 ${borderGroup} border-2 bg-white rounded-sm rotate-45 flex items-center justify-center`} style={{ left: `${Math.min(off + w + 2, 94)}%`, marginLeft: '-10px' }}>
+                          <div className={`w-2 h-2 rounded-sm ${colorGroup}`}></div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-1.5 text-center">
+                      <span className="text-[9px] font-semibold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded">{phase.duration}</span>
+                    </td>
+                    <td className="p-1.5 text-center">
+                      <span className={`text-[8px] px-1 py-0.5 rounded font-medium ${
+                        phase.responsible === 'SinoTrade' ? 'bg-blue-100 text-blue-700' :
+                        phase.responsible === 'Both' ? 'bg-purple-100 text-purple-700' :
+                        'bg-amber-100 text-amber-700'
+                      }`}>{phase.responsible}</span>
+                    </td>
+                  </tr>
+                )})}
+            </tbody>
+          </table>
           {/* Legend */}
-          <div className="flex flex-wrap gap-3 justify-center mt-2 pt-2 border-t border-gray-100">
-            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-400"></span> Assessment</span>
-            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-gold"></span> Documentation</span>
-            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400"></span> Approval</span>
-            <span className="text-[9px] text-gray-500 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-primary-navy"></span> Market Entry</span>
-            <span className="text-[9px] text-gray-500 flex items-center gap-1">● Milestone</span>
+          <div className="flex flex-wrap gap-3 justify-end mt-2 pt-2 border-t border-gray-100">
+            <span className="text-[8px] text-gray-400 flex items-center gap-1"><span className="w-2 h-2 rounded bg-blue-400 inline-block"></span> Assessment</span>
+            <span className="text-[8px] text-gray-400 flex items-center gap-1"><span className="w-2 h-2 rounded bg-gold inline-block"></span> Documentation</span>
+            <span className="text-[8px] text-gray-400 flex items-center gap-1"><span className="w-2 h-2 rounded bg-green-400 inline-block"></span> Approval</span>
+            <span className="text-[8px] text-gray-400 flex items-center gap-1"><span className="w-2 h-2 rounded bg-primary-navy inline-block"></span> Market Entry</span>
+            <span className="text-[8px] text-gray-400 flex items-center gap-1">◈ Milestone</span>
           </div>
         </div>
       </div>
