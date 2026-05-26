@@ -39,7 +39,6 @@ function ReportContent() {
         // Network error — retry
       }
 
-      // Not found yet — retry (webhook may still be processing)
       retries.current += 1;
       if (retries.current < MAX_RETRIES) {
         setTimeout(fetchReport, RETRY_DELAY);
@@ -55,15 +54,57 @@ function ReportContent() {
   if (loading) {
     const attempt = retries.current;
     return (
-      <main className="min-h-screen bg-bg-ice flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold mx-auto mb-4" />
-          <p className="text-gray-500">Loading report…</p>
-          {attempt > 0 && (
-            <p className="text-xs text-gray-400 mt-2">
-              Waiting for payment confirmation ({attempt}/{MAX_RETRIES})
+      <main className="min-h-screen bg-bg-ice py-16">
+        <div className="max-w-lg mx-auto px-4 text-center">
+          {/* Payment success badge */}
+          <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 rounded-full px-4 py-1.5 text-sm font-medium mb-8">
+            <span className="text-lg">✅</span>
+            Payment successful
+          </div>
+
+          {/* Generating card */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="animate-spin h-8 w-8 text-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+            </div>
+
+            <h1 className="text-xl font-bold text-primary-navy mb-2">
+              Generating Your Report
+            </h1>
+            <p className="text-gray-500 text-sm mb-6">
+              Your payment was confirmed. We are now generating your compliance report.
+              This usually takes a few seconds.
             </p>
-          )}
+
+            {/* Progress steps */}
+            <div className="space-y-3 text-left">
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">✓</span>
+                <span className="text-sm text-green-700">Payment received</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className={`w-6 h-6 ${attempt > 0 ? 'bg-gold text-primary-navy animate-pulse' : 'bg-gray-100 text-gray-400'} rounded-full flex items-center justify-center text-xs font-bold`}>
+                  {attempt > 0 ? '⟳' : '…'}
+                </span>
+                <span className={`text-sm ${attempt > 0 ? 'text-gold' : 'text-gray-400'}`}>
+                  Generating report document
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-6 h-6 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                <span className="text-sm text-gray-400">Ready to view</span>
+              </div>
+            </div>
+
+            {attempt > 0 && (
+              <p className="text-xs text-gray-400 mt-6">
+                Attempt {attempt + 1} of {MAX_RETRIES}…
+              </p>
+            )}
+          </div>
         </div>
       </main>
     );
@@ -71,13 +112,20 @@ function ReportContent() {
 
   if (error || !report) {
     return (
-      <main className="min-h-screen bg-bg-ice flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-primary-navy mb-2">Report Not Found</h1>
-          <p className="text-gray-500">{error || 'This report may have expired or does not exist.'}</p>
-          <a href={subsiteHref('/')} className="text-gold hover:underline mt-4 inline-block">
-            &larr; Back to Home
-          </a>
+      <main className="min-h-screen bg-bg-ice py-16">
+        <div className="max-w-lg mx-auto px-4 text-center">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">⚠️</span>
+            </div>
+            <h1 className="text-xl font-bold text-primary-navy mb-2">Report Not Found</h1>
+            <p className="text-gray-500 text-sm mb-6">
+              {error || 'This report may have expired or does not exist.'}
+            </p>
+            <a href={subsiteHref('/')} className="inline-block bg-gold hover:bg-gold/90 text-primary-navy font-semibold px-6 py-2.5 rounded-md transition-all">
+              &larr; Back to Home
+            </a>
+          </div>
         </div>
       </main>
     );
