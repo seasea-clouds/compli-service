@@ -20,6 +20,10 @@ export default function LabelCheckPage() {
         moduleKey: "label",
         moduleLabel: "Chinese Label Compliance",
         fields,
+        getFullResult: (vals) => {
+          const result = checkLabel({ category: vals.category, productName: vals.productName, packagingType: vals.packagingType, originCountry: vals.originCountry });
+          return result;
+        },
         checkProduct: (vals) => {
           const result = checkLabel({ category: vals.category as LabelCategory, productName: vals.productName, packagingType: vals.packagingType });
           return {

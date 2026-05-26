@@ -21,6 +21,10 @@ export default function TrademarkCheckPage() {
         moduleKey: "trademark",
         moduleLabel: "Brand Protection",
         fields,
+        getFullResult: (vals) => {
+          const result = checkTrademark({ category: vals.category, brandName: vals.brandName, registeredInChina: vals.registeredInChina === 'true', productName: vals.productName });
+          return result;
+        },
         checkProduct: (vals) => {
           const result = checkTrademark({
             category: vals.category as TrademarkCategory,

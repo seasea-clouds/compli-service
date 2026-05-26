@@ -21,6 +21,10 @@ export default function CccCheckPage() {
         moduleKey: "ccc",
         moduleLabel: "CCC Certification",
         fields,
+        getFullResult: (vals) => {
+          const result = checkCcc({ category: vals.category, productName: vals.productName, hsCode: vals.hsCode, intendedUse: vals.intendedUse, originCountry: vals.originCountry });
+          return result;
+        },
         checkProduct: (vals) => {
           const result = checkCcc({ category: vals.category as CccCategory, productName: vals.productName, hsCode: vals.hsCode, intendedUse: vals.intendedUse });
           return {

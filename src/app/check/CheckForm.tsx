@@ -26,6 +26,7 @@ interface CheckFormConfig {
   description: string;
   fields: FieldConfig[];
   checkProduct: (values: Record<string, string>) => FreeCheckResult;
+  getFullResult?: (values: Record<string, string>) => any;
   moduleKey: string;
   moduleLabel: string;
 }
@@ -56,24 +57,19 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
 
       // Store report data in localStorage before redirecting
       if (result) {
+        const fullResult = config.getFullResult ? config.getFullResult(values) : result;
         const docItems = (result.documents || []).map((d: string) => ({ label: d, value: 'Required' }));
         const reportData = {
           id: reportId,
           module: config.moduleLabel,
+          savedInput: values,
           productInfo: {
             name: values.productName || '',
             category: values.category || '',
             hsCode: values.hsCode || '',
             originCountry: '',
           },
-          result: {
-            requiresRegistration: result.isActionNeeded,
-            isHighRisk: false,
-            riskCategory: result.isActionNeeded ? 'high' : 'low',
-            summary: result.summary || '',
-            requiredDocuments: result.documents || [],
-            estimatedTimeline: result.isActionNeeded ? 'Estimated 3-6 months for standard processing' : 'No immediate action required',
-          },
+          result: fullResult,
           nextSteps: [
             'Submit completed application form with all supporting documents',
             'Engage a certified Chinese label review agency for label compliance',

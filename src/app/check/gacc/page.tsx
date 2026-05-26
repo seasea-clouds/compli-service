@@ -43,14 +43,7 @@ export default function GaccCheckPage() {
             hsCode: input.hsCode || '',
             originCountry: input.originCountry || '',
           },
-          result: {
-            requiresRegistration: freeData.requiresRegistration,
-            isHighRisk: freeData.isHighRisk || false,
-            riskCategory: freeData.riskCategory || '',
-            summary: freeData.summary || '',
-            requiredDocuments: freeData.requiredDocuments || [],
-            estimatedTimeline: freeData.estimatedTimeline || 'Contact us for a timeline tailored to your product',
-          },
+          result: freeData,
           nextSteps: [
             'Submit completed application form with all supporting documents',
             'Engage a certified Chinese label review agency for label compliance',

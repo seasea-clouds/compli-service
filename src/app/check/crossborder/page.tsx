@@ -21,6 +21,10 @@ export default function CrossborderCheckPage() {
         moduleKey: "crossborder",
         moduleLabel: "Cross-Border E-commerce",
         fields,
+        getFullResult: (vals) => {
+          const result = checkCrossborder({ category: vals.category, productName: vals.productName, targetPlatform: vals.targetPlatform, hasBondedWarehouse: vals.hasBondedWarehouse === 'true' });
+          return result;
+        },
         checkProduct: (vals) => {
           const result = checkCrossborder({
             category: vals.category as CrossborderCategory,

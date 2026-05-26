@@ -21,6 +21,13 @@ export default function CosmeticsCheckPage() {
         moduleKey: "cosmetics",
         moduleLabel: "Cosmetics Filing (NMPA)",
         fields,
+        getFullResult: (vals) => {
+          const result = checkCosmetics({
+            category: vals.category, productName: vals.productName,
+            brandCountry: vals.brandCountry, hasNewIngredient: vals.hasNewIngredient === 'true'
+          });
+          return result;
+        },
         checkProduct: (vals) => {
           const result = checkCosmetics({
             category: vals.category as CosmeticsCategory,
