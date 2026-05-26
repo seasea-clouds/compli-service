@@ -1,11 +1,14 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ReportViewer from '@/components/ReportViewer';
 import { API_BASE } from '@/lib/constants';
 import useSubsiteHref from '@/lib/useSubsiteHref';
 import type { ComplianceReport } from '../../../modules/gacc/report';
+
+const MAX_RETRIES = 15;
+const RETRY_DELAY = 2000;
 
 function ReportContent() {
   const searchParams = useSearchParams();
@@ -14,6 +17,7 @@ function ReportContent() {
   const [report, setReport] = useState<ComplianceReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const retries = useRef(0);
 
   useEffect(() => {
     if (!id) {
@@ -22,27 +26,44 @@ function ReportContent() {
       return;
     }
 
-    fetch(`${API_BASE}/report/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Report not found');
-        return res.json();
-      })
-      .then((data: ComplianceReport) => {
-        setReport(data);
+    const fetchReport = async (): Promise<void> => {
+      try {
+        const res = await fetch(`${API_BASE}/report/${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setReport(data);
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Network error — retry
+      }
+
+      // Not found yet — retry (webhook may still be processing)
+      retries.current += 1;
+      if (retries.current < MAX_RETRIES) {
+        setTimeout(fetchReport, RETRY_DELAY);
+      } else {
+        setError('Report not found. The payment may still be processing.');
         setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchReport();
   }, [id]);
 
   if (loading) {
+    const attempt = retries.current;
     return (
       <main className="min-h-screen bg-bg-ice flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold mx-auto mb-4" />
           <p className="text-gray-500">Loading report…</p>
+          {attempt > 0 && (
+            <p className="text-xs text-gray-400 mt-2">
+              Waiting for payment confirmation ({attempt}/{MAX_RETRIES})
+            </p>
+          )}
         </div>
       </main>
     );
