@@ -30,7 +30,7 @@ function rebuildResult(stored: any): any {
       productName: stored.productInfo?.name || '',
       originCountry: stored.productInfo?.originCountry || '',
     };
-    return fn(input);
+    try { return fn(input); } catch { return stored.result || {}; }
   } catch (e) {
     console.error('Rebuild failed:', e);
     return stored.result || {};
