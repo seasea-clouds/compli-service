@@ -1,218 +1,133 @@
 'use client';
 
 import { ReportTemplate } from '@/core/report/template';
-import type { GaccResult } from '../../../../modules/gacc/rules';
 
-const SAMPLE_RESULT: GaccResult = {
-  requiresRegistration: true,
-  isHighRisk: false,
-  riskCategory: 'low',
-  riskScore: 3.8,
+const SAMPLE_RESULT = {
+  requiresRegistration: true, isHighRisk: false, riskCategory: 'low', riskScore: 3.0,
   riskDimensions: [
-    { dimension: "Product Category", score: 3, color: "🟢", note: "Standard risk category — outside 18 high-risk list" },
-    { dimension: "Origin Country Complexity", score: 5, color: "🟡", note: "USA: moderate compliance pathway" },
-    { dimension: "Documentation Complexity", score: 4, color: "🟢", note: "Standard documentation package" },
-    { dimension: "Testing Requirements", score: 4, color: "🟢", note: "5 tests required. Cost range: $600-2,000" },
-    { dimension: "Timeline to Market", score: 3, color: "🟢", note: "Estimated: 6-10 weeks" },
+    { dimension: 'Positive List Eligibility', score: 2, color: '🟢', note: 'Category on CBEC positive list' },
+    { dimension: 'Platform Setup', score: 4, color: '🟢', note: 'Tmall Global onboarding 4-8 weeks' },
+    { dimension: 'Compliance Requirements', score: 2, color: '🟢', note: 'No GACC/NMPA required for CBEC imports' },
+    { dimension: 'Timeline to Launch', score: 3, color: '🟢', note: 'Estimated: 4-10 weeks' },
+    { dimension: 'Initial Investment', score: 5, color: '🟡', note: '$10,000-40,000 including deposit' },
   ],
-  executiveSummary: "This comprehensive assessment evaluates Organic Green Tea Matcha (Food & Beverages) against all applicable Chinese import regulations. Overall risk score: 3.8/10. 🟢 Product is standard risk. Standard GACC registration pathway applies.",
-  oneLineDecision: "🟢 Proceed: GACC registration required. Standard pathway. Estimated 2-4 months.",
-  viability: "Viable with compliance investment",
+  executiveSummary: 'This assessment evaluates Italian Premium Extra Virgin Olive Oil (Food & Beverages / HS 1509.10) for cross-border e-commerce entry to China via Tmall Global bonded warehouse model. Product is on CBEC positive list. No GACC registration required for CBEC channel. Strong market potential with Italy-origin premium positioning. Overall risk: 3.0/10.',
+  oneLineDecision: '✅ CBEC eligible. Bonded warehouse (1210) model recommended. Estimated 4-8 weeks to launch.',
+  viability: 'Viable — CBEC is the fastest channel for food products entering China',
   marketIntel: {
-    chinaImportTrend: "Growing demand — China's imports of this category have been increasing 8-15% year on year. Premium imported products particularly sought after by middle-class consumers.",
-    topOrigins: [{ country: "Belgium", share: "28%" }, { country: "Switzerland", share: "22%" }, { country: "USA", share: "15%" }, { country: "Italy", share: "12%" }],
-    consumerPerception: "Chinese consumers generally view imported Confectionery / Chocolate products favorably, associating them with higher quality and safety standards. Premium positioning is achievable.",
-    keyDrivers: ["Rising middle class demand for premium imports", "Growing food safety awareness", "Cross-border e-commerce enabling direct access", "Young consumers' preference for international brands"],
-    barriers: ["Competition from established import brands", "Regulatory complexity", "Price sensitivity in certain segments"],
-    recommendation: "General trade recommended for full market access. Leverage premium positioning for better margins.",
+    chinaImportTrend: 'Italy food products highly regarded in China. Olive oil imports growing 15-20% YoY as Chinese consumers adopt Mediterranean diet. Premium EVOO segment growing fastest.',
+    topOrigins: [{ country: 'Spain', share: '40%' }, { country: 'Italy', share: '25%' }, { country: 'Greece', share: '12%' }, { country: 'Tunisia', share: '8%' }],
+    consumerPerception: 'Italian olive oil is perceived as the highest quality. "Made in Italy" commands premium pricing. Chinese consumers actively search for authentic Italian food products.',
+    keyDrivers: ['Mediterranean diet trend in urban China', 'Health and wellness movement driving olive oil adoption', 'Social commerce enabling impulse purchases', 'Cross-border trust in imported food quality'],
+    barriers: ['Price competition from Spanish and domestic brands', 'Brand awareness building requires investment', 'Logistics: olive oil requires temperature-controlled storage', 'Counterfeit concerns in imported olive oil category'],
+    recommendation: 'Bonded warehouse (1210) model recommended for faster delivery. KOL marketing on Douyin/Xiaohongshu ideal for brand awareness.',
   },
   channels: [
-    { channel: "General Trade (一般贸易)", suitability: 'high', gaccRequired: true, description: "Standard import channel for commercial sale in physical retail and wholesale.", advantages: ["Full market access (online + offline)", "Build brand presence in China", "Higher margins at scale"], disadvantages: ["Full compliance overhead (GACC + label + testing)", "Longer timeline", "Requires Chinese entity or authorized agent"], timeline: "2-4 months", costRange: "$3,000-8,000" },
-    { channel: "Cross-Border E-commerce (CBEC / 跨境电商)", suitability: 'medium', gaccRequired: false, description: "Sell directly via Tmall Global, JD Worldwide. Stored in bonded warehouses.", advantages: ["Faster market entry", "Lower upfront compliance cost", "Test market before full commitment", "Simplified regulatory pathway"], disadvantages: ["Limited to online channels", "Per-shipment limits (RMB 5,000/transaction)", "Cannot sell through retail stores", "CBEC positive list restrictions"], timeline: "1-2 months", costRange: "$500-2,000" },
-    { channel: "Personal Parcel / Courier", suitability: 'low', gaccRequired: false, description: "Direct-to-consumer via courier (FedEx, DHL). For small quantities only.", advantages: ["Minimal documentation", "Fastest delivery"], disadvantages: ["Strictly limited to personal use quantities", "Not scalable", "Cannot build brand in market"], timeline: "Days", costRange: "$200-500 per shipment (customs brokerage)" },
+    { name: 'Tmall Global (Bonded Warehouse)', suitability: 'high', description: 'Largest CBEC platform. Bonded warehouse 1210 model.', pros: ['Massive traffic 700M+ active users', 'Cainiao integrated logistics', 'Bonded warehouse 2-3 day delivery'], cons: ['Higher deposit $15,000-25,000', 'Competitive marketplace'], timeline: '4-8 weeks', costRange: '$15,000-40,000' },
+    { name: 'JD Worldwide (Bonded)', suitability: 'high', description: 'Strong for food products. Own logistics.', pros: ['JD Logistics cold chain capabilities', 'Trusted for authentic imported goods', 'Lower commission rates'], cons: ['Smaller user base than Tmall', 'Stricter quality controls'], timeline: '4-8 weeks', costRange: '$12,000-35,000' },
+    { name: 'Douyin Global', suitability: 'medium', description: 'Short-video/social commerce CBEC.', pros: ['Viral potential', 'KOL marketing native', 'Younger demographic'], cons: ['Content investment required', 'Less established CBEC infrastructure'], timeline: '3-6 weeks', costRange: '$8,000-25,000' },
   ],
-  tariffInfo: {
-    hsCode: "1704, 1806",
-    mfnRate: "8-15% (MFN)",
-    ftaRate: "No FTA — MFN rates apply",
-    vatRate: "13%",
-    consumptionTax: "N/A",
-    totalTaxBurden: "8-15% + 13%",
-    estimatedLandedCostExample: "Contact us for a detailed landed cost calculation based on your FOB price.",
-  },
+  tariffInfo: { mfnRate: '9.1% comprehensive rate', vatRate: '70% of standard (CBEC rate)', consumptionTax: 'N/A', ftaRate: 'CBEC tax applies', totalTaxBurden: '~9.1% CBEC comprehensive rate (70% discount on tariff + VAT)' },
   regulations: [
-    { name: "GACC Decree 248", number: "Decree 248 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Regulations on the Registration of Overseas Manufacturers of Imported Food. All overseas food producers must register via CIFER before exporting to China." },
-    { name: "GACC Decree 249", number: "Decree 249 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Administrative Measures on Import and Export Food Safety." },
-    { name: "Food Safety Law of China", number: "PRC Food Safety Law (2015, amended 2021)", effectiveDate: "October 1, 2015", issuingAuthority: "NPC", relevance: 'primary', description: "Primary legislation governing food safety in China." },
-    { name: "GB 7718", number: "GB 7718-2011", effectiveDate: "April 20, 2012", issuingAuthority: "NHC", relevance: 'primary', description: "National Food Safety Standard — General Rules for Nutrition Labeling of Prepackaged Foods." },
-    { name: "GB 28050", number: "GB 28050-2011", effectiveDate: "January 1, 2013", issuingAuthority: "NHC", relevance: 'primary', description: "General Rules for Nutrition Labeling of Prepackaged Foods." },
-    { name: "GB 2760", number: "GB 2760-2024", effectiveDate: "February 8, 2025", issuingAuthority: "NHC", relevance: 'primary', description: "Uses of Food Additives — positive list system." },
-    { name: "GB 2762", number: "GB 2762-2022", effectiveDate: "June 30, 2023", issuingAuthority: "NHC", relevance: 'secondary', description: "Maximum levels of contaminants in food." },
-    { name: "CIFER System", number: "China Import Food Enterprise Registration System", effectiveDate: "January 1, 2022", issuingAuthority: "GACC", relevance: 'primary', description: "Online portal for overseas food manufacturers to submit GACC registration applications." },
+    { name: 'CBEC Retail Import Policy', number: 'MOFCOM 2018 Notice', effectiveDate: 'January 2019', authority: 'MOFCOM', relevance: 'primary', description: 'Framework for cross-border e-commerce retail import. Enables simplified customs clearance.' },
+    { name: 'CBEC Positive List', number: 'MOFCOM/GACC Joint List', effectiveDate: 'Updated annually', authority: 'MOFCOM/GACC', relevance: 'primary', description: 'Products eligible for CBEC import. Olive oil (HS 1509) on positive list.' },
+    { name: 'Three-Document Matching', number: 'GACC Decree 249 Art.5', effectiveDate: 'January 1, 2022', authority: 'GACC', relevance: 'primary', description: 'Order + payment + logistics document matching for customs clearance.' },
+    { name: 'Personal Import Limit', number: 'CBEC Policy Art.3', effectiveDate: '2019', authority: 'MOFCOM', relevance: 'primary', description: 'RMB 5,000/transaction, RMB 26,000/year per consumer.' },
+    { name: 'PIPL (Data Privacy)', number: 'Personal Information Protection Law', effectiveDate: 'November 1, 2021', authority: 'NPC', relevance: 'secondary', description: 'Cross-border data transfer requirements for consumer order data.' },
   ],
-  classification: {
-    assignedHsChapter: "1704, 1806",
-    ciqCode: "105",
-    isHighRisk: false,
-    riskReason: "18 categories outside — low risk. Standard GACC registration.",
-    alternativeClassificationNote: "HS code appears consistent with product category.",
-  },
+  classification: { assignedHsChapter: '1509', ciqCode: 'Check with customs', isHighRisk: false, riskReason: 'On CBEC positive list. Simplified compliance.', alternativeClassificationNote: '' },
   riskMatrix: [
-    { dimension: "品类风险 Product Category", rating: "🟢", explanation: "18 categories outside — low risk. Standard GACC registration." },
-    { dimension: "产地风险 Origin Country", rating: "🟡", explanation: "USA — moderate compliance pathway" },
-    { dimension: "成分风险 Ingredients", rating: "🟢", explanation: "Standard ingredient risk" },
-    { dimension: "加工风险 Processing", rating: "🟢", explanation: "Processed/shelf-stable — low quarantine risk" },
-    { dimension: "合规历史 Compliance History", rating: "🟢", explanation: "First-time registration — no negative history" },
-  ],
-  requiredDocuments: [
-    "GACC Registration Application Form",
-    "Product Description & Ingredients List",
-    "Manufacturing Process Flow Chart",
-    "HACCP / ISO 22000 Certificate (if any)",
-    "Lab Test Report (composition, microbiology)",
-    "Certificate of Free Sale",
-    "Product Photos & Packaging Images",
+    { dimension: 'Positive List', rating: '🟢', explanation: 'HS 1509 on CBEC positive list' },
+    { dimension: 'Platform Risk', rating: '🟢', explanation: 'Tmall Global established CBEC infrastructure' },
+    { dimension: 'Compliance', rating: '🟢', explanation: 'No GACC/NMPA for CBEC food imports' },
+    { dimension: 'Logistics', rating: '🟡', explanation: 'Glass bottles + olive oil requires careful handling' },
+    { dimension: 'Competition', rating: '🟡', explanation: 'Spanish brands dominate with price advantage' },
   ],
   documentGuide: [
-    { name: "GACC Registration Application Form", format: "CIFER system online submission", notarization: "Not required", validity: "Per application", commonError: "Incomplete fields, missing signatory information" },
-    { name: "Product Description & Ingredients List", format: "PDF/Word, Chinese or bilingual", notarization: "Translation certification recommended", validity: "Per application", commonError: "Additive codes not per GB 2760" },
-    { name: "Manufacturing Process Flow Chart", format: "PDF, diagram format", notarization: "Translation certification recommended", validity: "Per application", commonError: "Too generic, missing critical control points" },
-    { name: "HACCP / ISO 22000 Certificate", format: "PDF, valid certificate copy", notarization: "Certified copy + translation required", validity: "Must be current", commonError: "Expired certificate, wrong facility name" },
-    { name: "Lab Test Report", format: "PDF from CNAS/ISO 17025 accredited lab", notarization: "Original + translation", validity: "Within 6 months", commonError: "Non-accredited lab, incomplete test scope" },
-    { name: "Certificate of Free Sale", format: "PDF from competent authority", notarization: "Certified copy + translation", validity: "6-12 months", commonError: "Wrong issuing authority" },
-    { name: "Product Photos & Packaging Images", format: "JPEG/PNG, high resolution", notarization: "Not required", validity: "Per application", commonError: "Low resolution" },
+    { name: 'Business Registration', format: 'PDF', notarization: 'Certified copy', validity: 'Current', commonError: 'Not apostilled for China' },
+    { name: 'Brand Authorization Letter', format: 'PDF', notarization: 'Certified translation', validity: 'Per application', commonError: 'Authorisation chain not complete' },
+    { name: 'Product Listings (Chinese)', format: 'HTML/JPEG', notarization: 'Not required', validity: 'Per application', commonError: 'Advertising Law claims non-compliant' },
+    { name: 'Product Images & Descriptions', format: 'JPEG/MP4', notarization: 'Not required', validity: 'Per application', commonError: 'Labels not in Chinese' },
+    { name: 'Certificate of Free Sale', format: 'PDF', notarization: 'Certified copy', validity: '6-12 months', commonError: 'Wrong issuing authority' },
   ],
-  labTests: ["Microbiological", "Heavy metals", "Food additives", "Melamine", "Pesticide residues"],
-  testCostRange: "$600-2,000",
-  labGuide: "Testing must be conducted at a CNAS-accredited laboratory (ISO 17025). Samples should be representative of commercial production. Testing scope: Microbiological, Heavy metals, Food additives, Melamine, Pesticide residues. Estimated cost: $600-2,000. Turnaround: 2-5 weeks.",
+  requiredDocuments: ['Business Registration', 'Brand Authorization Letter', 'Product Listings (Chinese)', 'Product Images', 'Certificate of Free Sale'],
+  labTests: ['No CCC/GACC testing required for CBEC channel'],
+  testCostRange: 'N/A for CBEC',
+  labGuide: 'CBEC products do not require GACC registration, CCC certification, or NMPA filing. Simplified compliance pathway is a key advantage of cross-border e-commerce.',
   labelGuide: {
     requiredItems: [
-      { field: "Product Name", requirement: "Accurate reflection of product's true nature. Standardized name per GB if exists.", commonMistake: "Fanciful names without descriptive standard name" },
-      { field: "Ingredients List", requirement: "Descending order by weight. All additives with GB 2760 code numbers.", commonMistake: "Missing additive code numbers" },
-      { field: "Net Content", requirement: "Metric units (g/mL). Draining weight for solid-in-liquid.", commonMistake: "Using imperial units or missing draining weight" },
-      { field: "Manufacturer/Distributor", requirement: "Name and address of overseas manufacturer AND Chinese responsible party.", commonMistake: "Missing Chinese agent information" },
-      { field: "Country of Origin", requirement: "Clearly marked. 'Made in [Country]' or similar.", commonMistake: "Vague origin descriptions" },
-      { field: "Date of Manufacture & Best Before", requirement: "DD/MM/YYYY or YYYY/MM/DD format. Position must be prominent.", commonMistake: "Using MM/DD/YYYY format" },
-      { field: "Storage Conditions", requirement: "Clearly stated storage requirements.", commonMistake: "Generic statement when specific conditions needed" },
-      { field: "Nutrition Information Panel", requirement: "Per GB 28050 format. Energy (kJ), protein, fat, carbs, sodium mandatory.", commonMistake: "Using kcal instead of kJ" },
-      { field: "Food Additives", requirement: "Listed with GB 2760 category codes (e.g., E330, INS 330).", commonMistake: "Using trade names instead of standard codes" },
-      { field: "Allergen Information", requirement: "Mandatory: milk, eggs, fish, crustacea, peanuts, soybeans, wheat, tree nuts.", commonMistake: "Not declaring regulated allergens" },
-      { field: "QS/SC Logo", requirement: "Not required for imported food. Do NOT print QS/SC logo.", commonMistake: "Printing Chinese production license marks" },
-      { field: "Import Record Number", requirement: "Must show CIQ registration number after customs clearance.", commonMistake: "Blank or incorrect number" },
+      { field: 'Platform Product Name', requirement: 'Chinese product name on listing page', commonMistake: 'English-only listing' },
+      { field: 'Ingredients List', requirement: 'Chinese ingredient list on product page', commonMistake: 'Not translated from Italian' },
+      { field: 'Nutrition Info', requirement: 'Basic nutrition in Chinese on listing', commonMistake: 'Only origin language available' },
+      { field: 'Product Images', requirement: 'Clear product images showing packaging', commonMistake: 'Labels not readable in images' },
+      { field: 'Shipping & Returns', requirement: 'Chinese shipping and return policy', commonMistake: 'China-specific policy missing' },
     ],
-    gb7718Highlights: [
-      "All text must be in Chinese. Foreign language may be supplementary but not primary.",
-      "Font size must be no less than 1.8mm for most mandatory items.",
-      "Products containing GMO ingredients must be labeled as per GMO labeling regulations.",
-      "Irradiated ingredients must be declared.",
-      "Trans-fat content must be declared if >0.3g per 100g/100mL.",
-    ],
-    gb28050Highlights: [
-      "Energy must ALWAYS be shown in kJ (kilojoules) — not kcal alone.",
-      "Mandatory fields: Energy, Protein, Fat, Carbohydrate, Sodium.",
-      "NRV% must be calculated for each mandatory field.",
-    ],
+    gb7718Highlights: ['CBEC products are exempt from physical Chinese label requirements as personal imports'],
+    gb28050Highlights: [],
   },
   timelinePhases: [
-    { phase: "Initial Assessment & Classification", duration: "1-2 weeks", description: "Confirm HS code, GACC category classification, and identify required documents.", responsible: 'SinoTrade', dependencies: [] },
-    { phase: "Document Preparation & Translation", duration: "2-4 weeks", description: "Gather all required documents, translate to Chinese, notarize where required.", responsible: 'Both', dependencies: ["Initial assessment complete"] },
-    { phase: "Lab Testing (CNAS Accredited)", duration: "2-3 weeks", description: "Product samples sent to CNAS-accredited lab for required testing.", responsible: 'SinoTrade', dependencies: ["Sample shipment arranged"] },
-    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via CIFER system with our team handling all documentation and submission requirements.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
-    { phase: "GACC Review & Approval", duration: "2-6 weeks", description: "GACC processes application. Issue registration certificate upon approval.", responsible: 'SinoTrade', dependencies: ["Application submitted"] },
-    { phase: "Label Design & Compliance", duration: "2-3 weeks", description: "Design Chinese label per GB 7718/28050. Submit for compliance review.", responsible: 'SinoTrade', dependencies: ["Product details finalized"] },
-    { phase: "First Shipment & Customs Clearance", duration: "1-3 weeks", description: "First commercial shipment. CIQ inspection: document check, label verification, random sampling.", responsible: 'Both', dependencies: ["GACC Registration certificate", "Label approved"] },
+    { phase: 'Platform Selection & Strategy', duration: '1-2 weeks', description: 'Select platforms, determine bonded vs direct shipping model.', responsible: 'Both', dependencies: [] },
+    { phase: 'Merchant Registration', duration: '2-4 weeks', description: 'Complete Tmall Global merchant registration and compliance review.', responsible: 'SinoTrade', dependencies: ['Platform selected'] },
+    { phase: 'Logistics Setup', duration: '2-3 weeks', description: 'Bonded warehouse arrangement + three-document matching integration.', responsible: 'SinoTrade', dependencies: ['Registration approved'] },
+    { phase: 'Store Configuration', duration: '1-2 weeks', description: 'Store design, product listing creation, pricing configuration.', responsible: 'Both', dependencies: ['Logistics ready'] },
+    { phase: 'Launch & Optimization', duration: '1-2 weeks', description: 'Go live, initial marketing setup, performance monitoring.', responsible: 'Both', dependencies: ['Store configured'] },
   ],
   costBreakdown: [
-    { item: "GACC Registration Fee", estimatedRange: "$200-800", notes: "CIFER system filing with professional agent handling." },
-    { item: "Laboratory Testing (CNAS)", estimatedRange: "$600-2,000", notes: "Required tests: Microbiological, Heavy metals, Food additives, Melamine, Pesticide residues." },
-    { item: "Document Translation & Notarization", estimatedRange: "$500-2,000", notes: "All non-Chinese documents need certified Chinese translation." },
-    { item: "Chinese Label Design & Compliance Review", estimatedRange: "$300-1,500", notes: "Includes GB 7718 check, nutrition panel, 2 revision rounds." },
-    { item: "Professional Compliance Consultation", estimatedRange: "$2,000-5,000", notes: "End-to-end management: classification → documentation → filing → follow-up." },
-    { item: "Customs Brokerage (per shipment)", estimatedRange: "$200-500", notes: "Per-shipment customs clearance. Not a one-time cost." },
+    { item: 'Platform Deposit (Tmall Global)', range: '$15,000-25,000', note: 'Refundable deposit. Varies by product category.' },
+    { item: 'Platform Annual Fee', range: '$5,000-10,000/yr', note: 'Annual platform subscription fee.' },
+    { item: 'Bonded Warehouse Setup', range: '$2,000-5,000', note: 'Initial logistics configuration + customs registration' },
+    { item: 'Product Listing & Translation', range: '$1,000-3,000', note: 'Professional Chinese listing content + images' },
+    { item: 'Initial Inventory (Bonded)', range: '$10,000-30,000', note: 'First batch to bonded warehouse (depends on MOQ)' },
+    { item: 'Professional Service', range: '$5,000-12,000', note: 'End-to-end: onboarding, compliance, logistics, launch' },
   ],
-  totalCostRange: "$3,500-9,500",
-  estimatedTimeline: "6-10 weeks",
-  detailedTimeline: "Standard GACC registration for Confectionery / Chocolate typically takes 6-10 weeks. This assumes complete documentation and no requests for supplementary materials.",
-  countryProfile: {
-    importVolumeRank: 3,
-    region: "North America",
-    ftaWithChina: false,
-    ftaDetails: "No FTA with China. Subject to MFN rates. Additional tariffs from Section 301 may apply.",
-    specialRestrictions: ["Section 301 retaliatory tariffs (additional 5-25%)", "Country of origin labeling strict"],
-    bilateralMeatAccess: true,
-    bilateralAquaticAccess: true,
-    dairyApproved: true,
-    gaccDifficulty: 'moderate',
-    languageNote: "All documents in English accepted. Chinese translation required for labels.",
-    commonIssues: ["Additional 301 tariffs", "Differences in food additive standards between FDA and CFDA"],
-    importVolumeNote: "Largest agricultural exporter to China. Strong presence in grains, meat, and nuts.",
-  },
-  competitiveAnalysis: "China imported significant volumes of Confectionery / Chocolate products in 2024-2025. Top origins include Belgium, Switzerland, USA, Italy. The category shows growth potential with rising consumer demand for premium imports.",
+  totalCostRange: '$10,000-40,000',
+  estimatedTimeline: '4-10 weeks',
+  countryProfile: { region: 'Southern Europe', ftaWithChina: false, ftaDetails: '', specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: 'easy', languageNote: 'Italian + English documentation with Chinese translation', commonIssues: [], importVolumeNote: 'Italy is a major food exporter to China' },
   commonRejections: [
-    { problem: "Dairy content triggers high-risk reclassification", cause: "Products with >5% dairy content may be reclassified", solution: "Pre-classification review: dairy threshold analysis" },
-    { problem: "Additives not in GB 2760", cause: "Using additives approved in origin but banned in China", solution: "Full additive formula audit before application" },
+    { problem: 'Advertising Law violation', cause: 'Superlative claims (best, #1, premium) in product titles', solution: 'Pre-review all listing copy against China Advertising Law' },
+    { problem: 'Brand auth chain incomplete', cause: 'Missing intermediary distributor authorization', solution: 'Verify full authorization chain from brand owner to CBEC operator' },
+    { problem: 'Bonded warehouse customs delay', cause: 'Incorrect HS code classification at import to warehouse', solution: 'Professional tariff classification before first shipment' },
   ],
   postApprovalObligations: [
-    { item: "Annual Compliance Report", frequency: "Yearly", description: "Submit annual production and export data to GACC. Failure may result in suspension." },
-    { item: "Label Compliance Updates", frequency: "Per regulatory change", description: "Monitor GB 7718/28050 updates." },
-    { item: "Registration Renewal", frequency: "Every 5 years", description: "Submit renewal 3-6 months before expiry." },
-    { item: "Customs Clearance Per Shipment", frequency: "Per import", description: "Each shipment requires CIQ inspection." },
-    { item: "Market Surveillance", frequency: "Ongoing", description: "SAMR conducts regular market inspections." },
-    { item: "Formula/Process Change Notification", frequency: "When applicable", description: "Any change must be notified to GACC." },
+    { item: 'Three-Document Compliance', freq: 'Per order', desc: 'Order + payment + logistics document matching for customs clearance.' },
+    { item: 'Platform Fee Renewal', freq: 'Yearly', desc: 'Annual platform fee payment to maintain store.' },
+    { item: 'Product Listing Updates', freq: 'Quarterly', desc: 'Refresh listings per seasonality and platform policy changes.' },
+    { item: 'Tax Filing', freq: 'Monthly/Quarterly', desc: 'CBEC tax remittance via platform integrated system.' },
   ],
   horizonScan: [
-    { topic: "GB 7718 Revision", impact: 'high', timeframe: "2025-2026", description: "Expected to introduce significant changes to labeling requirements including new allergen declaration format.", actionRequired: true },
-    { topic: "CBEC Positive List Expansion", impact: 'medium', timeframe: "2025", description: "Expected expansion enabling more products via simplified CBEC channel.", actionRequired: false },
-    { topic: "Imported Food Traceability System", impact: 'medium', timeframe: "2025-2026", description: "GACC developing nationwide traceability system.", actionRequired: false },
-    { topic: "Carbon Footprint Labeling", impact: 'low', timeframe: "2026+", description: "China exploring carbon footprint labeling for imported goods.", actionRequired: false },
+    { topic: 'CBEC Positive List Expansion', impact: 'high', timeframe: '2025', description: 'Expected expansion enabling more food products via simplified CBEC channel.', actionRequired: false },
+    { topic: 'PIPL Data Transfer Rules', impact: 'medium', timeframe: '2025', description: 'Cross-border data transfer security assessment requirements may affect order processing.', actionRequired: true },
+    { topic: 'Bonded Warehouse 2.0', impact: 'medium', timeframe: '2025+', description: 'New bonded warehouse pilot zones offering faster clearance and lower costs.', actionRequired: false },
   ],
-  summary: "Your product (Food & Beverages) requires GACC registration but is classified as low risk.",
+  summary: 'Italian Premium Extra Virgin Olive Oil is eligible for CBEC import via Tmall Global bonded warehouse. No GACC/CCC/NMPA required. Fastest route to Chinese market.',
 };
 
 const labels = {
-  title: "China Market Entry Compliance Report",
-  sectionProduct: "Product Information",
-  sectionResult: "Assessment Result",
-  sectionDocuments: "Required Documents",
-  sectionNextSteps: "Next Steps",
-  ctaTitle: "Get a Custom Quote",
-  ctaDesc: "Our compliance experts will provide a tailored plan and pricing for your specific product.",
-  ctaBtn: "Contact Us",
-  footerName: "SinoTrade Compliance",
-  footerAddress: "Shanghai, China",
-  footerEmail: "david@sinotradecompliance.com",
-  labelProduct: "Product",
-  labelCategory: "Category",
-  labelHsCode: "HS Code",
-  labelOrigin: "Origin",
-  gaccRequired: "GACC Registration Required",
-  gaccNotRequired: "No GACC Registration Required",
+  title: 'China Market Entry Compliance Report',
+  sectionProduct: 'Product Information', sectionResult: 'Assessment Result',
+  sectionDocuments: 'Required Documents', sectionNextSteps: 'Next Steps',
+  ctaTitle: 'Get a Custom Quote', ctaDesc: 'Our compliance experts will provide a tailored plan and pricing.',
+  ctaBtn: 'Contact Us', footerName: 'SinoTrade Compliance', footerAddress: 'Shanghai, China',
+  footerEmail: 'david@sinotradecompliance.com', labelProduct: 'Product', labelCategory: 'Category',
+  labelHsCode: 'HS Code', labelOrigin: 'Origin',
+  gaccRequired: 'CBEC Compliance Required', gaccNotRequired: 'CBEC Compliance Not Required',
 };
 
-export default function ReportPreviewPage() {
+export default function CrossborderPreviewPage() {
   return (
     <div className="min-h-screen bg-bg-ice py-8">
       <div className="max-w-4xl mx-auto px-4 mb-4">
         <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 text-center mb-6">
-          <p className="text-sm font-bold text-amber-800">🔬 Preview Mode — Sample: Organic Green Tea Matcha (USA)</p>
-          <p className="text-xs text-amber-600">This is a preview with sample data to demonstrate the new 18-module report layout.</p>
+          <p className="text-sm font-bold text-amber-800">🔬 Preview Mode — CBEC: Italian Extra Virgin Olive Oil (Italy)</p>
+          <p className="text-xs text-amber-600">Sample report with realistic cross-border e-commerce data.</p>
         </div>
       </div>
       <ReportTemplate
-        reportId="PREVIEW-CROSSBORDER"
-        module="Cross-Border E-commerce"
-        locale="en"
-        labels={labels}
-        productInfo={{ name: "Organic Green Tea Matcha", category: "Food & Beverages", hsCode: "0902.10", originCountry: "USA" }}
+        reportId="PREVIEW-CROSSBORDER" module="Cross-Border E-commerce" locale="en" labels={labels}
+        productInfo={{ name: 'Italian Premium Extra Virgin Olive Oil', category: 'Food & Beverages', hsCode: '1509.10', originCountry: 'Italy' }}
         result={SAMPLE_RESULT}
-        nextSteps={[
-          "Contact SinoTrade Compliance for a detailed compliance assessment",
-          "Prepare required documentation",
-          "Submit GACC registration application",
-          "Design compliant Chinese label (GB 7718)",
-          "Arrange customs clearance support",
-        ]}
-        generatedAt="2026-05-26T07:00:00.000Z"
+        nextSteps={['Contact SinoTrade Compliance for a detailed assessment', 'Complete Tmall Global merchant registration', 'Set up bonded warehouse logistics', 'Configure three-document matching for customs', 'Launch with compliant product listings']}
+        generatedAt={new Date().toISOString()}
       />
     </div>
   );
