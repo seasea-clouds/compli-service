@@ -52,7 +52,7 @@ export default function CccCheckPage() {
           ],
           generatedAt: new Date().toISOString(),
         };
-        try { localStorage.setItem('compli…ort', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId, 'size:', JSON.stringify(reportData).length); } catch(e) { console.error('localStorage failed:', e); }
+        try { localStorage.setItem('compli-report-data', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId, 'size:', JSON.stringify(reportData).length); } catch(e) { console.error('localStorage failed:', e); }
       }
 
       const res = await fetch(`${API_BASE}/checkout`, {

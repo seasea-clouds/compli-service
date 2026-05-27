@@ -5,14 +5,14 @@
  * Frontend calls this when user clicks "Get Report — $1"
  *
  * POST /api/checkout
- * Body: { productId, reportId, email?, locale?, metadata }
+ * Body: { productId?, reportId, email?, locale?, metadata }
  */
 
 interface Env {
   CREEM_API_KEY: string;
   CREEM_PRODUCT_ID_SINGLE: string;
   CREEM_PRODUCT_ID_SUBSCRIBE: string;
-  DB: any;
+  DB: any; // D1Database
 }
 
 export async function onRequest(context: {
@@ -31,14 +31,15 @@ export async function onRequest(context: {
     }
 
     const pid = productId ?? context.env.CREEM_PRODUCT_ID_SINGLE;
+    const loc = locale ?? "en";
 
     // ── Build Creem checkout session ──────────────────────────────
     const body: Record<string, unknown> = {
       product_id: pid,
-      success_url: `https://sinotradecompliance.com/${locale ?? 'en'}/compli-service/report/?id=${reportId}`,
+      success_url: `https://sinotradecompliance.com/${loc}/compli-service/report/?id=${reportId}`,
       metadata: {
         report_id: reportId,
-        locale: locale ?? 'en',
+        locale: loc,
         ...(email && { email }),
         ...(metadata ?? {}),
       },

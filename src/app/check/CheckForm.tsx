@@ -81,7 +81,7 @@ export default function CheckForm({ config }: { config: CheckFormConfig }) {
         };
         const json = JSON.stringify(reportData);
         console.log('CheckForm: storing id=' + reportId + ' size=' + json.length);
-        localStorage.setItem('compli…ort', json);
+        localStorage.setItem('compli-report-data', json);
       } catch (e) {
         console.error('CheckForm localStorage failed:', e);
       }

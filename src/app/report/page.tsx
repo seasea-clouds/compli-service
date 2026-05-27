@@ -58,14 +58,14 @@ function ReportContent() {
 
     // Try to load from localStorage first
     try {
-      const stored = localStorage.getItem('compli…ort');
+      const stored = localStorage.getItem('compli-report-data');
       console.log('Report: reading localStorage, url id:', id, 'data found:', !!stored);
       if (stored) {
         const parsed = JSON.parse(stored);
         console.log('Report: stored id:', parsed.id, 'url id:', id, 'match:', parsed.id === id);
         if (parsed.id === id) {
           // Regenerate full result from stored input
-          localStorage.removeItem('compli…ort');
+          localStorage.removeItem('compli-report-data');
           setReport(parsed);
           setLoading(false);
           return;
@@ -89,7 +89,7 @@ function ReportContent() {
         };
         const m = map[prefix];
         if (m) {
-          const stored2 = localStorage.getItem('compli…ort');
+          const stored2 = localStorage.getItem('compli-report-data');
           const parsed2 = stored2 ? JSON.parse(stored2) : {};
           const savedInput = parsed2.savedInput || {};
           const sr = m.fn(savedInput);
