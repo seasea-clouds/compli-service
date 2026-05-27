@@ -65,9 +65,8 @@ function ReportContent() {
         console.log('Report: stored id:', parsed.id, 'url id:', id, 'match:', parsed.id === id);
         if (parsed.id === id) {
           // Regenerate full result from stored input
-          const fullResult = rebuildResult(parsed);
           localStorage.removeItem('compli…ort');
-          setReport({ ...parsed, result: fullResult });
+          setReport(parsed);
           setLoading(false);
           return;
         }
