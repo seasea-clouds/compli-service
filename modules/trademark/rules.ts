@@ -38,7 +38,7 @@ export function checkTrademark(input: any): any {
       { dimension: "Enforcement", score: needsReg ? 8 : 3, color: needsReg ? "🔴" : "🟢", note: needsReg ? "Cannot enforce without registration" : "Full enforcement rights" },
     ],
     channels: [
-      { name: "Trademark Registration", suitability: "high", gaccRequired: false, description: "File with CNIPA for full legal protection", advantages: ["Legal protection", "Platform enforcement"], disadvantages: ["8-14 month timeline"], timeline: "8-14 months", costRange: "$600-2,000/class" },
+      { channel: "Trademark Registration", suitability: "high", gaccRequired: false, description: "File with CNIPA for full legal protection", advantages: ["Legal protection", "Platform enforcement"], disadvantages: ["8-14 month timeline"], timeline: "8-14 months", costRange: "$600-2,000/class" },
     ],
     tariffInfo: { mfnRate: "N/A", vatRate: "N/A", consumptionTax: "N/A", ftaRate: null, totalTaxBurden: "N/A (legal service, not import)" },
     regulations: [

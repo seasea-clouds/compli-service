@@ -36,8 +36,8 @@ export function checkCrossborder(input: any): any {
       { dimension: "Investment", score: 5, color: "🟡", note: "$10,000-40,000 initial" },
     ],
     channels: [
-      { name: "Tmall Global", suitability: "high", gaccRequired: false, description: "Largest CBEC platform", advantages: ["Massive traffic", "Integrated logistics (Cainiao)"], disadvantages: ["Higher deposit", "Extensive docs"], timeline: "4-8 weeks", costRange: "$15,000-40,000" },
-      { name: "JD Worldwide", suitability: "high", gaccRequired: false, description: "Strong for electronics/health", advantages: ["Own logistics (JD Logistics)", "Trusted for authentic"], disadvantages: ["Stricter QC"], timeline: "4-8 weeks", costRange: "$12,000-35,000" },
+      { channel: "Tmall Global", suitability: "high", gaccRequired: false, description: "Largest CBEC platform", advantages: ["Massive traffic", "Integrated logistics (Cainiao)"], disadvantages: ["Higher deposit", "Extensive docs"], timeline: "4-8 weeks", costRange: "$15,000-40,000" },
+      { channel: "JD Worldwide", suitability: "high", gaccRequired: false, description: "Strong for electronics/health", advantages: ["Own logistics (JD Logistics)", "Trusted for authentic"], disadvantages: ["Stricter QC"], timeline: "4-8 weeks", costRange: "$12,000-35,000" },
     ],
     tariffInfo: { mfnRate: "9.1% comprehensive", vatRate: "70% of standard", consumptionTax: "N/A", ftaRate: "CBEC tax discount applies", totalTaxBurden: "~9.1% (70% discount on tariff + VAT)" },
     regulations: [

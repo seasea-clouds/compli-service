@@ -37,7 +37,7 @@ export function checkLabel(input: any): any {
       { dimension: "Cost", score: 2, color: "🟢", note: "$500-2,000" },
     ],
     channels: [
-      { name: "Professional Label Review", suitability: "high", gaccRequired: false, description: "Full label compliance audit + design", advantages: ["Guaranteed customs approval"], disadvantages: ["Professional fee applies"], timeline: "2-4 weeks", costRange: "$500-2,000" },
+      { channel: "Professional Label Review", suitability: "high", gaccRequired: false, description: "Full label compliance audit + design", advantages: ["Guaranteed customs approval"], disadvantages: ["Professional fee applies"], timeline: "2-4 weeks", costRange: "$500-2,000" },
     ],
     tariffInfo: { mfnRate: "5-20%", vatRate: "9-13%", consumptionTax: "N/A", ftaRate: null, totalTaxBurden: "Varies by product" },
     regulations: [
