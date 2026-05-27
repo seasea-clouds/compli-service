@@ -23,8 +23,8 @@ const SAMPLE_RESULT = {
     recommendation: 'File direct CNIPA trademark application immediately. Recommended classes: 29 (fruit spreads), 30 (honey, preserves), 32 (non-alcoholic beverages), 35 (retail services).',
   },
   channels: [
-    { name: 'CNIPA Direct Filing', suitability: 'high', description: 'File trademark application directly with CNIPA for strongest protection.', pros: ['Fastest processing for China-only', 'Best scope of protection', 'Lower cost for single country'], cons: ['8-14 month timeline', 'Requires Chinese agent'], timeline: '8-14 months', costRange: '$600-2,000/class' },
-    { name: 'Madrid System Designation', suitability: 'medium', description: 'Extend existing home-country registration to China via WIPO Madrid System.', pros: ['Single application for multiple countries', 'Simplified renewal management', 'No local agent initially'], cons: ['Longer processing time', 'Translation issues possible', 'May face same examination standards'], timeline: '12-18 months', costRange: '$800-2,500/class' },
+    { channel: 'CNIPA Direct Filing', suitability: 'high', gaccRequired: true, description: 'File trademark application directly with CNIPA for strongest protection.', advantages: ['Fastest processing for China-only', 'Best scope of protection', 'Lower cost for single country'], disadvantages: ['8-14 month timeline', 'Requires Chinese agent'], timeline: '8-14 months', costRange: '$600-2,000/class' },
+    { channel: 'Madrid System Designation', suitability: 'medium', gaccRequired: true, description: 'Extend existing home-country registration to China via WIPO Madrid System.', advantages: ['Single application for multiple countries', 'Simplified renewal management', 'No local agent initially'], disadvantages: ['Longer processing time', 'Translation issues possible', 'May face same examination standards'], timeline: '12-18 months', costRange: '$800-2,500/class' },
   ],
   tariffInfo: { mfnRate: 'N/A', vatRate: 'N/A', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: 'N/A (legal service, not import)' },
   regulations: [
@@ -61,11 +61,11 @@ const SAMPLE_RESULT = {
     { phase: 'Publication & Certificate', duration: '3-4 months', description: '3-month opposition period, then certificate issuance.', responsible: 'Both', dependencies: ['Substantive exam passed'] },
   ],
   costBreakdown: [
-    { item: 'Trademark Search', range: '$100-300/class', note: 'Professional search across CNIPA database' },
-    { item: 'CNIPA Filing Fee', range: '$300-500/class', note: 'Official CNIPA application fee' },
-    { item: 'CNIPA Agent Fee', range: '$200-400/class', note: 'Licensed Chinese trademark agent' },
-    { item: 'Customs IP Recordal', range: '$200-400', note: 'Register with China Customs for border enforcement' },
-    { item: 'Monitoring Service', range: '$300-600/yr', note: 'CNIPA gazette monitoring + e-commerce surveillance' },
+    { item: 'Trademark Search', estimatedRange: '$100-300/class', notes: 'Professional search across CNIPA database' },
+    { item: 'CNIPA Filing Fee', estimatedRange: '$300-500/class', notes: 'Official CNIPA application fee' },
+    { item: 'CNIPA Agent Fee', estimatedRange: '$200-400/class', notes: 'Licensed Chinese trademark agent' },
+    { item: 'Customs IP Recordal', estimatedRange: '$200-400', notes: 'Register with China Customs for border enforcement' },
+    { item: 'Monitoring Service', estimatedRange: '$300-600/yr', notes: 'CNIPA gazette monitoring + e-commerce surveillance' },
   ],
   totalCostRange: '$600-2,000/class',
   estimatedTimeline: '8-14 months',
@@ -76,10 +76,10 @@ const SAMPLE_RESULT = {
     { problem: 'Bad-faith opposition by squatter', cause: 'Squatter filed your mark during examination', solution: 'File opposition with evidence of prior use/bad faith' },
   ],
   postApprovalObligations: [
-    { item: 'Trademark Renewal', freq: 'Every 10 years', desc: 'Renew before expiry to maintain protection.' },
-    { item: 'Use Evidence', freq: 'Every 3-5 years', desc: 'CNIPA may request use evidence. Non-use for 3 years risks cancellation.' },
-    { item: 'Customs Recordal Renewal', freq: 'Every 10 years', desc: 'Renew customs recordal alongside trademark renewal.' },
-    { item: 'Market Monitoring', freq: 'Ongoing', desc: 'Monitor e-commerce platforms for infringement.' },
+    { item: 'Trademark Renewal', frequency: 'Every 10 years', desc: 'Renew before expiry to maintain protection.' },
+    { item: 'Use Evidence', frequency: 'Every 3-5 years', desc: 'CNIPA may request use evidence. Non-use for 3 years risks cancellation.' },
+    { item: 'Customs Recordal Renewal', frequency: 'Every 10 years', desc: 'Renew customs recordal alongside trademark renewal.' },
+    { item: 'Market Monitoring', frequency: 'Ongoing', desc: 'Monitor e-commerce platforms for infringement.' },
   ],
   horizonScan: [
     { topic: 'Trademark Law 5th Revision', impact: 'high', timeframe: '2025-2026', description: 'Expected reforms to bad-faith filing penalties and evidence requirements.', actionRequired: false },

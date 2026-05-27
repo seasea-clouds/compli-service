@@ -23,8 +23,8 @@ const SAMPLE_RESULT = {
     recommendation: 'NMPA notification filing is the standard route. Consider CBEC as interim sales channel while filing is in process.',
   },
   channels: [
-    { name: 'Standard Import (一般贸易)', suitability: 'high', description: 'Full NMPA filing + retail distribution.', pros: ['Full market access (online + offline)', 'Brand building in retail stores', 'Higher margins with retail distribution'], cons: ['2-4 month NMPA filing timeline', 'Chinese responsible person required'], timeline: '2-4 months', costRange: '$3,000-8,000' },
-    { name: 'CBEC (跨境电商)', suitability: 'medium', description: 'Sell via Tmall Global / JD Worldwide without NMPA filing.', pros: ['Faster entry (1-2 months)', 'No NMPA filing needed online', 'Test market demand before filing'], cons: ['Online only', 'Cannot access physical retail', 'Per-order limits apply'], timeline: '1-2 months', costRange: '$500-2,000' },
+    { channel: 'Standard Import (一般贸易)', suitability: 'high', gaccRequired: true, description: 'Full NMPA filing + retail distribution.', advantages: ['Full market access (online + offline)', 'Brand building in retail stores', 'Higher margins with retail distribution'], disadvantages: ['2-4 month NMPA filing timeline', 'Chinese responsible person required'], timeline: '2-4 months', costRange: '$3,000-8,000' },
+    { channel: 'CBEC (跨境电商)', suitability: 'medium', gaccRequired: true, description: 'Sell via Tmall Global / JD Worldwide without NMPA filing.', advantages: ['Faster entry (1-2 months)', 'No NMPA filing needed online', 'Test market demand before filing'], disadvantages: ['Online only', 'Cannot access physical retail', 'Per-order limits apply'], timeline: '1-2 months', costRange: '$500-2,000' },
   ],
   tariffInfo: { mfnRate: '1-5% (MFN)', vatRate: '13%', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: '1-5% + 13% VAT' },
   regulations: [
@@ -77,11 +77,11 @@ const SAMPLE_RESULT = {
     { phase: 'Approval & Launch', duration: '2-4 weeks', description: 'NMPA review and notification number issuance. Product ready for market.', responsible: 'NMPA', dependencies: ['Submission accepted'] },
   ],
   costBreakdown: [
-    { item: 'Safety Testing', range: '$1,000-3,000', note: 'Microbiological, heavy metals, stability at CNAS lab' },
-    { item: 'Safety Assessment Report', range: '$500-1,500', note: 'NMPA-compliant safety assessment by qualified toxicologist' },
-    { item: 'Chinese Responsible Person', range: '$500-1,000/yr', note: 'Domestic agent (境内责任人) designation service' },
-    { item: 'Document Translation', range: '$300-800', note: 'Professional Chinese translation of all submission documents' },
-    { item: 'NMPA Filing Management', range: '$2,000-5,000', note: 'End-to-end filing coordination and submission' },
+    { item: 'Safety Testing', estimatedRange: '$1,000-3,000', notes: 'Microbiological, heavy metals, stability at CNAS lab' },
+    { item: 'Safety Assessment Report', estimatedRange: '$500-1,500', notes: 'NMPA-compliant safety assessment by qualified toxicologist' },
+    { item: 'Chinese Responsible Person', estimatedRange: '$500-1,000/yr', notes: 'Domestic agent (境内责任人) designation service' },
+    { item: 'Document Translation', estimatedRange: '$300-800', notes: 'Professional Chinese translation of all submission documents' },
+    { item: 'NMPA Filing Management', estimatedRange: '$2,000-5,000', notes: 'End-to-end filing coordination and submission' },
   ],
   totalCostRange: '$3,000-8,000',
   estimatedTimeline: '2-4 months',
@@ -92,9 +92,9 @@ const SAMPLE_RESULT = {
     { problem: 'Preservative not on approved list', cause: 'China preservative list differs from EU/US', solution: 'Cross-check all preservatives against China CosIng' },
   ],
   postApprovalObligations: [
-    { item: 'Adverse Event Monitoring', freq: 'Ongoing', desc: 'Monitor and report any adverse reactions within legal timeframe.' },
-    { item: 'Annual Report Submission', freq: 'Yearly', desc: 'Submit annual safety report to NMPA for registered products.' },
-    { item: 'Formula Change Notification', freq: 'When applicable', desc: 'Any formulation change requires re-filing or notification update.' },
+    { item: 'Adverse Event Monitoring', frequency: 'Ongoing', desc: 'Monitor and report any adverse reactions within legal timeframe.' },
+    { item: 'Annual Report Submission', frequency: 'Yearly', desc: 'Submit annual safety report to NMPA for registered products.' },
+    { item: 'Formula Change Notification', frequency: 'When applicable', desc: 'Any formulation change requires re-filing or notification update.' },
   ],
   horizonScan: [
     { topic: 'CSAR Implementing Rules Update', impact: 'medium', timeframe: '2025', description: 'Expected updates to filing procedures and documentation requirements.', actionRequired: true },

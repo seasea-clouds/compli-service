@@ -23,7 +23,7 @@ const SAMPLE_RESULT = {
     recommendation: 'Label compliance is the first step. Consider GACC registration and CBEC channel for rapid market entry.',
   },
   channels: [
-    { name: 'Professional Label Review', suitability: 'high', description: 'Full label compliance audit + Chinese label design.', pros: ['Guaranteed customs approval', 'Professional Chinese design', 'Nutrition panel calculation'], cons: ['Professional fee applies', 'Label revision if formula changes'], timeline: '2-4 weeks', costRange: '$500-2,000' },
+    { channel: 'Professional Label Review', suitability: 'high', gaccRequired: true, description: 'Full label compliance audit + Chinese label design.', advantages: ['Guaranteed customs approval', 'Professional Chinese design', 'Nutrition panel calculation'], disadvantages: ['Professional fee applies', 'Label revision if formula changes'], timeline: '2-4 weeks', costRange: '$500-2,000' },
   ],
   tariffInfo: { mfnRate: '5-20% (MFN)', vatRate: '9-13%', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: 'Varies by product category' },
   regulations: [
@@ -84,11 +84,11 @@ const SAMPLE_RESULT = {
     { phase: 'Production Files', duration: '2-3 days', description: 'Deliver print-ready label files with correct dimensions and color specs.', responsible: 'SinoTrade', dependencies: ['Verification passed'] },
   ],
   costBreakdown: [
-    { item: 'Label Compliance Audit', range: '$200-500', note: 'Review existing labels against all applicable GB standards' },
-    { item: 'Chinese Translation & Design', range: '$300-800', note: 'Professional translation + compliant label layout' },
-    { item: 'Nutrition Panel Calculation', range: '$100-300', note: 'NRV% calculation and GB 28050 formatting' },
-    { item: 'Lab Test (Nutrition Analysis)', range: '$150-400', note: 'If current test report is not available' },
-    { item: 'Production-Ready Files', range: '$100-200', note: 'Print-ready AI/PDF/EPS files' },
+    { item: 'Label Compliance Audit', estimatedRange: '$200-500', notes: 'Review existing labels against all applicable GB standards' },
+    { item: 'Chinese Translation & Design', estimatedRange: '$300-800', notes: 'Professional translation + compliant label layout' },
+    { item: 'Nutrition Panel Calculation', estimatedRange: '$100-300', notes: 'NRV% calculation and GB 28050 formatting' },
+    { item: 'Lab Test (Nutrition Analysis)', estimatedRange: '$150-400', notes: 'If current test report is not available' },
+    { item: 'Production-Ready Files', estimatedRange: '$100-200', notes: 'Print-ready AI/PDF/EPS files' },
   ],
   totalCostRange: '$500-2,000',
   estimatedTimeline: '2-4 weeks',
@@ -99,9 +99,9 @@ const SAMPLE_RESULT = {
     { problem: 'Additive code not per GB 2760', cause: 'Using trade names instead of INS/E numbers', solution: 'Cross-reference all additives against GB 2760 positive list' },
   ],
   postApprovalObligations: [
-    { item: 'Label Compliance Monitoring', freq: 'Ongoing', desc: 'Monitor GB standard revisions that may affect label requirements.' },
-    { item: 'Formula Change Update', freq: 'When applicable', desc: 'Any ingredient change requires label revision and re-filing.' },
-    { item: 'Customs Clearance Per Shipment', freq: 'Per import', desc: 'Each shipment requires CIQ label inspection.' },
+    { item: 'Label Compliance Monitoring', frequency: 'Ongoing', desc: 'Monitor GB standard revisions that may affect label requirements.' },
+    { item: 'Formula Change Update', frequency: 'When applicable', desc: 'Any ingredient change requires label revision and re-filing.' },
+    { item: 'Customs Clearance Per Shipment', frequency: 'Per import', desc: 'Each shipment requires CIQ label inspection.' },
   ],
   horizonScan: [
     { topic: 'GB 7718 Revision', impact: 'high', timeframe: '2025-2026', description: 'Expected to introduce new allergen declaration format and e-labeling options.', actionRequired: true },
