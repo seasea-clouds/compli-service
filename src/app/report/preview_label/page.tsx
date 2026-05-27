@@ -27,11 +27,11 @@ const SAMPLE_RESULT = {
   ],
   tariffInfo: { mfnRate: '5-20% (MFN)', vatRate: '9-13%', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: 'Varies by product category' },
   regulations: [
-    { name: 'GB 7718-2025', number: 'GB 7718-2025', effectiveDate: '2025', authority: 'NHC', relevance: 'primary', description: 'Labeling of Prepackaged Foods — mandatory standard for all imported food labels.' },
-    { name: 'GB 28050-2025', number: 'GB 28050-2025', effectiveDate: '2025', authority: 'NHC', relevance: 'primary', description: 'Nutrition labeling — energy in kJ, NRV% mandatory format.' },
-    { name: 'GB 2760-2024', number: 'GB 2760-2024', effectiveDate: 'February 8, 2025', authority: 'NHC', relevance: 'primary', description: 'Food additives positive list — only listed additives permitted in China.' },
-    { name: 'Food Safety Law (Label Articles)', number: 'Ch.3 Arts.42-47, Ch.9 Arts.148-149', effectiveDate: 'October 1, 2015', authority: 'NPC', relevance: 'primary', description: 'Legal basis for label requirements. Fines up to 3x product value for violations.' },
-    { name: 'GB/T 23779-2023', number: 'GB/T 23779-2023', effectiveDate: '2023', authority: 'NHC', relevance: 'secondary', description: 'Allergen labeling guidelines for prepackaged foods.' },
+    { name: 'GB 7718-2025', number: 'GB 7718-2025', effectiveDate: '2025', issuingAuthority: 'NHC', relevance: 'primary', description: 'Labeling of Prepackaged Foods — mandatory standard for all imported food labels.' },
+    { name: 'GB 28050-2025', number: 'GB 28050-2025', effectiveDate: '2025', issuingAuthority: 'NHC', relevance: 'primary', description: 'Nutrition labeling — energy in kJ, NRV% mandatory format.' },
+    { name: 'GB 2760-2024', number: 'GB 2760-2024', effectiveDate: 'February 8, 2025', issuingAuthority: 'NHC', relevance: 'primary', description: 'Food additives positive list — only listed additives permitted in China.' },
+    { name: 'Food Safety Law (Label Articles)', number: 'Ch.3 Arts.42-47, Ch.9 Arts.148-149', effectiveDate: 'October 1, 2015', issuingAuthority: 'NPC', relevance: 'primary', description: 'Legal basis for label requirements. Fines up to 3x product value for violations.' },
+    { name: 'GB/T 23779-2023', number: 'GB/T 23779-2023', effectiveDate: '2023', issuingAuthority: 'NHC', relevance: 'secondary', description: 'Allergen labeling guidelines for prepackaged foods.' },
   ],
   classification: { assignedHsChapter: '1904', ciqCode: 'Check with customs', isHighRisk: false, riskReason: 'Standard GB 7718/28050 compliance', alternativeClassificationNote: '' },
   riskMatrix: [
@@ -99,9 +99,9 @@ const SAMPLE_RESULT = {
     { problem: 'Additive code not per GB 2760', cause: 'Using trade names instead of INS/E numbers', solution: 'Cross-reference all additives against GB 2760 positive list' },
   ],
   postApprovalObligations: [
-    { item: 'Label Compliance Monitoring', frequency: 'Ongoing', desc: 'Monitor GB standard revisions that may affect label requirements.' },
-    { item: 'Formula Change Update', frequency: 'When applicable', desc: 'Any ingredient change requires label revision and re-filing.' },
-    { item: 'Customs Clearance Per Shipment', frequency: 'Per import', desc: 'Each shipment requires CIQ label inspection.' },
+    { item: 'Label Compliance Monitoring', frequency: 'Ongoing', description: 'Monitor GB standard revisions that may affect label requirements.' },
+    { item: 'Formula Change Update', frequency: 'When applicable', description: 'Any ingredient change requires label revision and re-filing.' },
+    { item: 'Customs Clearance Per Shipment', frequency: 'Per import', description: 'Each shipment requires CIQ label inspection.' },
   ],
   horizonScan: [
     { topic: 'GB 7718 Revision', impact: 'high', timeframe: '2025-2026', description: 'Expected to introduce new allergen declaration format and e-labeling options.', actionRequired: true },

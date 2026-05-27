@@ -28,10 +28,10 @@ const SAMPLE_RESULT = {
   ],
   tariffInfo: { mfnRate: 'N/A', vatRate: 'N/A', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: 'N/A (legal service, not import)' },
   regulations: [
-    { name: 'Trademark Law of China', number: '4th Revision 2019', effectiveDate: 'November 1, 2019', authority: 'CNIPA/NPC', relevance: 'primary', description: 'First-to-file system. Art.32 prevents bad-faith filings. Art.57 defines infringement.' },
-    { name: 'Trademark Examination Guidelines', number: 'CNIPA 2021 Edition', effectiveDate: '2021', authority: 'CNIPA', relevance: 'primary', description: 'Examination standards for distinctiveness, similarity, and refusal grounds.' },
-    { name: 'Customs IP Protection Regulations', number: 'State Council Decree 395', effectiveDate: 'March 1, 2004', authority: 'GACC', relevance: 'primary', description: 'Border enforcement — customs can detain suspected counterfeits.' },
-    { name: 'E-Commerce Law (IP Chapter)', number: 'E-Commerce Law 2019', effectiveDate: 'January 1, 2019', authority: 'NPC', relevance: 'secondary', description: 'Platform liability for IP infringement. E-commerce platforms must remove infringing listings.' },
+    { name: 'Trademark Law of China', number: '4th Revision 2019', effectiveDate: 'November 1, 2019', issuingAuthority: 'CNIPA/NPC', relevance: 'primary', description: 'First-to-file system. Art.32 prevents bad-faith filings. Art.57 defines infringement.' },
+    { name: 'Trademark Examination Guidelines', number: 'CNIPA 2021 Edition', effectiveDate: '2021', issuingAuthority: 'CNIPA', relevance: 'primary', description: 'Examination standards for distinctiveness, similarity, and refusal grounds.' },
+    { name: 'Customs IP Protection Regulations', number: 'State Council Decree 395', effectiveDate: 'March 1, 2004', issuingAuthority: 'GACC', relevance: 'primary', description: 'Border enforcement — customs can detain suspected counterfeits.' },
+    { name: 'E-Commerce Law (IP Chapter)', number: 'E-Commerce Law 2019', effectiveDate: 'January 1, 2019', issuingAuthority: 'NPC', relevance: 'secondary', description: 'Platform liability for IP infringement. E-commerce platforms must remove infringing listings.' },
   ],
   classification: { assignedHsChapter: 'N/A', ciqCode: 'N/A', isHighRisk: true, riskReason: 'Brand not registered. First-to-file risk. Immediate action required.', alternativeClassificationNote: '' },
   riskMatrix: [
@@ -76,10 +76,10 @@ const SAMPLE_RESULT = {
     { problem: 'Bad-faith opposition by squatter', cause: 'Squatter filed your mark during examination', solution: 'File opposition with evidence of prior use/bad faith' },
   ],
   postApprovalObligations: [
-    { item: 'Trademark Renewal', frequency: 'Every 10 years', desc: 'Renew before expiry to maintain protection.' },
-    { item: 'Use Evidence', frequency: 'Every 3-5 years', desc: 'CNIPA may request use evidence. Non-use for 3 years risks cancellation.' },
-    { item: 'Customs Recordal Renewal', frequency: 'Every 10 years', desc: 'Renew customs recordal alongside trademark renewal.' },
-    { item: 'Market Monitoring', frequency: 'Ongoing', desc: 'Monitor e-commerce platforms for infringement.' },
+    { item: 'Trademark Renewal', frequency: 'Every 10 years', description: 'Renew before expiry to maintain protection.' },
+    { item: 'Use Evidence', frequency: 'Every 3-5 years', description: 'CNIPA may request use evidence. Non-use for 3 years risks cancellation.' },
+    { item: 'Customs Recordal Renewal', frequency: 'Every 10 years', description: 'Renew customs recordal alongside trademark renewal.' },
+    { item: 'Market Monitoring', frequency: 'Ongoing', description: 'Monitor e-commerce platforms for infringement.' },
   ],
   horizonScan: [
     { topic: 'Trademark Law 5th Revision', impact: 'high', timeframe: '2025-2026', description: 'Expected reforms to bad-faith filing penalties and evidence requirements.', actionRequired: false },

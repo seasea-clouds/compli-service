@@ -28,11 +28,11 @@ const SAMPLE_RESULT = {
   ],
   tariffInfo: { mfnRate: '1-5% (MFN)', vatRate: '13%', consumptionTax: 'N/A', ftaRate: null, totalTaxBurden: '1-5% + 13% VAT' },
   regulations: [
-    { name: 'Cosmetics Supervision & Administration Regulation (CSAR)', number: 'State Council Decree 727 (2021)', effectiveDate: '2021', authority: 'NMPA', relevance: 'primary', description: 'Primary cosmetics regulation. Reformed the entire cosmetics regulatory system.' },
-    { name: 'Cosmetics Registration & Filing Measures', number: 'NMPA 2021 No.1-3', effectiveDate: '2021', authority: 'NMPA', relevance: 'primary', description: 'Detailed procedures for registration (special) vs filing (ordinary).' },
-    { name: 'Cosmetics Safety Assessment Guidelines', number: 'NMPA 2021 Tech Specs', effectiveDate: '2021', authority: 'NMPA', relevance: 'primary', description: 'Required safety assessment report format and content.' },
-    { name: 'INCI Name Translation Standard', number: 'NMPA ICSC Database', effectiveDate: 'Current', authority: 'NMPA', relevance: 'primary', description: 'Official Chinese translation of INCI ingredient names.' },
-    { name: 'GB/T 35914-2018', number: 'GB/T 35914-2018', effectiveDate: '2018', authority: 'NHC', relevance: 'secondary', description: 'Hygienic standard for cosmetics — microbiological limits.' },
+    { name: 'Cosmetics Supervision & Administration Regulation (CSAR)', number: 'State Council Decree 727 (2021)', effectiveDate: '2021', issuingAuthority: 'NMPA', relevance: 'primary', description: 'Primary cosmetics regulation. Reformed the entire cosmetics regulatory system.' },
+    { name: 'Cosmetics Registration & Filing Measures', number: 'NMPA 2021 No.1-3', effectiveDate: '2021', issuingAuthority: 'NMPA', relevance: 'primary', description: 'Detailed procedures for registration (special) vs filing (ordinary).' },
+    { name: 'Cosmetics Safety Assessment Guidelines', number: 'NMPA 2021 Tech Specs', effectiveDate: '2021', issuingAuthority: 'NMPA', relevance: 'primary', description: 'Required safety assessment report format and content.' },
+    { name: 'INCI Name Translation Standard', number: 'NMPA ICSC Database', effectiveDate: 'Current', issuingAuthority: 'NMPA', relevance: 'primary', description: 'Official Chinese translation of INCI ingredient names.' },
+    { name: 'GB/T 35914-2018', number: 'GB/T 35914-2018', effectiveDate: '2018', issuingAuthority: 'NHC', relevance: 'secondary', description: 'Hygienic standard for cosmetics — microbiological limits.' },
   ],
   classification: { assignedHsChapter: '3304', ciqCode: 'Check with customs', isHighRisk: false, riskReason: 'Ordinary cosmetics — notification filing', alternativeClassificationNote: '' },
   riskMatrix: [
@@ -92,9 +92,9 @@ const SAMPLE_RESULT = {
     { problem: 'Preservative not on approved list', cause: 'China preservative list differs from EU/US', solution: 'Cross-check all preservatives against China CosIng' },
   ],
   postApprovalObligations: [
-    { item: 'Adverse Event Monitoring', frequency: 'Ongoing', desc: 'Monitor and report any adverse reactions within legal timeframe.' },
-    { item: 'Annual Report Submission', frequency: 'Yearly', desc: 'Submit annual safety report to NMPA for registered products.' },
-    { item: 'Formula Change Notification', frequency: 'When applicable', desc: 'Any formulation change requires re-filing or notification update.' },
+    { item: 'Adverse Event Monitoring', frequency: 'Ongoing', description: 'Monitor and report any adverse reactions within legal timeframe.' },
+    { item: 'Annual Report Submission', frequency: 'Yearly', description: 'Submit annual safety report to NMPA for registered products.' },
+    { item: 'Formula Change Notification', frequency: 'When applicable', description: 'Any formulation change requires re-filing or notification update.' },
   ],
   horizonScan: [
     { topic: 'CSAR Implementing Rules Update', impact: 'medium', timeframe: '2025', description: 'Expected updates to filing procedures and documentation requirements.', actionRequired: true },

@@ -29,11 +29,11 @@ const SAMPLE_RESULT = {
   ],
   tariffInfo: { mfnRate: '9.1% comprehensive rate', vatRate: '70% of standard (CBEC rate)', consumptionTax: 'N/A', ftaRate: 'CBEC tax applies', totalTaxBurden: '~9.1% CBEC comprehensive rate (70% discount on tariff + VAT)' },
   regulations: [
-    { name: 'CBEC Retail Import Policy', number: 'MOFCOM 2018 Notice', effectiveDate: 'January 2019', authority: 'MOFCOM', relevance: 'primary', description: 'Framework for cross-border e-commerce retail import. Enables simplified customs clearance.' },
-    { name: 'CBEC Positive List', number: 'MOFCOM/GACC Joint List', effectiveDate: 'Updated annually', authority: 'MOFCOM/GACC', relevance: 'primary', description: 'Products eligible for CBEC import. Olive oil (HS 1509) on positive list.' },
-    { name: 'Three-Document Matching', number: 'GACC Decree 249 Art.5', effectiveDate: 'January 1, 2022', authority: 'GACC', relevance: 'primary', description: 'Order + payment + logistics document matching for customs clearance.' },
-    { name: 'Personal Import Limit', number: 'CBEC Policy Art.3', effectiveDate: '2019', authority: 'MOFCOM', relevance: 'primary', description: 'RMB 5,000/transaction, RMB 26,000/year per consumer.' },
-    { name: 'PIPL (Data Privacy)', number: 'Personal Information Protection Law', effectiveDate: 'November 1, 2021', authority: 'NPC', relevance: 'secondary', description: 'Cross-border data transfer requirements for consumer order data.' },
+    { name: 'CBEC Retail Import Policy', number: 'MOFCOM 2018 Notice', effectiveDate: 'January 2019', issuingAuthority: 'MOFCOM', relevance: 'primary', description: 'Framework for cross-border e-commerce retail import. Enables simplified customs clearance.' },
+    { name: 'CBEC Positive List', number: 'MOFCOM/GACC Joint List', effectiveDate: 'Updated annually', issuingAuthority: 'MOFCOM/GACC', relevance: 'primary', description: 'Products eligible for CBEC import. Olive oil (HS 1509) on positive list.' },
+    { name: 'Three-Document Matching', number: 'GACC Decree 249 Art.5', effectiveDate: 'January 1, 2022', issuingAuthority: 'GACC', relevance: 'primary', description: 'Order + payment + logistics document matching for customs clearance.' },
+    { name: 'Personal Import Limit', number: 'CBEC Policy Art.3', effectiveDate: '2019', issuingAuthority: 'MOFCOM', relevance: 'primary', description: 'RMB 5,000/transaction, RMB 26,000/year per consumer.' },
+    { name: 'PIPL (Data Privacy)', number: 'Personal Information Protection Law', effectiveDate: 'November 1, 2021', issuingAuthority: 'NPC', relevance: 'secondary', description: 'Cross-border data transfer requirements for consumer order data.' },
   ],
   classification: { assignedHsChapter: '1509', ciqCode: 'Check with customs', isHighRisk: false, riskReason: 'On CBEC positive list. Simplified compliance.', alternativeClassificationNote: '' },
   riskMatrix: [
@@ -89,10 +89,10 @@ const SAMPLE_RESULT = {
     { problem: 'Bonded warehouse customs delay', cause: 'Incorrect HS code classification at import to warehouse', solution: 'Professional tariff classification before first shipment' },
   ],
   postApprovalObligations: [
-    { item: 'Three-Document Compliance', frequency: 'Per order', desc: 'Order + payment + logistics document matching for customs clearance.' },
-    { item: 'Platform Fee Renewal', frequency: 'Yearly', desc: 'Annual platform fee payment to maintain store.' },
-    { item: 'Product Listing Updates', frequency: 'Quarterly', desc: 'Refresh listings per seasonality and platform policy changes.' },
-    { item: 'Tax Filing', frequency: 'Monthly/Quarterly', desc: 'CBEC tax remittance via platform integrated system.' },
+    { item: 'Three-Document Compliance', frequency: 'Per order', description: 'Order + payment + logistics document matching for customs clearance.' },
+    { item: 'Platform Fee Renewal', frequency: 'Yearly', description: 'Annual platform fee payment to maintain store.' },
+    { item: 'Product Listing Updates', frequency: 'Quarterly', description: 'Refresh listings per seasonality and platform policy changes.' },
+    { item: 'Tax Filing', frequency: 'Monthly/Quarterly', description: 'CBEC tax remittance via platform integrated system.' },
   ],
   horizonScan: [
     { topic: 'CBEC Positive List Expansion', impact: 'high', timeframe: '2025', description: 'Expected expansion enabling more food products via simplified CBEC channel.', actionRequired: false },
