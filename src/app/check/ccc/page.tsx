@@ -33,6 +33,7 @@ export default function CccCheckPage() {
       // Store report data in localStorage
       if (freeData) {
         const reportData = {
+          savedInput: input,
           id: reportId,
           module: 'CCC Certification',
           productInfo: {
@@ -51,7 +52,7 @@ export default function CccCheckPage() {
           ],
           generatedAt: new Date().toISOString(),
         };
-        try { localStorage.setItem('compli…ort', JSON.stringify(reportData)); } catch {}
+        try { localStorage.setItem('compli…ort', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId, 'size:', JSON.stringify(reportData).length); } catch(e) { console.error('localStorage failed:', e); }
       }
 
       const res = await fetch(`${API_BASE}/checkout`, {

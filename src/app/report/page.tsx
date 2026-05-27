@@ -90,7 +90,10 @@ function ReportContent() {
         };
         const m = map[prefix];
         if (m) {
-          const sr = m.fn({productName:'Your Product'});
+          const stored2 = localStorage.getItem('compli…ort');
+          const parsed2 = stored2 ? JSON.parse(stored2) : {};
+          const savedInput = parsed2.savedInput || {};
+          const sr = m.fn(savedInput);
           setReport({id,module:m.label,productInfo:{name:'Your Product',category:'',originCountry:''},
             result:sr,nextSteps:['Contact us for assessment','Prepare docs','Submit'],
             generatedAt:new Date().toISOString()});

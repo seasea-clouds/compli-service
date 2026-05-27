@@ -36,6 +36,7 @@ export default function GaccCheckPage() {
         const docItems = (freeData.requiredDocuments || []).map((d: string) => ({ label: d, value: 'Required' }));
         const reportData = {
           id: reportId,
+          savedInput: input,
           module: 'GACC Food Registration',
           productInfo: {
             name: input.productName || '',
@@ -53,9 +54,7 @@ export default function GaccCheckPage() {
           ],
           generatedAt: new Date().toISOString(),
         };
-        try {
-          localStorage.setItem('compli…ort', JSON.stringify(reportData));
-        } catch {}
+        try { localStorage.setItem('compli…ort', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId); } catch(e) { console.error('GACC localStorage failed:', e); }
       }
 
       const res = await fetch(`${API_BASE}/checkout`, {
