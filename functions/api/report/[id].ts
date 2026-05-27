@@ -23,24 +23,37 @@ export async function onRequest(context: { request: Request; env: any; params: {
     try {
       const row = await context.env.DB.prepare('SELECT * FROM reports WHERE id = ?').bind(id).first();
       if (row) {
-        // Parse and transform
-        let productInfo = { name: '', category: '', hsCode: '', originCountry: '' };
-        let inputData: Record<string, unknown> = {};
-        if (row.input_data) {
-          try { inputData = JSON.parse(row.input_data); } catch {}
-          productInfo = {
-            name: (inputData.productName as string) || row.product_name || '',
-            category: (inputData.category as string) || '',
-            hsCode: (inputData.hsCode as string) || row.hs_code || '',
-            originCountry: (inputData.originCountry as string) || row.origin_country || '',
-          };
+        // Parse stored result data (the full compliance report)
+        let resultData = { requiresRegistration: false, isHighRisk: false, riskCategory: '', summary: '', requiredDocuments: [] };
+        let nextStepsData: string[] = [];
+        if (row.result_data) {
+          try {
+            const parsed = JSON.parse(row.result_data);
+            resultData = parsed.result || parsed;
+            nextStepsData = parsed.nextSteps || [];
+          } catch {}
         }
+        
+        // Parse product info from input_data
+        let productInfo = { name: '', category: '', hsCode: '', originCountry: '' };
+        if (row.input_data) {
+          try {
+            const inputData = JSON.parse(row.input_data);
+            productInfo = {
+              name: (inputData.productName as string) || row.product_name || '',
+              category: (inputData.category as string) || '',
+              hsCode: (inputData.hsCode as string) || row.hs_code || '',
+              originCountry: (inputData.originCountry as string) || row.origin_country || '',
+            };
+          } catch {}
+        }
+        
         return Response.json({
           id: row.id,
           module: row.module,
           productInfo,
-          result: { requiresRegistration: false, isHighRisk: false, riskCategory: '', summary: '', requiredDocuments: [] },
-          nextSteps: [],
+          result: resultData,
+          nextSteps: nextStepsData,
           generatedAt: row.created_at || '',
         });
       }
