@@ -11,6 +11,12 @@ import { checkCosmetics } from '../../../modules/nmpa/rules';
 import { checkLabel } from '../../../modules/label/rules';
 import { checkCrossborder } from '../../../modules/crossborder/rules';
 import { checkTrademark } from '../../../modules/trademark/rules';
+import { CATEGORY_LABELS as GACC_LABELS } from '../../../modules/gacc/rules';
+import { CATEGORY_LABELS as CCC_LABELS } from '../../../modules/ccc/rules';
+import { CATEGORY_LABELS as COSMETICS_LABELS } from '../../../modules/nmpa/rules';
+import { CATEGORY_LABELS as LABEL_LABELS } from '../../../modules/label/rules';
+import { CATEGORY_LABELS as CB_LABELS } from '../../../modules/crossborder/rules';
+import { CATEGORY_LABELS as TM_LABELS } from '../../../modules/trademark/rules';
 
 const CHECK_MAP: Record<string, (input: any) => any> = {
   'GACC Food Registration': checkGacc,
@@ -19,6 +25,15 @@ const CHECK_MAP: Record<string, (input: any) => any> = {
   'Chinese Label Compliance': checkLabel,
   'Cross-Border E-commerce': checkCrossborder,
   'Brand Protection': checkTrademark,
+};
+
+const CATEGORY_LABELS_MAP: Record<string, Record<string, string>> = {
+  GACC: GACC_LABELS,
+  CCC: CCC_LABELS,
+  COSMETICS: COSMETICS_LABELS,
+  LABEL: LABEL_LABELS,
+  CROSSBORDER: CB_LABELS,
+  TRADEMARK: TM_LABELS,
 };
 
 function rebuildResult(stored: any): any {
@@ -64,7 +79,10 @@ function ReportContent() {
         const parsed = JSON.parse(stored);
         console.log('Report: stored id:', parsed.id, 'url id:', id, 'match:', parsed.id === id);
         if (parsed.id === id) {
-          // Regenerate full result from stored input
+          // Keep savedInput in a separate key for fallback use (survives page refresh)
+          if (parsed.savedInput) {
+            localStorage.setItem('compli-report-input', JSON.stringify(parsed.savedInput));
+          }
           localStorage.removeItem('compli-report-data');
           setReport(parsed);
           setLoading(false);
@@ -75,26 +93,28 @@ function ReportContent() {
       console.error('localStorage error:', e);
     }
 
-    // Fallback: generate report from ID prefix
+    // Fallback: generate report from ID prefix (uses persisted savedInput)
     try {
       if (id) {
         const prefix = id.split('-')[0].toUpperCase();
-        const map: Record<string, {label:string;fn:(i:any)=>any}> = {
-          GACC: {label:'GACC Food Registration',fn:checkGacc},
-          CCC: {label:'CCC Certification',fn:checkCcc},
-          COSMETICS: {label:'Cosmetics Filing (NMPA)',fn:checkCosmetics},
-          LABEL: {label:'Chinese Label Compliance',fn:checkLabel},
-          CROSSBORDER: {label:'Cross-Border E-commerce',fn:checkCrossborder},
-          TRADEMARK: {label:'Brand Protection',fn:checkTrademark},
+        const map: Record<string, {label:string;fn:(i:any)=>any;nextSteps:string[]}> = {
+          GACC: {label:'GACC Food Registration',fn:checkGacc,nextSteps:['Determine product category among 18 GACC-regulated categories','Register in CIFER system with CRA assignment','Prepare all required documentation with Chinese translation','Complete label compliance review (GB 7718/GB 28050)','Submit GACC application and track 3-6 month review']},
+          CCC: {label:'CCC Certification',fn:checkCcc,nextSteps:['Select a CNCA-accredited certification body for your product category','Submit product samples for type testing (Safety + EMC)','Prepare factory inspection documentation and QMS','Receive CCC certificate and mark authorization (4-6 months)','Maintain annual factory surveillance inspections']},
+          COSMETICS: {label:'Cosmetics Filing (NMPA)',fn:checkCosmetics,nextSteps:['Designate Chinese responsible person (境内责任人)','Complete safety assessment per NMPA 2021 guidelines','Coordinate testing at NMPA-designated laboratory','File NMPA notification (备案) for ordinary cosmetics','Set up post-market adverse event monitoring']},
+          LABEL: {label:'Chinese Label Compliance',fn:checkLabel,nextSteps:['Submit label artwork for GB 7718-2025 compliance audit','Receive compliant Chinese label design','Verify all 9 mandatory elements and nutrition panel','Obtain print-ready label files','Arrange customs clearance label support']},
+          CROSSBORDER: {label:'Cross-Border E-commerce',fn:checkCrossborder,nextSteps:['Select target platform (Tmall Global/JD/Douyin)','Complete overseas merchant registration','Set up bonded warehouse (1210) or direct shipping (9610)','Configure three-document matching for customs','Launch store with compliant Chinese listings']},
+          TRADEMARK: {label:'Brand Protection',fn:checkTrademark,nextSteps:['Conduct CNIPA trademark search in relevant Nice classes','File trademark via direct CNIPA filing (8-14 months)','Monitor 3-month opposition period','Register Customs IP recordal for border enforcement','Set up ongoing trademark monitoring']},
         };
         const m = map[prefix];
         if (m) {
-          const stored2 = localStorage.getItem('compli-report-data');
-          const parsed2 = stored2 ? JSON.parse(stored2) : {};
-          const savedInput = parsed2.savedInput || {};
+          const storedInput = localStorage.getItem('compli-report-input');
+          const savedInput = storedInput ? JSON.parse(storedInput) : {};
           const sr = m.fn(savedInput);
-          setReport({id,module:m.label,productInfo:{name:'Your Product',category:'',originCountry:''},
-            result:sr,nextSteps:['Contact us for assessment','Prepare docs','Submit'],
+          const productName = savedInput.productName || savedInput.brandName || 'Your Product';
+          const category = savedInput.category ? (CATEGORY_LABELS_MAP[prefix]?.[savedInput.category] || '') : '';
+          setReport({id,module:m.label,
+            productInfo:{name:productName,category,originCountry:''},
+            result:sr,nextSteps:m.nextSteps,
             generatedAt:new Date().toISOString()});
           setLoading(false);
           return;

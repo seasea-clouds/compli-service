@@ -54,7 +54,7 @@ export default function GaccCheckPage() {
           ],
           generatedAt: new Date().toISOString(),
         };
-        try { localStorage.setItem('compli-report-data', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId); } catch(e) { console.error('GACC localStorage failed:', e); }
+        try { try{localStorage.setItem('compli-report-input',JSON.stringify(input||{}))}catch(e){};localStorage.setItem('compli-report-data', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId); } catch(e) { console.error('GACC localStorage failed:', e); }
       }
 
       const res = await fetch(`${API_BASE}/checkout`, {
