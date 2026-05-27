@@ -15,7 +15,7 @@ const SAMPLE_RESULT: GaccResult = {
     { dimension: "Testing Requirements", score: 4, color: "🟢", note: "5 tests required. Cost range: $600-2,000" },
     { dimension: "Timeline to Market", score: 3, color: "🟢", note: "Estimated: 6-10 weeks" },
   ],
-  executiveSummary: "This comprehensive assessment evaluates Wireless Bluetooth Speaker (Consumer Electronics (HS 85)) against all applicable Chinese import regulations. Overall risk score: 3.8/10. 🟢 Product is standard risk. Standard GACC registration pathway applies.",
+  executiveSummary: "This comprehensive assessment evaluates Wireless Bluetooth Speaker (Consumer Electronics) against all applicable Chinese import regulations. Overall risk score: 3.8/10. 🟢 Product is standard risk. Standard GACC registration pathway applies.",
   oneLineDecision: "🟢 Proceed: GACC registration required. Standard pathway. Estimated 2-4 months.",
   viability: "Viable with compliance investment",
   marketIntel: {
@@ -166,7 +166,7 @@ const SAMPLE_RESULT: GaccResult = {
     { topic: "Imported Food Traceability System", impact: 'medium', timeframe: "2025-2026", description: "GACC developing nationwide traceability system.", actionRequired: false },
     { topic: "Carbon Footprint Labeling", impact: 'low', timeframe: "2026+", description: "China exploring carbon footprint labeling for imported goods.", actionRequired: false },
   ],
-  summary: "Your product (Consumer Electronics (HS 85)) requires GACC registration but is classified as low risk.",
+  summary: "Your product (Consumer Electronics) requires GACC registration but is classified as low risk.",
 };
 
 const labels = {
@@ -203,7 +203,7 @@ export default function ReportPreviewPage() {
         module="CCC Certification"
         locale="en"
         labels={labels}
-        productInfo={{ name: "Wireless Bluetooth Speaker", category: "Consumer Electronics (HS 85)", hsCode: "8518.22", originCountry: "USA" }}
+        productInfo={{ name: "Wireless Bluetooth Speaker", category: "Consumer Electronics", hsCode: "8518.22", originCountry: "USA" }}
         result={SAMPLE_RESULT}
         nextSteps={[
           "Contact SinoTrade Compliance for a detailed compliance assessment",

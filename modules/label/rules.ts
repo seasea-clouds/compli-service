@@ -1,7 +1,7 @@
-/** LABEL — 深度规则引擎 */
-
+/**
+ * 中文标签合规 — 深度规则引擎
+ */
 export type LabelCategory =
-
   | "prepackaged" | "dairy" | "beverage" | "confectionery" | "alcohol"
   | "health_food" | "infant" | "oil" | "seasoning" | "other";
 
@@ -13,40 +13,101 @@ export interface LabelInput {
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
-  "prepackaged": "Prepackaged Foods (GB 7718)",
-  "dairy": "Dairy Products",
-  "alcohol": "Alcoholic Beverages",
-  "confectionery": "Confectionery/Snacks",
+  "prepackaged": "Prepackaged Foods (GB 7718)", "dairy": "Dairy Products",
+  "beverage": "Beverages / Juices", "confectionery": "Confectionery / Snacks",
+  "alcohol": "Alcoholic Beverages", "health_food": "Health / Dietary Supplements",
+  "infant": "Infant / Baby Foods", "oil": "Edible Oils / Fats",
+  "seasoning": "Seasonings / Condiments", "other": "Other Food Products",
 };
 
-const P: Record<string, any> = {"prepackaged": {"label": "Prepackaged Foods (GB 7718)", "risk": "Medium", "riskReason": "12 mandatory label fields. Nutrition panel per GB 28050.", "time": "2-3 weeks", "cost": "$500-2,000", "mfn": "5-20%", "vat": "9%", "testing": ["Nutritional (kJ+kcal)", "Additives (GB 2760)", "Microbiological"], "testCost": "$300-1,500", "trend": "Growing imported food demand.", "drivers": ["Premium food demand", "Rising income"], "barriers": ["Label complexity", "Ingredient adaptation"], "perception": "Imported food trusted for quality.", "competition": "European, Japanese, US brands lead.", "reject": [{"problem": "Energy in kcal without kJ", "cause": "GB 28050 mandates kJ primary", "solution": "Always show kJ first, kcal optional"}]}, "dairy": {"label": "Dairy Products", "risk": "High", "riskReason": "Strict testing. Infant formula needs GB 10765.", "time": "3-4 weeks", "cost": "$800-2,500", "mfn": "5-20%", "vat": "9%", "testing": ["Nutritional", "Microbiological", "Aflatoxin M1", "Melamine"], "testCost": "$500-2,000", "reject": [{"problem": "Missing GB 10765 warnings", "cause": "Separate standard for infant", "solution": "Use GB 10765 label template"}]}, "alcohol": {"label": "Alcoholic Beverages", "risk": "Medium", "riskReason": "GB 7718 + alcohol GB 2758.", "time": "2-3 weeks", "cost": "$500-2,000", "mfn": "5-10%", "vat": "13%", "testing": ["Alcohol content", "Methanol", "Additives"], "testCost": "$300-1,200", "reject": [{"problem": "ABV label vs lab mismatch", "cause": "Production variation", "solution": "Verify before printing"}]}, "confectionery": {"label": "Confectionery/Snacks", "risk": "Medium", "riskReason": "GB 7718. Additives on GB 2760 list.", "time": "2-3 weeks", "cost": "$500-2,000", "mfn": "8-15%", "vat": "13%", "testing": ["Nutritional", "Additive screening", "Microbiological"], "testCost": "$300-1,500", "reject": []}};
-const R: any[] = [{"name": "GB 7718-2011 (rev.2025)", "num": "GB 7718-2011", "auth": "NHC", "rel": "primary", "desc": "Labeling of Prepackaged Foods."}, {"name": "GB 28050-2011", "num": "GB 28050-2011", "auth": "NHC", "rel": "primary", "desc": "Nutrition labeling. kJ + NRV%."}, {"name": "GB 2760-2024", "num": "GB 2760-2024", "auth": "NHC", "rel": "primary", "desc": "Food additives positive list."}, {"name": "Food Safety Law", "num": "Arts.42-47", "auth": "NPC", "rel": "primary", "desc": "Label legal basis."}, {"name": "GACC Decree 249", "num": "Ch.2", "auth": "GACC", "rel": "secondary", "desc": "Customs label inspection."}];
-const C: any[] = [{"item": "Label Compliance Audit", "range": "$200-500", "note": "Full GB audit."}, {"item": "Chinese Label Design", "range": "$300-1,000", "note": "2 revisions."}, {"item": "Nutrition Testing", "range": "$200-600", "note": "CNAS lab."}, {"item": "Translation", "range": "$100-300", "note": "Chinese cert."}];
-const T: any[] = [{"phase": "Label Review", "dur": "3-5d", "desc": "Audit current label", "resp": "SinoTrade"}, {"phase": "Chinese Design", "dur": "5-7d", "desc": "Create compliant label", "resp": "SinoTrade"}, {"phase": "Nutrition Calc", "dur": "2-3d", "desc": "NRV% per GB 28050", "resp": "SinoTrade"}, {"phase": "Final Check", "dur": "2-3d", "desc": "Pre-print verify", "resp": "Both"}];
-const PO: any[] = [{"item": "GB 7718 Revision Monitor", "freq": "Ongoing", "desc": "Track 2025 revision."}, {"item": "Formula Change Re-label", "freq": "When applicable", "desc": "New formula = new label."}];
-const H: any[] = [{"topic": "GB 7718 Major Revision", "impact": "high", "when": "2025-2026", "desc": "New allergen + digital labeling.", "action": true}];
-const D: any[] = [{"name": "Original Label Artwork", "fmt": "JPEG/PDF", "not": "No", "err": "Low res"}, {"name": "Chinese Design", "fmt": "PDF", "not": "No", "err": "Fonts"}, {"name": "Nutrition Report", "fmt": "CNAS PDF", "not": "Yes", "err": "kJ vs kcal"}, {"name": "Free Sale Cert", "fmt": "PDF", "not": "Yes", "err": "Missing"}];
-
 export function checkLabel(input: any): any {
-  const cat = P[input.category]; if (!cat) return {};
-  const ih = cat.risk && cat.risk.includes("🔴");
-  return { requiresRegistration: ih, riskCategory: ih ? "high" : "low", isHighRisk: ih, riskScore: ih ? 7.0 : 3.5,
-    estimatedTimeline: cat.time || "Contact us", totalCostRange: cat.cost || "$500-5,000",
-    executiveSummary: `Assessment for ${input.productName}.`,
-    oneLineDecision: ih ? "⚠️ Action" : "✅ Proceed",
-    riskDimensions: [{dimension:"Category",score:ih?8:3,color:ih?"🔴":"🟢",note:cat.label}],
-    channels: [{name:"Standard",suitability:"high",description:"Full process",advantages:[],disadvantages:[],timeline:cat.time,costRange:cat.cost}],
-    tariffInfo:{mfnRate:cat.mfn||"Varies",vatRate:cat.vat||"13%",consumptionTax:"N/A",ftaRate:null,totalTaxBurden:"Varies"},
-    regulations:R, classification:{assignedHsChapter:"—",ciqCode:"—",isHighRisk:ih,riskReason:cat.riskReason,alternativeClassificationNote:""},
-    riskMatrix:[{dimension:"Category",rating:ih?"🔴":"🟢",explanation:cat.riskReason}],
-    documentGuide:D, requiredDocuments:["Original Label Artwork", "Chinese Design", "Nutrition Report", "Free Sale Cert"],
-    testRequirements:cat.testing||[], testCostRange:cat.testCost||"", labGuide:"",
-    labelGuide:{requiredItems:[],gb7718Highlights:[],gb28050Highlights:[]},
-    timelinePhases:T, costBreakdown:C,
-    countryProfile:{region:"—",ftaWithChina:false,ftaDetails:"",specialRestrictions:[],bilateralMeatAccess:false,bilateralAquaticAccess:false,dairyApproved:false,gaccDifficulty:"moderate",languageNote:"",commonIssues:[],importVolumeNote:""},
-    marketIntel:{chinaImportTrend:cat.trend||"",keyDrivers:cat.drivers||[],barriers:cat.barriers||[],consumerPerception:cat.perception||"",topOrigins:[],recommendation:ih?"Engage professional":"Standard"},
-    competitiveAnalysis:cat.competition||"", commonRejections:[{"problem": "Energy in kcal without kJ", "cause": "GB 28050 mandates kJ primary", "solution": "Always show kJ first, kcal optional"}],
-    postApprovalObligations:PO, horizonScan:H,
-    summary:ih?"Action required":"Standard process",
+  const isHighRisk = false;
+  const riskScore = 4.5;
+  return {
+    requiresRegistration: true, riskCategory: "medium", isHighRisk, riskScore,
+    estimatedTimeline: "2-4 weeks", totalCostRange: "$500-2,000",
+    executiveSummary: `Label compliance assessment for ${input.productName}. All imported food requires Chinese label. Risk: ${riskScore}/10.`,
+    oneLineDecision: "⚠️ Chinese label compliance required. Timeline: 2-4 weeks.",
+    summary: "All prepackaged food imports require Chinese labels per GB 7718 and GB 28050.",
+    riskDimensions: [
+      { dimension: "Label Fields", score: 5, color: "🟡", note: "12 mandatory fields per GB 7718" },
+      { dimension: "Nutrition Panel", score: 5, color: "🟡", note: "GB 28050 — kJ + NRV% required" },
+      { dimension: "Additive Review", score: 6, color: "🟡", note: "GB 2760 positive list compliance" },
+      { dimension: "Timeline", score: 3, color: "🟢", note: "2-4 weeks" },
+      { dimension: "Cost", score: 2, color: "🟢", note: "$500-2,000" },
+    ],
+    channels: [
+      { name: "Professional Label Review", suitability: "high", gaccRequired: false, description: "Full label compliance audit + design", advantages: ["Guaranteed customs approval"], disadvantages: ["Professional fee applies"], timeline: "2-4 weeks", costRange: "$500-2,000" },
+    ],
+    tariffInfo: { mfnRate: "5-20%", vatRate: "9-13%", consumptionTax: "N/A", ftaRate: null, totalTaxBurden: "Varies by product" },
+    regulations: [
+      { name: "GB 7718-2011", number: "GB 7718-2011 (rev. 2025)", effectiveDate: "April 20, 2012", authority: "NHC", relevance: "primary", description: "Labeling of Prepackaged Foods — mandatory for all food imports." },
+      { name: "GB 28050-2011", number: "GB 28050-2011", effectiveDate: "January 1, 2013", authority: "NHC", relevance: "primary", description: "Nutrition labeling — kJ format + NRV% mandatory." },
+      { name: "GB 2760-2024", number: "GB 2760-2024", effectiveDate: "February 8, 2025", authority: "NHC", relevance: "primary", description: "Food additives positive list — only listed additives permitted." },
+      { name: "Food Safety Law (Label Articles)", number: "Ch.3 Arts.42-47, Ch.9 Arts.148-149", effectiveDate: "October 1, 2015", authority: "NPC", relevance: "primary", description: "Legal basis for all food label requirements. Fines up to 3× product value for violations." },
+    ],
+    classification: { assignedHsChapter: "Varies", ciqCode: "Varies", isHighRisk: false, riskReason: "Standard GB 7718/28050 compliance. 12 mandatory fields.", alternativeClassificationNote: "" },
+    riskMatrix: [
+      { dimension: "Label Fields", rating: "🟡", explanation: "12 mandatory fields — all must be in Chinese" },
+      { dimension: "Nutrition Panel", rating: "🟡", explanation: "kJ format + NRV% calculation required" },
+      { dimension: "Additive Check", rating: "🟡", explanation: "All additives must be on GB 2760 positive list" },
+    ],
+    documentGuide: [
+      { name: "Original Label Artwork", format: "JPEG/PDF all sides", notarization: "Not required", validity: "Per application", commonError: "Low resolution or illegible text" },
+      { name: "Chinese Label Design", format: "PDF/AI with embedded fonts", notarization: "Not required", validity: "Per application", commonError: "Fonts not embedded" },
+      { name: "Nutrition Test Report", format: "CNAS lab report", notarization: "Certified translation recommended", validity: "Within 6 months", commonError: "Energy shown in kcal not kJ" },
+      { name: "Certificate of Free Sale", format: "Government authority PDF", notarization: "Certified copy + translation", validity: "6-12 months", commonError: "Wrong issuing authority" },
+      { name: "Ingredients & Additives Declaration", format: "Excel/PDF", notarization: "Not required", validity: "Per application", commonError: "GB 2760 codes not listed" },
+    ],
+    requiredDocuments: ["Original Label Artwork", "Chinese Label Design", "Nutrition Test Report", "Certificate of Free Sale", "Ingredients Declaration"],
+    testRequirements: ["Nutritional analysis (Energy kJ/kcal)", "Additive verification (GB 2760)", "Microbiological (where required)"],
+    testCostRange: "$300-1,500",
+    labGuide: "Nutritional analysis must be at CNAS-accredited lab. Key point: energy must be in kJ (kilojoules) — kcal alone is insufficient.",
+    labTests: ["Nutritional analysis", "Additive verification", "Microbiological"],
+    viability: "High — label compliance is mandatory and cannot be bypassed",
+    detailedTimeline: "Label review (3-5 working days) → Design (5-7 working days) → Nutrition calc (2-3 days) → Final check (2-3 days). Total: 2-3 weeks.",
+    labelGuide: {
+      requiredItems: [
+        { field: "Product Name", requirement: "Accurate reflection of product nature. Standardized name if GB exists.", commonMistake: "Fanciful names without standard name" },
+        { field: "Ingredients List", requirement: "Descending order by weight. Additives with GB 2760 codes.", commonMistake: "Missing additive codes or wrong order" },
+        { field: "Net Content", requirement: "Metric units (g/mL). Draining weight if needed.", commonMistake: "Imperial units" },
+        { field: "Manufacturer Info", requirement: "Overseas manufacturer + Chinese responsible party.", commonMistake: "Missing Chinese agent info" },
+        { field: "Country of Origin", requirement: "Clearly marked.", commonMistake: "Vague description" },
+        { field: "Date & Best Before", requirement: "DD/MM/YYYY or YYYY/MM/DD", commonMistake: "MM/DD/YYYY format" },
+        { field: "Storage Conditions", requirement: "Clear storage instructions.", commonMistake: "Generic statements" },
+        { field: "Nutrition Panel", requirement: "Energy kJ + protein + fat + carbs + sodium + NRV%", commonMistake: "Using kcal, missing NRV%" },
+        { field: "Additive Codes", requirement: "GB 2760 codes (E330, INS 330)", commonMistake: "Trade names" },
+        { field: "Allergens", requirement: "Milk, eggs, fish, crustacea, peanuts, soy, wheat, tree nuts", commonMistake: "Not declared" },
+        { field: "Import Record #", requirement: "CIQ number after clearance.", commonMistake: "Blank" },
+      ],
+      gb7718Highlights: ["All text must be Chinese. Foreign supplementary only.", "Font ≥ 1.8mm.", "GMO must be labeled.", "Irradiated declared.", "Trans-fat if >0.3g/100g."],
+      gb28050Highlights: ["Energy in kJ primary.", "Protein, Fat, Carbs, Sodium mandatory.", "NRV% per Appendix A.", "Format must match standard.", "Tolerance ≤120% energy."],
+    },
+    timelinePhases: [
+      { phase: "Label Review", duration: "3-5 working days", description: "Audit current label against GB 7718/28050/2760", responsible: "SinoTrade", dependencies: [] },
+      { phase: "Chinese Label Design", duration: "5-7 working days", description: "Create compliant Chinese label artwork", responsible: "SinoTrade", dependencies: ["Label review complete"] },
+      { phase: "Nutrition Calculation", duration: "2-3 working days", description: "NRV% calculation per GB 28050", responsible: "SinoTrade", dependencies: ["Nutrition test results"] },
+      { phase: "Final Verification", duration: "2-3 working days", description: "Pre-printing compliance check", responsible: "Both", dependencies: ["Chinese design complete"] },
+    ],
+    costBreakdown: [
+      { item: "Label Compliance Review", estimatedRange: "$200-500", notes: "Full audit against GB 7718/28050/2760" },
+      { item: "Chinese Label Design", estimatedRange: "$300-1,000", notes: "Includes 2 revision rounds" },
+      { item: "Nutrition Testing", estimatedRange: "$200-600", notes: "CNAS lab — mandatory NRV% data" },
+      { item: "Translation Certification", estimatedRange: "$100-300", notes: "English → Chinese" },
+    ],
+    countryProfile: { region: "", ftaWithChina: false, ftaDetails: "", specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: "moderate", languageNote: "All text must be in Chinese. English may be supplementary.", commonIssues: [], importVolumeNote: "" },
+    marketIntel: { chinaImportTrend: "All imported prepackaged food requires Chinese labels. Market size: mandatory for every food importer.", keyDrivers: ["Regulatory requirement", "Market access"], barriers: ["Complex standards", "Professional review needed"], consumerPerception: "Chinese labels build consumer trust.", topOrigins: [], recommendation: "Engage professional label compliance service." },
+    competitiveAnalysis: "Label compliance is regulatory — not competitive. All importers face the same requirements.",
+    commonRejections: [
+      { problem: "Nutrition panel uses kcal without kJ", cause: "GB 28050 mandates kJ as primary", solution: "Always show kJ first, kcal optional" },
+      { problem: "Additive not on GB 2760 list", cause: "Ingredient approved in origin but not China", solution: "Pre-submission additive audit against GB 2760" },
+    ],
+    postApprovalObligations: [
+      { item: "Label Update Monitoring", frequency: "Ongoing", description: "Track GB 7718/28050 revisions" },
+      { item: "Formula Change Re-label", frequency: "When applicable", description: "New formula = new label compliance check" },
+    ],
+    horizonScan: [
+      { topic: "GB 7718 Major Revision", impact: "high", timeframe: "2025-2026", description: "New allergen + digital labeling rules expected.", actionRequired: true },
+    ],
   };
 }

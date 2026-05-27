@@ -10,7 +10,7 @@ const SAMPLE_RESULT: GaccResult = {
   riskScore: 3.8,
   riskDimensions: [
     { dimension: "Product Category", score: 3, color: "🟢", note: "Standard risk category — outside 18 high-risk list" },
-    { dimension: "Origin Country Complexity", score: 5, color: "🟡", note: "Australia: moderate compliance pathway" },
+    { dimension: "Origin Country Complexity", score: 5, color: "🟡", note: "USA: moderate compliance pathway" },
     { dimension: "Documentation Complexity", score: 4, color: "🟢", note: "Standard documentation package" },
     { dimension: "Testing Requirements", score: 4, color: "🟢", note: "5 tests required. Cost range: $600-2,000" },
     { dimension: "Timeline to Market", score: 3, color: "🟢", note: "Estimated: 6-10 weeks" },
@@ -20,9 +20,9 @@ const SAMPLE_RESULT: GaccResult = {
   viability: "Viable with compliance investment",
   marketIntel: {
     chinaImportTrend: "Growing demand — China's imports of this category have been increasing 8-15% year on year. Premium imported products particularly sought after by middle-class consumers.",
-    topOrigins: [{ country: "Belgium", share: "28%" }, { country: "Switzerland", share: "22%" }, { country: "Australia", share: "15%" }, { country: "Italy", share: "12%" }],
+    topOrigins: [{ country: "Belgium", share: "28%" }, { country: "Switzerland", share: "22%" }, { country: "USA", share: "15%" }, { country: "Italy", share: "12%" }],
     consumerPerception: "Chinese consumers generally view imported Confectionery / Chocolate products favorably, associating them with higher quality and safety standards. Premium positioning is achievable.",
-    keyDrivers: ["Rising middle class demand for premium imports", "Growing label compliance awareness", "Cross-border e-commerce enabling direct access", "Young consumers' preference for international brands"],
+    keyDrivers: ["Rising middle class demand for premium imports", "Growing food safety awareness", "Cross-border e-commerce enabling direct access", "Young consumers' preference for international brands"],
     barriers: ["Competition from established import brands", "Regulatory complexity", "Price sensitivity in certain segments"],
     recommendation: "General trade recommended for full market access. Leverage premium positioning for better margins.",
   },
@@ -42,8 +42,8 @@ const SAMPLE_RESULT: GaccResult = {
   },
   regulations: [
     { name: "GACC Decree 248", number: "Decree 248 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Regulations on the Registration of Overseas Manufacturers of Imported Food. All overseas food producers must register via CIFER before exporting to China." },
-    { name: "GB 7718 Standard", number: "Decree 249 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Administrative Measures on Import and Export Food Safety." },
-    { name: "Food Safety Law of China", number: "PRC Food Safety Law (2015, amended 2021)", effectiveDate: "October 1, 2015", issuingAuthority: "NPC", relevance: 'primary', description: "Primary legislation governing label compliance in China." },
+    { name: "GACC Decree 249", number: "Decree 249 (2021)", effectiveDate: "January 1, 2022", issuingAuthority: "General Administration of Customs (GACC)", relevance: 'primary', description: "Administrative Measures on Import and Export Food Safety." },
+    { name: "Food Safety Law of China", number: "PRC Food Safety Law (2015, amended 2021)", effectiveDate: "October 1, 2015", issuingAuthority: "NPC", relevance: 'primary', description: "Primary legislation governing food safety in China." },
     { name: "GB 7718", number: "GB 7718-2011", effectiveDate: "April 20, 2012", issuingAuthority: "NHC", relevance: 'primary', description: "National Food Safety Standard — General Rules for Nutrition Labeling of Prepackaged Foods." },
     { name: "GB 28050", number: "GB 28050-2011", effectiveDate: "January 1, 2013", issuingAuthority: "NHC", relevance: 'primary', description: "General Rules for Nutrition Labeling of Prepackaged Foods." },
     { name: "GB 2760", number: "GB 2760-2024", effectiveDate: "February 8, 2025", issuingAuthority: "NHC", relevance: 'primary', description: "Uses of Food Additives — positive list system." },
@@ -59,13 +59,13 @@ const SAMPLE_RESULT: GaccResult = {
   },
   riskMatrix: [
     { dimension: "品类风险 Product Category", rating: "🟢", explanation: "18 categories outside — low risk. Standard GACC registration." },
-    { dimension: "产地风险 Origin Country", rating: "🟡", explanation: "Australia — moderate compliance pathway" },
+    { dimension: "产地风险 Origin Country", rating: "🟡", explanation: "USA — moderate compliance pathway" },
     { dimension: "成分风险 Ingredients", rating: "🟢", explanation: "Standard ingredient risk" },
     { dimension: "加工风险 Processing", rating: "🟢", explanation: "Processed/shelf-stable — low quarantine risk" },
     { dimension: "合规历史 Compliance History", rating: "🟢", explanation: "First-time registration — no negative history" },
   ],
   requiredDocuments: [
-    "Label Compliance Application Form",
+    "GACC Registration Application Form",
     "Product Description & Ingredients List",
     "Manufacturing Process Flow Chart",
     "HACCP / ISO 22000 Certificate (if any)",
@@ -74,7 +74,7 @@ const SAMPLE_RESULT: GaccResult = {
     "Product Photos & Packaging Images",
   ],
   documentGuide: [
-    { name: "Label Compliance Application Form", format: "Label review process online submission", notarization: "Not required", validity: "Per application", commonError: "Incomplete fields, missing signatory information" },
+    { name: "GACC Registration Application Form", format: "CIFER system online submission", notarization: "Not required", validity: "Per application", commonError: "Incomplete fields, missing signatory information" },
     { name: "Product Description & Ingredients List", format: "PDF/Word, Chinese or bilingual", notarization: "Translation certification recommended", validity: "Per application", commonError: "Additive codes not per GB 2760" },
     { name: "Manufacturing Process Flow Chart", format: "PDF, diagram format", notarization: "Translation certification recommended", validity: "Per application", commonError: "Too generic, missing critical control points" },
     { name: "HACCP / ISO 22000 Certificate", format: "PDF, valid certificate copy", notarization: "Certified copy + translation required", validity: "Must be current", commonError: "Expired certificate, wrong facility name" },
@@ -117,13 +117,13 @@ const SAMPLE_RESULT: GaccResult = {
     { phase: "Initial Assessment & Classification", duration: "1-2 weeks", description: "Confirm HS code, GACC category classification, and identify required documents.", responsible: 'SinoTrade', dependencies: [] },
     { phase: "Document Preparation & Translation", duration: "2-4 weeks", description: "Gather all required documents, translate to Chinese, notarize where required.", responsible: 'Both', dependencies: ["Initial assessment complete"] },
     { phase: "Lab Testing (CNAS Accredited)", duration: "2-3 weeks", description: "Product samples sent to CNAS-accredited lab for required testing.", responsible: 'SinoTrade', dependencies: ["Sample shipment arranged"] },
-    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via Label review process with our team handling all documentation and submission requirements.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
+    { phase: "Application Submission (CIFER)", duration: "1-2 weeks", description: "Submit registration via CIFER system with our team handling all documentation and submission requirements.", responsible: 'SinoTrade', dependencies: ["All documents ready", "Lab reports received"] },
     { phase: "GACC Review & Approval", duration: "2-6 weeks", description: "GACC processes application. Issue registration certificate upon approval.", responsible: 'SinoTrade', dependencies: ["Application submitted"] },
     { phase: "Label Design & Compliance", duration: "2-3 weeks", description: "Design Chinese label per GB 7718/28050. Submit for compliance review.", responsible: 'SinoTrade', dependencies: ["Product details finalized"] },
-    { phase: "First Shipment & Customs Clearance", duration: "1-3 weeks", description: "First commercial shipment. CIQ inspection: document check, label verification, random sampling.", responsible: 'Both', dependencies: ["Label Compliance certificate", "Label approved"] },
+    { phase: "First Shipment & Customs Clearance", duration: "1-3 weeks", description: "First commercial shipment. CIQ inspection: document check, label verification, random sampling.", responsible: 'Both', dependencies: ["GACC Registration certificate", "Label approved"] },
   ],
   costBreakdown: [
-    { item: "Label Compliance Fee", estimatedRange: "$200-800", notes: "Label review process filing with professional agent handling." },
+    { item: "GACC Registration Fee", estimatedRange: "$200-800", notes: "CIFER system filing with professional agent handling." },
     { item: "Laboratory Testing (CNAS)", estimatedRange: "$600-2,000", notes: "Required tests: Microbiological, Heavy metals, Food additives, Melamine, Pesticide residues." },
     { item: "Document Translation & Notarization", estimatedRange: "$500-2,000", notes: "All non-Chinese documents need certified Chinese translation." },
     { item: "Chinese Label Design & Compliance Review", estimatedRange: "$300-1,500", notes: "Includes GB 7718 check, nutrition panel, 2 revision rounds." },
@@ -147,7 +147,7 @@ const SAMPLE_RESULT: GaccResult = {
     commonIssues: ["Additional 301 tariffs", "Differences in food additive standards between FDA and CFDA"],
     importVolumeNote: "Largest agricultural exporter to China. Strong presence in grains, meat, and nuts.",
   },
-  competitiveAnalysis: "China imported significant volumes of Confectionery / Chocolate products in 2024-2025. Top origins include Belgium, Switzerland, Australia, Italy. The category shows growth potential with rising consumer demand for premium imports.",
+  competitiveAnalysis: "China imported significant volumes of Confectionery / Chocolate products in 2024-2025. Top origins include Belgium, Switzerland, USA, Italy. The category shows growth potential with rising consumer demand for premium imports.",
   commonRejections: [
     { problem: "Dairy content triggers high-risk reclassification", cause: "Products with >5% dairy content may be reclassified", solution: "Pre-classification review: dairy threshold analysis" },
     { problem: "Additives not in GB 2760", cause: "Using additives approved in origin but banned in China", solution: "Full additive formula audit before application" },
@@ -185,8 +185,8 @@ const labels = {
   labelCategory: "Category",
   labelHsCode: "HS Code",
   labelOrigin: "Origin",
-  gaccRequired: "Label Compliance Required",
-  gaccNotRequired: "No Label Compliance Required",
+  gaccRequired: "GACC Registration Required",
+  gaccNotRequired: "No GACC Registration Required",
 };
 
 export default function ReportPreviewPage() {
@@ -194,7 +194,7 @@ export default function ReportPreviewPage() {
     <div className="min-h-screen bg-bg-ice py-8">
       <div className="max-w-4xl mx-auto px-4 mb-4">
         <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 text-center mb-6">
-          <p className="text-sm font-bold text-amber-800">🔬 Preview Mode — Sample: Organic Honey Almond Granola (Australia)</p>
+          <p className="text-sm font-bold text-amber-800">🔬 Preview Mode — Sample: Organic Honey Almond Granola (USA)</p>
           <p className="text-xs text-amber-600">This is a preview with sample data to demonstrate the new 18-module report layout.</p>
         </div>
       </div>
@@ -203,7 +203,7 @@ export default function ReportPreviewPage() {
         module="Chinese Label Compliance"
         locale="en"
         labels={labels}
-        productInfo={{ name: "Organic Honey Almond Granola", category: "Prepackaged Foods (GB 7718)", hsCode: "1904.10", originCountry: "Australia" }}
+        productInfo={{ name: "Organic Honey Almond Granola", category: "Prepackaged Foods (GB 7718)", hsCode: "1904.10", originCountry: "USA" }}
         result={SAMPLE_RESULT}
         nextSteps={[
           "Contact SinoTrade Compliance for a detailed compliance assessment",

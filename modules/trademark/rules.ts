@@ -1,7 +1,7 @@
-/** TRADEMARK — 深度规则引擎 */
-
+/**
+ * 品牌保护 / 商标注册 — 深度规则引擎
+ */
 export type TrademarkCategory =
-
   | "food" | "cosmetics" | "electronics" | "apparel"
   | "beverage" | "health_supplement" | "luxury" | "other";
 
@@ -14,40 +14,86 @@ export interface TrademarkInput {
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
-  "food": "Food Products",
-  "cosmetics": "Cosmetics",
-  "electronics": "Electronics/Tech",
-  "apparel": "Apparel/Fashion",
+  "food": "Food Products", "cosmetics": "Cosmetics / Personal Care",
+  "electronics": "Electronics / Technology", "apparel": "Apparel / Fashion",
+  "beverage": "Beverages", "health_supplement": "Health Supplements",
+  "luxury": "Luxury Goods", "other": "Other",
 };
 
-const P: Record<string, any> = {"food": {"label": "Food Products", "risk": "High", "riskReason": "Class 29/30/31. Brands frequently squatted.", "time": "8-14 months", "cost": "$600-1,200/class", "testing": [], "testCost": "", "reject": [{"problem": "Similar mark exists", "cause": "Prior registration", "solution": "Search + class strategy"}]}, "cosmetics": {"label": "Cosmetics", "risk": "High", "riskReason": "Class 3 most contested.", "time": "8-14 months", "cost": "$600-1,200/class", "testing": [], "testCost": "", "reject": [{"problem": "Brand squatted", "cause": "Bad-faith filing", "solution": "File opposition within 3 months"}]}, "electronics": {"label": "Electronics/Tech", "risk": "Medium", "riskReason": "Class 9/42. Specification drafting critical.", "time": "8-14 months", "cost": "$600-1,200/class", "testing": [], "testCost": "", "reject": [{"problem": "Spec too broad rejected", "cause": "CNIPA requires specific goods", "solution": "List specific products"}]}, "apparel": {"label": "Apparel/Fashion", "risk": "High", "riskReason": "Class 25 most squatted class.", "time": "8-14 months", "cost": "$600-1,200/class", "testing": [], "testCost": "", "reject": [{"problem": "Counterfeit on platform", "cause": "No TM = no takedown", "solution": "Register + customs recordal"}]}};
-const R: any[] = [{"name": "Trademark Law of China", "num": "4th Rev 2019", "auth": "CNIPA", "rel": "primary", "desc": "First-to-file system."}, {"name": "Examination Guidelines", "num": "CNIPA 2021", "auth": "CNIPA", "rel": "primary", "desc": "Similarity/distinctiveness standards."}, {"name": "Nice Classification", "num": "12th Ed", "auth": "CNIPA", "rel": "primary", "desc": "45 classes."}, {"name": "Customs IP Protection", "num": "Decree 395", "auth": "GACC", "rel": "secondary", "desc": "Border enforcement."}];
-const C: any[] = [{"item": "Trademark Search", "range": "$200-500", "note": "CNIPA + WIPO."}, {"item": "Filing Fee/class", "range": "$300-600", "note": "CNIPA official."}, {"item": "Registration Cert", "range": "$100-200", "note": "Issuance."}, {"item": "Full Service/class", "range": "$800-2,000", "note": "Search+filing."}];
-const T: any[] = [{"phase": "Trademark Search", "dur": "1-2w", "desc": "CNIPA database", "resp": "Both"}, {"phase": "Application", "dur": "1-3d", "desc": "File CNIPA", "resp": "SinoTrade"}, {"phase": "Formal Exam", "dur": "1-2m", "desc": "CNIPA formalities", "resp": "CNIPA"}, {"phase": "Substantive Exam", "dur": "6-9m", "desc": "CNIPA review", "resp": "CNIPA"}, {"phase": "Publication", "dur": "3m", "desc": "Opposition window", "resp": "CNIPA"}, {"phase": "Registration", "dur": "1-2m", "desc": "Certificate 10yr", "resp": "Both"}];
-const PO: any[] = [{"item": "TM Renewal", "freq": "10yr", "desc": "File 6m before."}, {"item": "Use Evidence", "freq": "Ongoing", "desc": "For non-use challenges."}, {"item": "Watch Service", "freq": "Monthly", "desc": "Monitor conflicts."}];
-const H: any[] = [{"topic": "TM Law 5th Revision", "impact": "high", "when": "2025-2026", "desc": "Stronger bad-faith penalties.", "action": true}];
-const D: any[] = [{"name": "TM Application Form", "fmt": "CNIPA", "not": "No", "err": "Goods vague"}, {"name": "Brand Specimen", "fmt": "JPEG", "not": "No", "err": "Low res"}, {"name": "Goods List", "fmt": "Excel", "not": "No", "err": "Not specific"}, {"name": "Power of Attorney", "fmt": "PDF", "not": "Yes", "err": "Missing sign"}];
-
 export function checkTrademark(input: any): any {
-  const cat = P[input.category]; if (!cat) return {};
-  const ih = cat.risk && cat.risk.includes("🔴");
-  return { requiresRegistration: ih, riskCategory: ih ? "high" : "low", isHighRisk: ih, riskScore: ih ? 7.0 : 3.5,
-    estimatedTimeline: cat.time || "Contact us", totalCostRange: cat.cost || "$500-5,000",
-    executiveSummary: `Assessment for ${input.productName}.`,
-    oneLineDecision: ih ? "⚠️ Action" : "✅ Proceed",
-    riskDimensions: [{dimension:"Category",score:ih?8:3,color:ih?"🔴":"🟢",note:cat.label}],
-    channels: [{name:"Standard",suitability:"high",description:"Full process",advantages:[],disadvantages:[],timeline:cat.time,costRange:cat.cost}],
-    tariffInfo:{mfnRate:cat.mfn||"Varies",vatRate:cat.vat||"13%",consumptionTax:"N/A",ftaRate:null,totalTaxBurden:"Varies"},
-    regulations:R, classification:{assignedHsChapter:"—",ciqCode:"—",isHighRisk:ih,riskReason:cat.riskReason,alternativeClassificationNote:""},
-    riskMatrix:[{dimension:"Category",rating:ih?"🔴":"🟢",explanation:cat.riskReason}],
-    documentGuide:D, requiredDocuments:["TM Application Form", "Brand Specimen", "Goods List", "Power of Attorney"],
-    testRequirements:cat.testing||[], testCostRange:cat.testCost||"", labGuide:"",
-    labelGuide:{requiredItems:[],gb7718Highlights:[],gb28050Highlights:[]},
-    timelinePhases:T, costBreakdown:C,
-    countryProfile:{region:"—",ftaWithChina:false,ftaDetails:"",specialRestrictions:[],bilateralMeatAccess:false,bilateralAquaticAccess:false,dairyApproved:false,gaccDifficulty:"moderate",languageNote:"",commonIssues:[],importVolumeNote:""},
-    marketIntel:{chinaImportTrend:cat.trend||"",keyDrivers:cat.drivers||[],barriers:cat.barriers||[],consumerPerception:cat.perception||"",topOrigins:[],recommendation:ih?"Engage professional":"Standard"},
-    competitiveAnalysis:cat.competition||"", commonRejections:[{"problem": "Similar mark exists", "cause": "Prior registration", "solution": "Search + class strategy"}],
-    postApprovalObligations:PO, horizonScan:H,
-    summary:ih?"Action required":"Standard process",
+  const needsReg = !input.registeredInChina;
+  const isHighRisk = needsReg;
+  const riskScore = needsReg ? 7.5 : 2.0;
+  return {
+    needsRegistration: needsReg, requiresRegistration: needsReg, riskCategory: isHighRisk ? "high" : "low", isHighRisk, riskScore,
+    estimatedTimeline: "8-14 months", totalCostRange: "$600-2,000/class",
+    executiveSummary: `Trademark assessment for "${input.brandName}". Risk: ${riskScore}/10. ${needsReg ? "🔴 NOT registered — urgent filing needed." : "🟢 Registered — maintain."}`,
+    oneLineDecision: needsReg ? "🔴 Urgent: file trademark before market entry" : "🟢 Registered. Monitor renewal.",
+    summary: needsReg ? "Brand NOT registered in China. High risk of bad-faith squatting." : "Brand registered. Ongoing monitoring recommended.",
+    riskDimensions: [
+      { dimension: "Registration Status", score: needsReg ? 9 : 1, color: needsReg ? "🔴" : "🟢", note: needsReg ? "Not registered — high risk" : "Registered" },
+      { dimension: "Squatter Risk", score: needsReg ? 8 : 3, color: needsReg ? "🔴" : "🟢", note: "China first-to-file: squatters may grab your brand" },
+      { dimension: "Timeline", score: needsReg ? 6 : 1, color: needsReg ? "🟡" : "🟢", note: "8-14 months if filing now" },
+      { dimension: "Cost", score: 3, color: "🟢", note: "$600-2,000/class" },
+      { dimension: "Enforcement", score: needsReg ? 8 : 3, color: needsReg ? "🔴" : "🟢", note: needsReg ? "Cannot enforce without registration" : "Full enforcement rights" },
+    ],
+    channels: [
+      { name: "Trademark Registration", suitability: "high", gaccRequired: false, description: "File with CNIPA for full legal protection", advantages: ["Legal protection", "Platform enforcement"], disadvantages: ["8-14 month timeline"], timeline: "8-14 months", costRange: "$600-2,000/class" },
+    ],
+    tariffInfo: { mfnRate: "N/A", vatRate: "N/A", consumptionTax: "N/A", ftaRate: null, totalTaxBurden: "N/A (legal service, not import)" },
+    regulations: [
+      { name: "Trademark Law of China", number: "4th Revision 2019", effectiveDate: "November 1, 2019", authority: "CNIPA/NPC", relevance: "primary", description: "First-to-file system. Art.32 prevents bad-faith filings. Art.57 defines infringement." },
+      { name: "Trademark Examination Guidelines", number: "CNIPA 2021 Edition", effectiveDate: "2021", authority: "CNIPA", relevance: "primary", description: "Examination standards for distinctiveness and similarity." },
+      { name: "Customs IP Protection Regulations", number: "State Council Decree 395", effectiveDate: "March 1, 2004", authority: "GACC", relevance: "secondary", description: "Border enforcement — customs can detain suspected counterfeits." },
+    ],
+    classification: { assignedHsChapter: "N/A", ciqCode: "N/A", isHighRisk: needsReg, riskReason: needsReg ? "Brand not registered. First-to-file risk." : "Registered.", alternativeClassificationNote: "" },
+    riskMatrix: [
+      { dimension: "Registration Status", rating: needsReg ? "🔴" : "🟢", explanation: needsReg ? "Not registered" : "Registered" },
+      { dimension: "Squatter Risk", rating: "🔴", explanation: "China first-to-file — anyone can register your brand" },
+      { dimension: "Timeline", rating: needsReg ? "🟡" : "🟢", explanation: "8-14 months" },
+    ],
+    documentGuide: [
+      { name: "Trademark Application Form", format: "CNIPA format", notarization: "Not required", validity: "Per application", commonError: "Goods description too vague" },
+      { name: "Brand Specimen / Logo", format: "JPEG, 5-10cm", notarization: "Not required", validity: "Per application", commonError: "Low resolution" },
+      { name: "Goods/Services List", format: "Excel per Nice Class", notarization: "Not required", validity: "Per application", commonError: "Not specific enough" },
+      { name: "Power of Attorney", format: "PDF notarized", notarization: "Certified copy", validity: "Per application", commonError: "Missing signature/seal" },
+    ],
+    requiredDocuments: ["TM Application Form", "Brand Specimen", "Goods/Services List", "Power of Attorney"],
+    testRequirements: ["CNIPA database search", "Common law prior art search"],
+    testCostRange: "$200-500",
+    labGuide: "Trademark search should cover CNIPA database + WIPO Global Brand DB + common law marketplace use.",
+    labTests: ["CNIPA search", "WIPO search", "Marketplace search"],
+    viability: "Critical — trademark registration is essential for China market entry",
+    detailedTimeline: "Search (1-2 weeks) → Application (1-3 days) → Formal exam (1-2 months) → Substantive exam (6-9 months) → Publication (3 months) → Registration (1-2 months). Total: 8-14 months.",
+    labelGuide: { requiredItems: [], gb7718Highlights: [], gb28050Highlights: [] },
+    timelinePhases: [
+      { phase: "Trademark Search", duration: "1-2 weeks", description: "CNIPA + WIPO + common law search", responsible: "Both", dependencies: [] },
+      { phase: "Application Filing", duration: "1-3 days", description: "Submit to CNIPA with classification", responsible: "SinoTrade", dependencies: ["Search complete"] },
+      { phase: "Formal Examination", duration: "1-2 months", description: "CNIPA reviews formalities", responsible: "CNIPA", dependencies: ["Application filed"] },
+      { phase: "Substantive Examination", duration: "6-9 months", description: "CNIPA examines distinctiveness/conflicts", responsible: "CNIPA", dependencies: ["Formal exam passed"] },
+      { phase: "Publication (Opposition)", duration: "3 months", description: "Third party opposition window", responsible: "CNIPA", dependencies: ["Substantive exam passed"] },
+      { phase: "Registration Certificate", duration: "1-2 months", description: "Certificate issued. Valid 10 years.", responsible: "Both", dependencies: ["Publication period passed"] },
+    ],
+    costBreakdown: [
+      { item: "Trademark Search", estimatedRange: "$200-500", notes: "CNIPA + WIPO comprehensive search" },
+      { item: "Filing Fee (per class)", estimatedRange: "$300-600", notes: "CNIPA official fee" },
+      { item: "Registration Certificate", estimatedRange: "$100-200", notes: "CNIPA issuance" },
+      { item: "Professional Service", estimatedRange: "$800-2,000", notes: "Search + filing + monitoring" },
+    ],
+    countryProfile: { region: "", ftaWithChina: false, ftaDetails: "", specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: "moderate", languageNote: "CNIPA filings in Chinese required.", commonIssues: [], importVolumeNote: "" },
+    marketIntel: { chinaImportTrend: "Trademark filings growing 15%+ annually. Class 25, 3, 9 most contested.", keyDrivers: ["Brand protection", "E-commerce enforcement", "Market entry"], barriers: ["First-to-file system", "Squatter risk", "Examination backlog"], consumerPerception: "Registered brands trusted on platforms.", topOrigins: [], recommendation: needsReg ? "File registration immediately. Consider defensive filings for Chinese transliteration." : "Maintain registration. Monitor for conflicting marks." },
+    competitiveAnalysis: "Chinese brands dominate registration numbers. Foreign brands face squatter risk. 15-25% of foreign brands experience squatting.",
+    commonRejections: [
+      { problem: "Similar prior mark exists", cause: "Third party filed similar mark first", solution: "Comprehensive pre-filing search + class selection strategy" },
+      { problem: "Brand squatted by local agent", cause: "First-to-file system — agent registered brand", solution: "File opposition within 3 months or negotiate purchase" },
+    ],
+    postApprovalObligations: [
+      { item: "Trademark Renewal", frequency: "Every 10 years", description: "File renewal 6 months before expiry" },
+      { item: "Use Evidence Collection", frequency: "Ongoing", description: "Evidence for 3-year non-use challenges" },
+      { item: "Watch Service", frequency: "Monthly", description: "Monitor CNIPA for conflicting marks" },
+    ],
+    horizonScan: [
+      { topic: "Trademark Law 5th Revision", impact: "high", timeframe: "2025-2026", description: "Stronger bad-faith filing penalties expected.", actionRequired: true },
+    ],
   };
 }
