@@ -17,9 +17,10 @@ export function generateCrossborderReport(input: CrossborderInput): Omit<Complia
     result,
     nextSteps: [
       "Contact SinoTrade Compliance for a detailed compliance assessment",
-      "Prepare required documentation",
-      "Submit compliance application",
-      "Arrange customs clearance support",
+      "Complete platform merchant registration and compliance review",
+      "Set up bonded warehouse logistics and three-document matching",
+      "Configure product listings with compliant Chinese content",
+      "Launch store and optimize for Chinese consumer preferences",
     ],
   };
 }

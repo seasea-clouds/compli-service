@@ -44,11 +44,11 @@ export default function TrademarkCheckPage() {
           },
           result: freeData,
           nextSteps: [
-            'Submit completed application form',
-            'Engage compliance professional for review',
-            'Await regulatory approval',
-            'Arrange customs clearance',
-            'Schedule annual compliance review',
+            'Conduct comprehensive CNIPA trademark search in relevant Nice classes',
+            'File trademark application via direct CNIPA filing (8-14 months)',
+            'Monitor 3-month opposition period after CNIPA publication',
+            'Register Customs IP recordal (海关备案) for border enforcement',
+            'Set up ongoing trademark monitoring for squatter detection',
           ],
           generatedAt: new Date().toISOString(),
         };

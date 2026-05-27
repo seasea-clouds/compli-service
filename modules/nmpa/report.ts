@@ -17,9 +17,10 @@ export function generateCosmeticsReport(input: CosmeticsInput): Omit<ComplianceR
     result,
     nextSteps: [
       "Contact SinoTrade Compliance for a detailed compliance assessment",
-      "Prepare required documentation",
-      "Submit compliance application",
-      "Arrange customs clearance support",
+      "Designate a Chinese responsible person (境内责任人)",
+      "Complete safety assessment report per NMPA 2021 guidelines",
+      "Coordinate testing at NMPA-designated laboratory",
+      "File NMPA notification (备案) or registration (注册) application",
     ],
   };
 }

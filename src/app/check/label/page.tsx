@@ -44,11 +44,11 @@ export default function LabelCheckPage() {
           },
           result: freeData,
           nextSteps: [
-            'Submit completed application form',
-            'Engage compliance professional for review',
-            'Await regulatory approval',
-            'Arrange customs clearance',
-            'Schedule annual compliance review',
+            'Submit current label artwork for full GB 7718-2025 compliance audit',
+            'Receive compliant Simplified Chinese label design with correct formatting',
+            'Verify all 9 mandatory label elements and nutrition panel (GB 28050)',
+            'Obtain print-ready label files with correct dimensions and color specs',
+            'Arrange customs clearance label support for first shipment',
           ],
           generatedAt: new Date().toISOString(),
         };

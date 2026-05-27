@@ -17,9 +17,10 @@ export function generateTrademarkReport(input: TrademarkInput): Omit<ComplianceR
     result,
     nextSteps: [
       "Contact SinoTrade Compliance for a detailed compliance assessment",
-      "Prepare required documentation",
-      "Submit compliance application",
-      "Arrange customs clearance support",
+      "Conduct comprehensive CNIPA trademark search in relevant classes",
+      "File trademark application via direct CNIPA filing (recommended)",
+      "Monitor 3-month opposition period after publication",
+      "Register Customs IP recordal (海关备案) after certificate issuance",
     ],
   };
 }

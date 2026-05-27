@@ -46,11 +46,11 @@ export default function GaccCheckPage() {
           },
           result: freeData,
           nextSteps: [
-            'Submit completed application form with all supporting documents',
-            'Engage a certified Chinese label review agency for label compliance',
-            'Await GACC review and registration certificate (typically 3-6 months)',
-            'Arrange customs clearance documentation for first shipment',
-            'Schedule annual compliance review and renewal',
+            'Determine product category among 18 GACC-regulated categories',
+            'Register in CIFER system with CRA (Compliance Review Agent) assignment',
+            'Prepare all required documentation with professional Chinese translation',
+            'Complete label compliance review (GB 7718 / GB 28050) before printing',
+            'Submit GACC registration application and track 3-6 month review',
           ],
           generatedAt: new Date().toISOString(),
         };

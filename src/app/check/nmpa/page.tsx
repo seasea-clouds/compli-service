@@ -44,11 +44,11 @@ export default function NmpaCheckPage() {
           },
           result: freeData,
           nextSteps: [
-            'Submit completed application form',
-            'Engage compliance professional for review',
-            'Await regulatory approval',
-            'Arrange customs clearance',
-            'Schedule annual compliance review',
+            'Designate a Chinese responsible person (境内责任人) for NMPA filing',
+            'Complete safety assessment report per NMPA 2021 guidelines',
+            'Coordinate microbiological and stability testing at CNAS-accredited lab',
+            'File NMPA notification (备案) for ordinary cosmetics (2-4 months)',
+            'Set up post-market adverse event monitoring system',
           ],
           generatedAt: new Date().toISOString(),
         };

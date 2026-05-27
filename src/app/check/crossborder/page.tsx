@@ -44,11 +44,11 @@ export default function CrossborderCheckPage() {
           },
           result: freeData,
           nextSteps: [
-            'Submit completed application form',
-            'Engage compliance professional for review',
-            'Await regulatory approval',
-            'Arrange customs clearance',
-            'Schedule annual compliance review',
+            'Select target platform (Tmall Global, JD Worldwide, or Douyin Global)',
+            'Complete overseas merchant registration and platform compliance review',
+            'Set up bonded warehouse (1210) or direct shipping (9610) logistics',
+            'Configure three-document matching (三单对碰) for customs clearance',
+            'Launch store with compliant Chinese product listings and content',
           ],
           generatedAt: new Date().toISOString(),
         };

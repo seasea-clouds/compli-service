@@ -17,9 +17,10 @@ export function generateCccReport(input: CccInput): Omit<ComplianceReport, "id" 
     result,
     nextSteps: [
       "Contact SinoTrade Compliance for a detailed compliance assessment",
-      "Prepare required documentation",
-      "Submit compliance application",
-      "Arrange customs clearance support",
+      "Submit product samples to CNCA-accredited testing laboratory",
+      "Prepare factory inspection documentation and quality manuals",
+      "Complete CCC application with designated certification body",
+      "Arrange ongoing compliance and annual surveillance audits",
     ],
   };
 }

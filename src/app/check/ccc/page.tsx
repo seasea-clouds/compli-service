@@ -44,11 +44,11 @@ export default function CccCheckPage() {
           },
           result: freeData,
           nextSteps: [
-            'Submit completed application form',
-            'Engage compliance professional for review',
-            'Await regulatory approval',
-            'Arrange customs clearance',
-            'Schedule annual compliance review',
+            'Select a CNCA-accredited certification body for your product category',
+            'Submit product samples for type testing (Safety GB 4943.1, EMC GB 9254)',
+            'Prepare factory inspection documentation and quality management system',
+            'Receive CCC certificate and mark printing authorization (4-6 months)',
+            'Maintain annual factory surveillance inspections for certificate validity',
           ],
           generatedAt: new Date().toISOString(),
         };
