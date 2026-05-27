@@ -125,6 +125,8 @@ export default function GaccCheckPage() {
               <input
                 type="text"
                 className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
+                minLength={2}
+                required
                 placeholder="e.g., Cabernet Sauvignon Red Wine"
                 value={input.productName ?? ""}
                 onChange={(e) => setInput({ ...input, productName: e.target.value })}
@@ -138,7 +140,8 @@ export default function GaccCheckPage() {
                 <input
                   type="text"
                   className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
-                  placeholder="e.g., France"
+                  required
+                placeholder="e.g., France"
                   value={input.originCountry ?? ""}
                   onChange={(e) => setInput({ ...input, originCountry: e.target.value })}
                   required

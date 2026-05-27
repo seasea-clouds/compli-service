@@ -114,6 +114,7 @@ export default function CrossborderCheckPage() {
                 type="text"
                 value={input["productName"] || ""}
                 onChange={e => setVal("productName", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., Organic Green Tea Matcha"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 required
@@ -125,6 +126,7 @@ export default function CrossborderCheckPage() {
                 type="text"
                 value={input["targetPlatform"] || ""}
                 onChange={e => setVal("targetPlatform", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., Tmall Global, JD Worldwide, Douyin"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 required

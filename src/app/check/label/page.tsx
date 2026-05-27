@@ -114,6 +114,7 @@ export default function LabelCheckPage() {
                 type="text"
                 value={input["productName"] || ""}
                 onChange={e => setVal("productName", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., Organic Honey Almond Granola"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 required
@@ -125,6 +126,7 @@ export default function LabelCheckPage() {
                 type="text"
                 value={input["packagingType"] || ""}
                 onChange={e => setVal("packagingType", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., Box, Pouch, Bottle"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 required

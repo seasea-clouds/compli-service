@@ -114,6 +114,7 @@ export default function CccCheckPage() {
                 type="text"
                 value={input["productName"] || ""}
                 onChange={e => setVal("productName", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., Wireless Bluetooth Speaker"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 required
@@ -125,6 +126,7 @@ export default function CccCheckPage() {
                 type="text"
                 value={input["hsCode"] || ""}
                 onChange={e => setVal("hsCode", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., 8518.22 (optional)"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
               />
@@ -135,6 +137,7 @@ export default function CccCheckPage() {
                 type="text"
                 value={input["intendedUse"] || ""}
                 onChange={e => setVal("intendedUse", e.target.value)}
+                minLength={2}
                 placeholder={"e.g., Home use, industrial, medical"}
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                 required
