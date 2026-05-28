@@ -9,7 +9,7 @@ import {
   DecisionSummary, RegulationsSection, DocumentsSection,
   TimelineSection, CostSection, HorizonSection, GlossarySection,
 } from './sections/BaseSections';
-import { ModuleSections } from './sections/ModuleSections';
+import { ModuleSections, CommonSections } from './sections/ModuleSections';
 import { getPhase1Items, getGlossary } from './template';
 
 interface ReportShellProps {
@@ -124,6 +124,9 @@ export default function ReportShell(props: ReportShellProps) {
 
         {/* ═══ 模块专有区块 ═══ */}
         <ModuleSections module={module} result={result as BaseReportData} />
+
+        {/* ═══ 通用市场/渠道区块 ═══ */}
+        <CommonSections result={result as BaseReportData} />
 
         {/* ═══ 费用 + 前瞻 + 术语 ═══ */}
         <CostSection result={result as BaseReportData} />
