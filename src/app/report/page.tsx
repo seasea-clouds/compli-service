@@ -109,6 +109,11 @@ function ReportContent() {
         if (m) {
           const storedInput = localStorage.getItem('compli-report-input');
           const savedInput = storedInput ? JSON.parse(storedInput) : {};
+          // Provide safe defaults for fallback generation
+          if (!savedInput.category) savedInput.category = 'other';
+          if (!savedInput.productName) savedInput.productName = 'Your Product';
+          if (!savedInput.brandName) savedInput.brandName = savedInput.productName;
+          if (!savedInput.originCountry) savedInput.originCountry = 'China';
           const sr = m.fn(savedInput);
           const productName = savedInput.productName || savedInput.brandName || 'Your Product';
           const category = savedInput.category ? (CATEGORY_LABELS_MAP[prefix]?.[savedInput.category] || '') : '';
