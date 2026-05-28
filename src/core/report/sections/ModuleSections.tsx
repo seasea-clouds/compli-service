@@ -33,8 +33,6 @@ export function CommonSections({ result }: { result: any }) {
   return (
     <>
       {renderMarketIntel(result)}
-      {renderChannels(result)}
-      {renderDocumentGuide(result)}
       {renderPostApproval(result)}
     </>
   );
