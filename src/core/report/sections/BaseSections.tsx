@@ -101,13 +101,13 @@ export function TimelineSection({ result }: { result: BaseReportData }) {
     <div className="bg-white rounded-xl border border-gray-200 p-6">
       <SectionTitle icon={<span>🗓️</span>} label="Implementation Roadmap" />
       <div className="space-y-4">
-        {result.timelinePhases.map((phase, i) => (
+        {result.timelinePhases.map((phase: any, i: number) => (
           <div key={i} className="relative pl-6 border-l-2 border-gold/40">
             <div className="absolute left-[-5px] top-1 w-2 h-2 rounded-full bg-gold" />
             <p className="text-sm font-semibold text-primary-navy">{phase.phase}</p>
             <p className="text-xs text-gold font-medium mb-1">{phase.duration}</p>
             <ul className="space-y-1">
-              {phase.activities.map((act, j) => (
+              {(phase.activities || (phase.description ? [phase.description] : [])).map((act: string, j: number) => (
                 <li key={j} className="text-sm text-gray-600 flex items-start gap-1.5">
                   <span className="text-gray-400 mt-1">•</span>
                   {act}
