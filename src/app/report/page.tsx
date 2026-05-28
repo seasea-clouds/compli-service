@@ -108,12 +108,22 @@ function ReportContent() {
         const m = map[prefix];
         if (m) {
           const storedInput = localStorage.getItem('compli-report-input');
-          const savedInput = storedInput ? JSON.parse(storedInput) : {};
-          // Provide safe defaults for fallback generation
-          if (!savedInput.category) savedInput.category = 'other';
-          if (!savedInput.productName) savedInput.productName = 'Your Product';
-          if (!savedInput.brandName) savedInput.brandName = savedInput.productName;
-          if (!savedInput.originCountry) savedInput.originCountry = 'China';
+          let savedInput = storedInput ? JSON.parse(storedInput) : {};
+          // If stored input doesn't match current module, discard it
+          const knownPrefixes = ['GACC','CCC','LABEL','COSMETICS','CROSSBORDER','TRADEMARK'];
+          if (knownPrefixes.includes(prefix)) {
+            // Check if savedInput has valid category for this module
+            const moduleCatMap: Record<string, string> = {
+              GACC: 'other', CCC: 'electronics', LABEL: 'prepackaged',
+              COSMETICS: 'skincare', CROSSBORDER: 'food', TRADEMARK: 'food',
+            };
+            savedInput = {
+              category: moduleCatMap[prefix] || 'other',
+              productName: savedInput.productName || 'Your Product',
+              brandName: savedInput.brandName || savedInput.productName || 'Your Brand',
+              originCountry: savedInput.originCountry || 'China',
+            };
+          }
           const sr = m.fn(savedInput);
           const productName = savedInput.productName || savedInput.brandName || 'Your Product';
           const category = savedInput.category ? (CATEGORY_LABELS_MAP[prefix]?.[savedInput.category] || '') : '';
