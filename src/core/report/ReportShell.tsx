@@ -122,11 +122,11 @@ export default function ReportShell(props: ReportShellProps) {
         <DocumentsSection result={result as BaseReportData} />
         <TimelineSection result={result as BaseReportData} />
 
-        {/* ═══ 模块专有区块 ═══ */}
+        {/* ═══ 模块专有区块 + 通用区块（非GACC模块补充显示） ═══ */}
         <ModuleSections module={module} result={result as BaseReportData} />
-
-        {/* ═══ 通用市场/渠道区块 ═══ */}
-        <CommonSections result={result as BaseReportData} />
+        {module !== 'GACC Food Registration' && (
+          <CommonSections result={result as BaseReportData} />
+        )}
 
         {/* ═══ 费用 + 前瞻 + 术语 ═══ */}
         <CostSection result={result as BaseReportData} />
