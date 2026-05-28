@@ -31,6 +31,15 @@
 - [x] T-I18N-SYNC. 主站/用户站语言切换通过 localStorage 同步
 - [x] T-FAVICON. 用户站网站图标（favicon.ico + icon.png）
 - [x] T-BASEPATH. basePath: /compli-service 配置，静态资源路径一致
+- [x] T-REPORT-REFACTOR. 报告系统改为模块感知架构
+  - types.ts: 统一 BaseReportData + 模块扩展类型
+  - ReportShell: 模块感知报告外壳（共享区块 + 专有区块）
+  - sections/BaseSections: 决策/法规/时间线/费用/前瞻/术语
+  - sections/ModuleSections: 各模块专属区块（Gacc/Ccc/Label/Nmpa/CB/TM）
+  - 删除 5 个旧 preview_xxx/，统一预览页
+  - 修复 gacc/page.tsx duplicate required
+  - 修复 label/rules.ts CostItem 类型
+  - 构建 0 错误通过
 
 ---
 
