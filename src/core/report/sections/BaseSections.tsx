@@ -97,25 +97,101 @@ export function DocumentsSection({ result }: { result: BaseReportData }) {
 
 export function TimelineSection({ result }: { result: BaseReportData }) {
   if (!result.timelinePhases?.length) return null;
+  
+  const barWidths = [16, 20, 16, 12, 18, 12, 6];
+  const offsets = [2, 20, 42, 58, 72, 84, 92];
+  const colorGroups = ['bg-blue-400', 'bg-blue-400', 'bg-gold', 'bg-gold', 'bg-green-400', 'bg-green-400', 'bg-primary-navy'];
+  
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
       <SectionTitle icon={<span>🗓️</span>} label="Implementation Roadmap" />
-      <div className="space-y-4">
+      
+      {/* Phase list with badges */}
+      <div className="space-y-3 mb-6">
         {result.timelinePhases.map((phase: any, i: number) => (
-          <div key={i} className="relative pl-6 border-l-2 border-gold/40">
-            <div className="absolute left-[-5px] top-1 w-2 h-2 rounded-full bg-gold" />
-            <p className="text-sm font-semibold text-primary-navy">{phase.phase}</p>
-            <p className="text-xs text-gold font-medium mb-1">{phase.duration}</p>
-            <ul className="space-y-1">
-              {(phase.activities || (phase.description ? [phase.description] : [])).map((act: string, j: number) => (
-                <li key={j} className="text-sm text-gray-600 flex items-start gap-1.5">
-                  <span className="text-gray-400 mt-1">•</span>
-                  {act}
-                </li>
-              ))}
-            </ul>
+          <div key={i} className="flex items-start gap-3">
+            <div className={"w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 " + (i === result.timelinePhases.length - 1 ? 'bg-gold text-primary-navy' : 'bg-primary-navy text-white')}>
+              {i + 1}
+            </div>
+            <div className="flex-1 bg-white rounded-lg p-3 border border-gray-100">
+              <div className="flex justify-between items-start">
+                <h3 className="font-semibold text-sm text-gray-900">{phase.phase}</h3>
+                <span className="text-xs font-bold text-gold bg-gold/10 px-2 py-0.5 rounded">{phase.duration}</span>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">{(phase.activities || (phase.description ? [phase.description] : [])).join(', ')}</p>
+              <div className="flex gap-2 mt-1.5">
+                <span className={"text-[10px] px-1.5 py-0.5 rounded " + (phase.responsible === 'SinoTrade' ? 'bg-blue-100 text-blue-700' : phase.responsible === 'Both' ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700')}>
+                  {phase.responsible === 'SinoTrade' ? '🤝 We handle' : phase.responsible === 'Both' ? '🔄 Joint' : '📋 Client'}
+                </span>
+                {(phase.dependencies || []).map((dep: string, j: number) => (
+                  <span key={j} className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">← {dep}</span>
+                ))}
+              </div>
+            </div>
           </div>
         ))}
+      </div>
+
+      {/* Timeline Summary */}
+      {result.estimatedTimeline && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <p className="text-lg font-bold text-blue-800">Estimated Total: {result.estimatedTimeline}</p>
+          {result.detailedTimeline && <p className="text-sm text-gray-700 mt-1">{result.detailedTimeline}</p>}
+        </div>
+      )}
+
+      {/* Gantt-style timeline chart */}
+      <div className="mt-4 overflow-x-auto">
+        <table className="w-full text-xs border-collapse" style={{ minWidth: '650px' }}>
+          <thead>
+            <tr>
+              <th className="text-left p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider w-[30%]">Phase</th>
+              <th className="text-left p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider">Timeline</th>
+              <th className="text-center p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider w-[12%]">Duration</th>
+              <th className="text-center p-1.5 text-[9px] font-bold text-gray-500 uppercase tracking-wider w-[10%]">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {result.timelinePhases.map((phase: any, i: number) => {
+              const w = barWidths[i % barWidths.length];
+              const off = offsets[i % offsets.length];
+              const cg = colorGroups[i % colorGroups.length];
+              return (
+                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
+                  <td className="p-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <div className={"w-1.5 h-1.5 rounded-full " + cg}></div>
+                      <span className="text-[10px] font-medium text-gray-800">{phase.phase}</span>
+                    </div>
+                    <p className="text-[8px] text-gray-400 ml-3 truncate max-w-[180px]">{(phase.activities || (phase.description ? [phase.description] : []))[0] || ''}</p>
+                  </td>
+                  <td className="p-1.5 relative">
+                    <div className="h-6 bg-gray-100 rounded relative overflow-hidden w-full">
+                      <div className={"absolute top-1 h-4 rounded-sm " + cg + " opacity-80"} style={{ left: off + '%', width: w + '%', minWidth: '20px' }}>
+                        <div className="h-full w-full rounded-sm opacity-20 bg-white"></div>
+                      </div>
+                      <div className={"absolute top-0.5 w-5 h-5 border-2 bg-white rounded-sm rotate-45 flex items-center justify-center " + cg.replace('bg-', 'border-')} style={{ left: Math.min(off + w + 2, 94) + '%', marginLeft: '-10px' }}>
+                        <div className={"w-2 h-2 rounded-sm " + cg}></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-1.5 text-center">
+                    <span className="text-[9px] font-semibold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded">{phase.duration}</span>
+                  </td>
+                  <td className="p-1.5 text-center">
+                    <span className={"text-[8px] px-1 py-0.5 rounded font-medium " + (phase.responsible === 'SinoTrade' ? 'bg-blue-100 text-blue-700' : phase.responsible === 'Both' ? 'bg-purple-100 text-purple-700' : 'bg-amber-100 text-amber-700')}>
+                      {phase.responsible === 'SinoTrade' ? '🤝' : phase.responsible === 'Both' ? '🔄' : '📋'}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="mt-2 flex justify-end gap-4 text-[9px] text-gray-400">
+          <span className="flex items-center gap-1">◈ Milestone</span>
+          <span className="flex items-center gap-1">▬ Phase duration</span>
+        </div>
       </div>
     </div>
   );
