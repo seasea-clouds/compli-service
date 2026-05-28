@@ -84,9 +84,22 @@ export function checkCrossborder(input: any): any {
       { problem: "Product not on positive list", cause: "Specific HS code restricted", solution: "Verify HS code against latest positive list" },
       { problem: "Brand authorization chain incomplete", cause: "Platform requires full chain", solution: "Establish complete authorization before applying" },
     ],
+    countryNotes: [
+      "Translation service recommended for product listings and label artwork.",
+      "Some categories face stricter inspection at customs (e.g., electronics).",
+      "Bonded warehouse inventory must reconcile monthly with platform data.",
+      "Consumer protection law requires 7-day no-questions-asked returns.",
+      "Intellectual property filing (trademark registration) recommended before listing.",
+    ],
     postApprovalObligations: [
       { item: "Platform Compliance Review", frequency: "Quarterly", description: "Plaform audits product listings" },
       { item: "Bonded Warehouse Inventory", frequency: "Monthly", description: "Verify inventory accuracy" },
+    ],
+    postApproval: [
+      { item: "Platform Compliance Review", freq: "Quarterly", desc: "Platform audits product listings for compliance" },
+      { item: "Bonded Warehouse Inventory", freq: "Monthly", desc: "Reconcile inventory with platform records" },
+      { item: "Label Renewal Check", freq: "Annually", desc: "Verify labels still meet current GB standards" },
+      { item: "Positive List Review", freq: "Annually", desc: "Check if category remains on CBEC positive list" },
     ],
     horizonScan: [
       { topic: "Positive List Expansion", impact: "high", timeframe: "2025", description: "More food categories expected to be added.", actionRequired: true },

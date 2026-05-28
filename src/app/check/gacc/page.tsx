@@ -130,7 +130,6 @@ export default function GaccCheckPage() {
                 placeholder="e.g., Cabernet Sauvignon Red Wine"
                 value={input.productName ?? ""}
                 onChange={(e) => setInput({ ...input, productName: e.target.value })}
-                required
               />
             </div>
 
@@ -144,7 +143,6 @@ export default function GaccCheckPage() {
                 placeholder="e.g., France"
                   value={input.originCountry ?? ""}
                   onChange={(e) => setInput({ ...input, originCountry: e.target.value })}
-                  required
                 />
               </div>
               <div>

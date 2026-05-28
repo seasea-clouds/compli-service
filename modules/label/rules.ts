@@ -20,7 +20,144 @@ export const CATEGORY_LABELS: Record<string, string> = {
   "seasoning": "Seasonings / Condiments", "other": "Other Food Products",
 };
 
-export function checkLabel(input: any): any {
+/* ------------------------------------------------------------------ */
+/*  LabelResult sub-types                                              */
+/* ------------------------------------------------------------------ */
+
+/** Risk dimension entry */
+export interface RiskDimension {
+  dimension: string;
+  score: number;
+  color: string;
+  note: string;
+}
+
+/** Channel / sales suitability entry */
+export interface LabelChannel {
+  name: string;
+  suitability: string;
+  description: string;
+  timeline: string;
+  costRange: string;
+  [key: string]: unknown;
+}
+
+/** Tariff rate summary */
+export interface TariffInfo {
+  mfnRate: string | null;
+  vatRate: string | null;
+  ftaRate: string | null;
+  [key: string]: unknown;
+}
+
+/** Regulation reference */
+export interface Regulation {
+  name: string;
+  number: string;
+  authority: string;
+  relevance: string;
+  description: string;
+  [key: string]: unknown;
+}
+
+/** Risk matrix cell */
+export interface RiskMatrixEntry {
+  dimension: string;
+  rating: string;
+  explanation: string;
+}
+
+/** Timeline phase */
+export interface TimelinePhase {
+  phase: string;
+  duration: string;
+  description: string;
+  responsible: string;
+  [key: string]: unknown;
+}
+
+/** Cost breakdown line */
+export interface CostItem {
+  item: string;
+  estimatedRange?: string;
+  notes?: string;
+}
+
+/** Common label-rejection pattern */
+export interface Rejection {
+  problem: string;
+  cause: string;
+  solution: string;
+}
+
+/** Post-approval recurring obligation */
+export interface PostApprovalItem {
+  item: string;
+  freq: string;
+  desc: string;
+}
+
+/** Horizon-scan / regulatory-watch entry */
+export interface HorizonScanItem {
+  topic: string;
+  impact: string;
+  timeframe: string;
+  description: string;
+  actionRequired: boolean;
+}
+
+/* ------------------------------------------------------------------ */
+/*  LabelResult — full result shape                                    */
+/* ------------------------------------------------------------------ */
+
+export interface LabelResult {
+  // --- existing core fields ---
+  requiresRegistration: boolean;
+  riskCategory: string;
+  isHighRisk: boolean;
+  estimatedTimeline: string;
+  executiveSummary: string;
+  summary: string;
+  classification: Record<string, unknown>;
+  documentGuide: Record<string, unknown>[];
+  requiredDocuments: string[];
+  testRequirements: string[];
+  testCostRange: string;
+  labGuide: string;
+  labTests: string[];
+  viability: string;
+  detailedTimeline: string;
+  labelGuide: Record<string, unknown>;
+  countryProfile: Record<string, unknown>;
+  marketIntel: Record<string, unknown>;
+  competitiveAnalysis: string;
+  postApprovalObligations: Record<string, unknown>[];
+
+  // --- requested / enriched fields ---
+  riskScore: number;
+  riskDimensions: RiskDimension[];
+  oneLineDecision: string;
+  channels: LabelChannel[];
+  tariffInfo: TariffInfo;
+  regulations: Regulation[];
+  riskMatrix: RiskMatrixEntry[];
+  timelinePhases: TimelinePhase[];
+  costBreakdown: CostItem[];
+  totalCostRange: string;
+  countryNotes: string[];
+  commonRejections: Rejection[];
+  postApproval: PostApprovalItem[];
+  horizonScan: HorizonScanItem[];
+
+  // Loose safety valve for any legacy / extra keys
+  [key: string]: unknown;
+}
+
+/* ------------------------------------------------------------------ */
+/*  checkLabel — main entry point                                      */
+/* ------------------------------------------------------------------ */
+
+export function checkLabel(input: LabelInput): LabelResult {
   const isHighRisk = false;
   const riskScore = 4.5;
   return {
@@ -37,7 +174,7 @@ export function checkLabel(input: any): any {
       { dimension: "Cost", score: 2, color: "🟢", note: "$500-2,000" },
     ],
     channels: [
-      { channel: "Professional Label Review", suitability: "high", gaccRequired: false, description: "Full label compliance audit + design", advantages: ["Guaranteed customs approval"], disadvantages: ["Professional fee applies"], timeline: "2-4 weeks", costRange: "$500-2,000" },
+      { name: "Professional Label Review", channel: "Professional Label Review", suitability: "high", gaccRequired: false, description: "Full label compliance audit + design", advantages: ["Guaranteed customs approval"], disadvantages: ["Professional fee applies"], timeline: "2-4 weeks", costRange: "$500-2,000" },
     ],
     tariffInfo: { mfnRate: "5-20%", vatRate: "9-13%", consumptionTax: "N/A", ftaRate: null, totalTaxBurden: "Varies by product" },
     regulations: [
@@ -95,6 +232,12 @@ export function checkLabel(input: any): any {
       { item: "Nutrition Testing", estimatedRange: "$200-600", notes: "CNAS lab — mandatory NRV% data" },
       { item: "Translation Certification", estimatedRange: "$100-300", notes: "English → Chinese" },
     ],
+    countryNotes: [
+      "China requires all imported food labels in Chinese — foreign text is supplementary only",
+      "Chinese responsible party (agent/importer) must be listed on the label",
+      "Origin country marked per GB 7718 — vague descriptions rejected at customs",
+      "Bilingual labels strongly recommended for products sold in duty-free or premium retail",
+    ],
     countryProfile: { region: "", ftaWithChina: false, ftaDetails: "", specialRestrictions: [], bilateralMeatAccess: false, bilateralAquaticAccess: false, dairyApproved: false, gaccDifficulty: "moderate", languageNote: "All text must be in Chinese. English may be supplementary.", commonIssues: [], importVolumeNote: "" },
     marketIntel: { chinaImportTrend: "All imported prepackaged food requires Chinese labels. Market size: mandatory for every food importer.", keyDrivers: ["Regulatory requirement", "Market access"], barriers: ["Complex standards", "Professional review needed"], consumerPerception: "Chinese labels build consumer trust.", topOrigins: [], recommendation: "Engage professional label compliance service." },
     competitiveAnalysis: "Label compliance is regulatory — not competitive. All importers face the same requirements.",
@@ -106,8 +249,15 @@ export function checkLabel(input: any): any {
       { item: "Label Update Monitoring", frequency: "Ongoing", description: "Track GB 7718/28050 revisions" },
       { item: "Formula Change Re-label", frequency: "When applicable", description: "New formula = new label compliance check" },
     ],
+    postApproval: [
+      { item: "Label Update Monitoring", freq: "Ongoing", desc: "Track GB 7718/28050 revisions and re-print when standards change" },
+      { item: "Formula Change Re-label", freq: "As needed", desc: "Any ingredient or formulation change triggers a new label compliance review" },
+      { item: "Annual Compliance Audit", freq: "Yearly", desc: "Spot check labels against latest regulatory amendments" },
+    ],
     horizonScan: [
       { topic: "GB 7718 Major Revision", impact: "high", timeframe: "2025-2026", description: "New allergen + digital labeling rules expected.", actionRequired: true },
+      { topic: "Digital / QR Labeling", impact: "medium", timeframe: "2026-2028", description: "China exploring QR-code-based label disclosure for traceability.", actionRequired: false },
+      { topic: "Nutrition Front-of-Pack (FOP)", impact: "medium", timeframe: "2027+", description: "Possible mandatory FOP nutrition scoring system (similar to Nutri-Score).", actionRequired: false },
     ],
   };
 }
