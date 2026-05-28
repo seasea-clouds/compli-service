@@ -822,7 +822,7 @@ interface ChannelStrategy {
 }
 
 function getChannels(input: GaccInput): ChannelStrategy[] {
-  const cat = CATEGORY_PROFILES[input.category];
+  const cat = CATEGORY_PROFILES[input.category] || CATEGORY_PROFILES['other'];
   return [
     {
       channel: "General Trade (一般贸易)",

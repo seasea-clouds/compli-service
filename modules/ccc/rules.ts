@@ -28,7 +28,7 @@ const PROFILES: Record<string, any> = {"electronics": {"label": "Consumer Electr
 const COUNTRIES: Record<string, any> = {"USA": {"diff": "moderate", "fta": false, "notes": "CB reports accepted. Section 301 tariffs may apply."}, "Germany": {"diff": "easy", "fta": false, "notes": "CB reports widely accepted. Strong CE alignment."}, "Japan": {"diff": "easy", "fta": true, "notes": "PSE certification often recognized for testing."}, "South Korea": {"diff": "easy", "fta": true, "notes": "KC certification testing may be accepted."}};
 
 export function checkCcc(input: any): any {
-  const cat = PROFILES[input.category];
+  const cat = PROFILES[input.category] || PROFILES['electronics'];
   if (!cat) return {};
   const requiresReg = cat.risk === "🔴 High";
   const isHighRisk = requiresReg;

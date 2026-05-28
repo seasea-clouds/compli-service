@@ -28,7 +28,7 @@ const PROFILES: Record<string, any> = {"skincare": {"label": "Skincare (HS 33.04
 const COUNTRIES: Record<string, any> = {"France": {"diff": "easy", "notes": "Strong reputation in China. French brands well-received."}, "Japan": {"diff": "easy", "notes": "Japanese cosmetics highly trusted by Chinese consumers."}, "South Korea": {"diff": "easy", "notes": "K-beauty popular. Fastest NMPA processing history."}, "USA": {"diff": "moderate", "notes": "US brand premium positioning. Standard processing."}};
 
 export function checkCosmetics(input: any): any {
-  const cat = PROFILES[input.category];
+  const cat = PROFILES[input.category] || PROFILES['skincare'];
   if (!cat) return {};
   const requiresReg = cat.special === true;
   const isHighRisk = requiresReg;
