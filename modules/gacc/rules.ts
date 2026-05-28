@@ -869,7 +869,7 @@ interface MarketIntel {
 }
 
 function getMarketIntel(input: GaccInput): MarketIntel {
-  const cat = CATEGORY_PROFILES[input.category];
+  const cat = CATEGORY_PROFILES[input.category] || CATEGORY_PROFILES['other'];
   return {
     chinaImportTrend: cat.marketTrend === 'growing' 
       ? "Growing demand — China's imports of this category have been increasing 8-15% year on year. Premium imported products particularly sought after by middle-class consumers."
@@ -895,7 +895,7 @@ export interface CostBreakdown {
 }
 
 function getCostBreakdown(input: GaccInput): CostBreakdown[] {
-  const cat = CATEGORY_PROFILES[input.category];
+  const cat = CATEGORY_PROFILES[input.category] || CATEGORY_PROFILES['other'];
   return [
     { item: "GACC Registration Fee", estimatedRange: "$200-800", notes: "CIFER system filing with professional agent handling." },
     { item: "Laboratory Testing (CNAS)", estimatedRange: cat.testCostRange, notes: `Required tests: ${cat.labTests.slice(0, 4).join(", ")}${cat.labTests.length > 4 ? ` (+${cat.labTests.length - 4} more)` : ""}. Costs vary by test scope.` },
@@ -907,7 +907,7 @@ function getCostBreakdown(input: GaccInput): CostBreakdown[] {
 }
 
 function getTotalCostRange(input: GaccInput): string {
-  const cat = CATEGORY_PROFILES[input.category];
+  const cat = CATEGORY_PROFILES[input.category] || CATEGORY_PROFILES['other'];
   if (cat.isHighRisk) return "$8,500-24,500";
   return "$3,500-9,500";
 }
@@ -923,7 +923,7 @@ export interface TimelinePhase {
 }
 
 function getTimeline(input: GaccInput): TimelinePhase[] {
-  const cat = CATEGORY_PROFILES[input.category];
+  const cat = CATEGORY_PROFILES[input.category] || CATEGORY_PROFILES['other'];
   const timeline1 = cat.isHighRisk ? cat.gaccTimelineHigh : cat.gaccTimelineLow;
   
   return [
@@ -1170,7 +1170,7 @@ export interface GaccResult {
 }
 
 export function checkGacc(input: GaccInput): GaccResult {
-  const cat = CATEGORY_PROFILES[input.category];
+  const cat = CATEGORY_PROFILES[input.category] || CATEGORY_PROFILES['other'];
   const country = COUNTRY_DB[input.originCountry] || COUNTRY_DB.DEFAULT;
   const isHighRisk = cat.isHighRisk;
   
