@@ -30,7 +30,9 @@ export function checkCrossborder(input: any): any {
   return {
     requiresRegistration: true, riskCategory: "low", isHighRisk: false, riskScore,
     estimatedTimeline: "4-10 weeks", totalCostRange: "$10,000-40,000",
-    executiveSummary: `CBEC assessment for ${input.productName}. On positive list. Fastest route to Chinese market.`,
+    verdictLabel: 'Low Risk',
+    riskPathway: 'On positive list — fastest route to Chinese market.',
+    executiveSummary: `CBEC assessment for ${input.productName} — eligible for cross-border e-commerce channel.`,
     oneLineDecision: "✅ CBEC eligible. No GACC registration needed.",
     summary: "Cross-border e-commerce is the fastest channel for entering China.",
     riskDimensions: [

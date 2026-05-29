@@ -43,7 +43,9 @@ export function checkCosmetics(input: any): any {
     riskCategory: requiresReg ? "high" : "low", isHighRisk, riskScore,
     estimatedTimeline: cat.time || "Contact us",
     totalCostRange: requiresReg ? "$5,000-25,000" : "$800-5,000",
-    executiveSummary: `Assessment for ${input.productName}. Risk: ${riskScore}/10. ${requiresReg ? "🔴 Action required" : "🟢 Standard pathway"}.`,
+    verdictLabel: requiresReg ? 'High Risk' : 'Low Risk',
+    riskPathway: requiresReg ? 'NMPA filing required — plan 4-6 months.' : 'Standard pathway — proceed with documentation.',
+    executiveSummary: `NMPA cosmetics filing assessment for ${input.productName}.`,
     oneLineDecision: requiresReg ? "🔴 Compliance action required" : "🟢 Proceed with standard process",
     riskDimensions: [
       { dimension: "Product Category", score: requiresReg ? 8 : 3, color: requiresReg ? "🔴" : "🟢", note: cat.label },

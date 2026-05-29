@@ -15,7 +15,9 @@ const SAMPLE_RESULT: GaccResult = {
     { dimension: "Testing Requirements", score: 4, color: "🟢", note: "5 tests required. Cost range: $600-2,000" },
     { dimension: "Timeline to Market", score: 3, color: "🟢", note: "Estimated: 6-10 weeks" },
   ],
-  executiveSummary: "This comprehensive assessment evaluates Stone Ground Dark Chocolate (Confectionery / Chocolate (HS 17.04, 18.06)) against all applicable Chinese import regulations. Overall risk score: 3.8/10. 🟢 Product is standard risk. Standard GACC registration pathway applies.",
+  verdictLabel: 'Standard Risk',
+  riskPathway: 'Standard risk — Standard GACC registration pathway applies.',
+  executiveSummary: "This comprehensive assessment evaluates Stone Ground Dark Chocolate (Confectionery / Chocolate (HS 17.04, 18.06)) against all applicable Chinese import regulations.",
   oneLineDecision: "🟢 Proceed: GACC registration required. Standard pathway. Estimated 2-4 months.",
   viability: "Viable with compliance investment",
   marketIntel: {

@@ -140,6 +140,8 @@ export interface LabelResult {
   // --- requested / enriched fields ---
   riskScore: number;
   riskDimensions: RiskDimension[];
+  verdictLabel: string;
+  riskPathway: string;
   oneLineDecision: string;
   channels: LabelChannel[];
   tariffInfo: TariffInfo;
@@ -167,7 +169,9 @@ export function checkLabel(input: LabelInput): LabelResult {
   return {
     requiresRegistration: true, riskCategory: "medium", isHighRisk, riskScore,
     estimatedTimeline: "2-4 weeks", totalCostRange: "$500-2,000",
-    executiveSummary: `Label compliance assessment for ${input.productName}. All imported food requires Chinese label. Risk: ${riskScore}/10.`,
+    verdictLabel: 'Medium Risk',
+    riskPathway: 'Chinese label compliance required per GB 7718 and GB 28050.',
+    executiveSummary: `Label compliance assessment for ${input.productName}.`,
     oneLineDecision: "⚠️ Chinese label compliance required. Timeline: 2-4 weeks.",
     summary: "All prepackaged food imports require Chinese labels per GB 7718 and GB 28050.",
     riskDimensions: [

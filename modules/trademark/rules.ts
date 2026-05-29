@@ -32,7 +32,9 @@ export function checkTrademark(input: any): any {
   return {
     needsRegistration: needsReg, requiresRegistration: needsReg, riskCategory: isHighRisk ? "high" : "low", isHighRisk, riskScore,
     estimatedTimeline: "8-14 months", totalCostRange: "$600-2,000/class",
-    executiveSummary: `Trademark assessment for "${input.brandName}". Risk: ${riskScore}/10. ${needsReg ? "🔴 NOT registered — urgent filing needed." : "🟢 Registered — maintain."}`,
+    verdictLabel: needsReg ? 'High Risk' : 'Low Risk',
+    riskPathway: needsReg ? 'Not registered — urgent filing needed before market entry.' : 'Registered — maintain and monitor for renewal.',
+    executiveSummary: `Trademark assessment for "${input.brandName}".`,
     oneLineDecision: needsReg ? "🔴 Urgent: file trademark before market entry" : "🟢 Registered. Monitor renewal.",
     summary: needsReg ? "Brand NOT registered in China. High risk of bad-faith squatting." : "Brand registered. Ongoing monitoring recommended.",
     riskDimensions: [

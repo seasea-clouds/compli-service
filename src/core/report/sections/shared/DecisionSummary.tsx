@@ -12,6 +12,12 @@ export default function DecisionSummary({ result }: { result: any }) {
         <p className="text-lg font-semibold text-primary-navy">{result.oneLineDecision}</p>
       </div>
       <p className="text-sm text-gray-700 leading-relaxed">{result.executiveSummary}</p>
+      {result.riskPathway && (
+        <div className="mt-3 flex items-start gap-2 text-sm">
+          <span className={`mt-0.5 ${result.isHighRisk ? 'text-red-500' : 'text-green-500'}`}>{result.isHighRisk ? '🔴' : '🟢'}</span>
+          <span className={result.isHighRisk ? 'text-red-700' : 'text-green-700'}>{result.riskPathway}</span>
+        </div>
+      )}
       {result.viability && <div className="mt-4 flex items-center gap-2 text-sm text-gray-600"><span>📊 Viability:</span><span className="font-semibold text-primary-navy">{result.viability}</span></div>}
     </div>
   )

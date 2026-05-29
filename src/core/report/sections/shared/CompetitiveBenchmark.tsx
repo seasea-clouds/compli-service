@@ -24,7 +24,7 @@ export default function CompetitiveBenchmark({ result }: { result: any }) {
               const shareNum = parseFloat(o.share) || 0
               return (
                 <div key={i} className="flex items-center gap-3">
-                  <span className="text-xs font-medium text-gray-700 w-24 truncate">{o.country}</span>
+                  <span className="text-xs font-medium text-gray-700 break-words max-w-[140px]">{o.country}</span>
                   <div className="flex-1 bg-gray-100 rounded-full h-2.5">
                     <div className="h-2.5 rounded-full bg-gold/70" style={{ width: Math.min(shareNum * 2, 100) + '%' }}></div>
                   </div>

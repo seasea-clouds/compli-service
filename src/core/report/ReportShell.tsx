@@ -205,6 +205,7 @@ export default function ReportShell(props: ReportShellProps) {
                 (result.riskScore || 0) >= 7 ? 'text-red-400' : (result.riskScore || 0) >= 4 ? 'text-amber-400' : 'text-green-400'
               }`}>{(result.riskScore || 0) >= 7 ? '🔴' : (result.riskScore || 0) >= 4 ? '🟡' : '🟢'}</p>
               <p className="text-[10px] text-white/50 uppercase tracking-wider">Verdict</p>
+              <p className="text-[9px] text-white/40 mt-1 leading-tight">{result.verdictLabel || '—'}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10 group hover:bg-white/15 transition-all">
               <p className="text-lg font-bold text-white mb-1">{result.estimatedTimeline || '—'}</p>
@@ -224,7 +225,7 @@ export default function ReportShell(props: ReportShellProps) {
                 return (
                   <div key={i} className="bg-white/5 rounded-lg p-2 border border-white/10">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-[9px] text-white/60 truncate">{d.dimension}</span>
+                      <span className="text-[9px] text-white/60 break-words max-w-[80%]">{d.dimension}</span>
                       <span className={`text-[10px] font-bold ${
                         d.score >= 7 ? 'text-red-400' : d.score >= 4 ? 'text-amber-400' : 'text-green-400'
                       }`}>{d.score}/10</span>
@@ -234,7 +235,7 @@ export default function ReportShell(props: ReportShellProps) {
                         d.score >= 7 ? 'bg-red-400' : d.score >= 4 ? 'bg-amber-400' : 'bg-green-400'
                       }`} style={{width: pct + '%'}}></div>
                     </div>
-                    <p className="text-[8px] text-white/40 mt-1 truncate">{d.note}</p>
+                    <p className="text-[8px] text-white/40 mt-1 line-clamp-2">{d.note}</p>
                   </div>
                 );
               })}
