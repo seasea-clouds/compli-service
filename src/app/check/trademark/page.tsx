@@ -56,7 +56,7 @@ export default function TrademarkCheckPage() {
       }
 
       // ⚡ 调试模式：跳过付款，直接跳报告
-      window.location.href = `/${locale || 'en'}/compli-service/report/?id=${reportId}`;
+      window.location.href = '../report/?id=' + reportId;
     } catch (err: any) {
       setError(String(err));
       setLoading(false);

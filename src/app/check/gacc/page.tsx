@@ -58,7 +58,8 @@ export default function GaccCheckPage() {
       }
 
       // ⚡ 调试模式：跳过付款，直接跳报告
-      window.location.href = `/${locale || 'en'}/compli-service/report/?id=${reportId}`;
+      // 相对路径：兼容 CF Pages 直访 (/report/) 和主站代理 (/{locale}/compli-service/report/)
+window.location.href = '../report/?id=' + reportId;
     } catch (err) {
       setError(String(err));
       setLoading(false);
