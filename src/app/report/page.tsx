@@ -128,7 +128,7 @@ function ReportContent() {
           const productName = savedInput.productName || savedInput.brandName || 'Your Product';
           const category = savedInput.category ? (CATEGORY_LABELS_MAP[prefix]?.[savedInput.category] || '') : '';
           setReport({id,module:m.label,
-            productInfo:{name:productName,category,originCountry:''},
+            productInfo:{name:productName,category,originCountry: savedInput.originCountry || ''},
             result:sr,nextSteps:m.nextSteps,
             generatedAt:new Date().toISOString()});
           setLoading(false);
