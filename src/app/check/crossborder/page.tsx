@@ -109,6 +109,18 @@ export default function CrossborderCheckPage() {
               />
             </div>
             <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Country of Origin</label>
+              <input
+                type="text"
+                value={input["originCountry"] || ""}
+                onChange={e => setVal("originCountry", e.target.value)}
+                minLength={2}
+                placeholder={"e.g., Japan, South Korea"}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                required
+              />
+            </div>
+            <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1.5">Target Platform</label>
               <input
                 type="text"

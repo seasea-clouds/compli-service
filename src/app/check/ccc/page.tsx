@@ -131,6 +131,18 @@ export default function CccCheckPage() {
                 required
               />
             </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Country of Origin</label>
+              <input
+                type="text"
+                value={input["originCountry"] || ""}
+                onChange={e => setVal("originCountry", e.target.value)}
+                minLength={2}
+                placeholder={"e.g., China, Vietnam, Germany"}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                required
+              />
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
