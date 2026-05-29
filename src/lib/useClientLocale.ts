@@ -18,14 +18,14 @@ function detectLocaleFromPath(): Locale | null {
 
 export function getStoredLocale(): Locale {
   if (typeof window === 'undefined') return defaultLocale;
-  // 1) 优先 localStorage（用户主动切换的语言）
+  // 1) 优先 URL 路径推断（当前页面的语言最准确）
+  const fromPath = detectLocaleFromPath();
+  if (fromPath) return fromPath;
+  // 2) 后备：localStorage（用户历史偏好）
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored && locales.includes(stored as Locale)) {
     return stored as Locale;
   }
-  // 2) 后备：从 URL 路径推断
-  const fromPath = detectLocaleFromPath();
-  if (fromPath) return fromPath;
   return defaultLocale;
 }
 
@@ -37,7 +37,13 @@ export default function useClientLocale(): Locale {
   const [locale, setLocale] = useState<Locale>(defaultLocale);
 
   useEffect(() => {
-    setLocale(getStoredLocale());
+    const detected = getStoredLocale();
+    setLocale(detected);
+    // 同步到 localStorage，确保 LanguageSwitcher 下次优先使用 URL 语言
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored !== detected) {
+      localStorage.setItem(STORAGE_KEY, detected);
+    }
   }, []);
 
   return locale;
