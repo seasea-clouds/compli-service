@@ -57,32 +57,8 @@ export default function GaccCheckPage() {
         try { try{localStorage.setItem('compli-report-input',JSON.stringify(input||{}))}catch(e){};localStorage.setItem('compli-report-data', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId); } catch(e) { console.error('GACC localStorage failed:', e); }
       }
 
-      const res = await fetch(`${API_BASE}/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          reportId,
-          email: email || undefined,
-          locale,
-          productId: undefined, // uses default Single Report product
-          metadata: {
-            module: "gacc",
-            productName: input.productName,
-            category: input.category,
-            originCountry: input.originCountry,
-            hsCode: input.hsCode,
-          },
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error ?? "Payment failed");
-      }
-
-      const data = await res.json();
-      // Redirect to Creem checkout
-      window.location.href = data.checkoutUrl;
+      // ⚡ 调试模式：跳过付款，直接跳报告
+      window.location.href = `/${locale || 'en'}/compli-service/report/?id=${reportId}`;
     } catch (err) {
       setError(String(err));
       setLoading(false);

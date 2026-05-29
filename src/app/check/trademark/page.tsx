@@ -55,20 +55,8 @@ export default function TrademarkCheckPage() {
         try { try{localStorage.setItem('compli-report-input',JSON.stringify(input||{}))}catch(e){};localStorage.setItem('compli-report-data', JSON.stringify(reportData)); console.log('Stored report to localStorage, id:', reportId, 'size:', JSON.stringify(reportData).length); } catch(e) { console.error('localStorage failed:', e); }
       }
 
-      const res = await fetch(`${API_BASE}/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          reportId,
-          email: email || undefined,
-          locale,
-          productId: undefined,
-          metadata: { ...input, module: "trademark" },
-        }),
-      });
-      if (!res.ok) throw new Error((await res.json()).error ?? 'Payment failed');
-      const data = await res.json();
-      window.location.href = data.checkoutUrl;
+      // ⚡ 调试模式：跳过付款，直接跳报告
+      window.location.href = `/${locale || 'en'}/compli-service/report/?id=${reportId}`;
     } catch (err: any) {
       setError(String(err));
       setLoading(false);
