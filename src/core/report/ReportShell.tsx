@@ -20,6 +20,7 @@ import CustomsClearance from './sections/shared/CustomsClearance';
 import Channels from './sections/shared/Channels';
 import RiskMatrix from './sections/shared/RiskMatrix';
 import MarketIntel from './sections/shared/MarketIntel';
+import CompetitiveBenchmark from './sections/shared/CompetitiveBenchmark';
 import IpBrandRisk from './sections/shared/IpBrandRisk';
 import PostApproval from './sections/shared/PostApproval';
 import EmergencyResponse from './sections/shared/EmergencyResponse';
@@ -27,6 +28,7 @@ import CostEstimation from './sections/shared/CostEstimation';
 import HorizonScan from './sections/shared/HorizonScan';
 import Glossary from './sections/shared/Glossary';
 import NextSteps from './sections/shared/NextSteps';
+import QuickNav from '@/components/QuickNav';
 
 // ─── GACC 专有区块 ───────────────────────────────────────────────
 import TariffTax from './sections/gacc/TariffTax';
@@ -268,6 +270,7 @@ export default function ReportShell(props: ReportShellProps) {
 
         {/* ── Shared: 深度层 ── */}
         {hasContent(MarketIntel, result) && <Section><MarketIntel result={result} /></Section>}
+        {hasContent(CompetitiveBenchmark, result) && <Section gold><CompetitiveBenchmark result={result} /></Section>}
         {hasContent(IpBrandRisk, result) && <Section><IpBrandRisk result={result} /></Section>}
         {hasContent(PostApproval, result) && <Section><PostApproval result={result} /></Section>}
         {hasContent(EmergencyResponse, result) && <Section><EmergencyResponse result={result} /></Section>}
@@ -276,6 +279,9 @@ export default function ReportShell(props: ReportShellProps) {
         <Section><Glossary glossary={glossary} /></Section>
         <Section><NextSteps steps={nextSteps || []} /></Section>
       </div>
+
+      {/* 快速导航浮标 — 仅在窗口滚过 header 后显示 */}
+      <QuickNav />
 
       {/* ═══ CTA ═══ */}
       <div className="bg-gradient-to-r from-primary-navy to-primary-navy/90 rounded-xl m-8 p-8 text-center">
