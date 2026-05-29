@@ -145,6 +145,70 @@ export default function TrademarkCheckPage() {
               </select>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Has Chinese Brand Name?</label>
+                <select
+                  value={input["hasChineseName"] || ""}
+                  onChange={e => setVal("hasChineseName", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No — need one</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Registered in Other Countries?</label>
+                <select
+                  value={input["hasForeignRegistration"] || ""}
+                  onChange={e => setVal("hasForeignRegistration", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Primary Nice Class</label>
+                <input
+                  type="text"
+                  value={input["tmClassDescription"] || ""}
+                  onChange={e => setVal("tmClassDescription", e.target.value)}
+                  placeholder={"e.g., Class 29 (meat/fish), Class 30 (coffee)"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Brand in Market (years)</label>
+                <input
+                  type="text"
+                  value={input["brandYearsInMarket"] || ""}
+                  onChange={e => setVal("brandYearsInMarket", e.target.value)}
+                  placeholder={"e.g., 10, New brand"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Need Customs IP Recordal?</label>
+              <select
+                value={input["needsCustomsRecordal"] || ""}
+                onChange={e => setVal("needsCustomsRecordal", e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+              >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="not_sure">Not sure</option>
+              </select>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-bold py-3 px-6 rounded-lg transition-all text-lg"

@@ -145,6 +145,70 @@ export default function NmpaCheckPage() {
               </select>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Contains Alcohol?</label>
+                <select
+                  value={input["hasAlcohol"] || ""}
+                  onChange={e => setVal("hasAlcohol", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Sunscreen / UV Claim?</label>
+                <select
+                  value={input["hasSunscreenClaim"] || ""}
+                  onChange={e => setVal("hasSunscreenClaim", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="true">Yes — SPECIAL cosmetics</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Primary Product Function</label>
+                <input
+                  type="text"
+                  value={input["productFunction"] || ""}
+                  onChange={e => setVal("productFunction", e.target.value)}
+                  placeholder={"e.g., Moisturizer, Anti-aging, Cleanse"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Net Volume / Weight</label>
+                <input
+                  type="text"
+                  value={input["packagingVolume"] || ""}
+                  onChange={e => setVal("packagingVolume", e.target.value)}
+                  placeholder={"e.g., 50ml, 200g"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Have GMP / ISO 22716 Certificate?</label>
+              <select
+                value={input["hasGMPCert"] || ""}
+                onChange={e => setVal("hasGMPCert", e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+              >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="in_progress">In Progress</option>
+              </select>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-bold py-3 px-6 rounded-lg transition-all text-lg"

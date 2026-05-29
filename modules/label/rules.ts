@@ -10,6 +10,10 @@ export interface LabelInput {
   productName: string;
   packagingType: string;
   originCountry?: string;
+  hasNutritionData?: string;
+  allergenInfo?: string;
+  hasLabelArtwork?: string;
+  ingredientsDeclaration?: string;
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -259,5 +263,40 @@ export function checkLabel(input: LabelInput): LabelResult {
       { topic: "Digital / QR Labeling", impact: "medium", timeframe: "2026-2028", description: "China exploring QR-code-based label disclosure for traceability.", actionRequired: false },
       { topic: "Nutrition Front-of-Pack (FOP)", impact: "medium", timeframe: "2027+", description: "Possible mandatory FOP nutrition scoring system (similar to Nutri-Score).", actionRequired: false },
     ],
-  };
+  
+  labelMandatoryElements: [
+    "Product Name — must accurately reflect product's true nature (GB 7718 4.1.2)",
+    "Ingredients List — descending by weight, additives with GB 2760 codes (4.1.3)",
+    "Net Content — metric units, draining weight for solid-in-liquid (4.1.5)",
+    "Manufacturer/Distributor — overseas manufacturer + Chinese responsible party (4.1.6)",
+    "Country of Origin — clearly marked (4.1.7)",
+    "Date of Manufacture & Best Before — DD/MM/YYYY format (4.1.8)",
+    "Storage Conditions — clearly stated (4.1.9)",
+    "Nutrition Information Panel — kJ + NRV% per GB 28050 (4.1.10)",
+    "Food Additives — listed with GB 2760 codes (4.1.11)",
+    "Allergen Information — 8 mandatory allergens (4.1.12)",
+  ],
+  nutritionGuide: {
+    mandatoryFields: ["Energy (kJ)", "Protein", "Fat", "Carbohydrate", "Sodium"],
+    format: "Per 100g/mL + NRV% column",
+    keyRule: "Energy must ALWAYS be in kJ — kcal alone is NOT sufficient",
+    commonMistake: "Using kcal instead of kJ, or missing NRV% column"
+  },
+  translationGuide: {
+    requirement: "All label text must be in Chinese. Foreign language supplementary only.",
+    notarization: "Translation certification from accredited translator required",
+    fontsize: "Minimum 1.8mm for mandatory elements",
+    tips: ["Use simplified Chinese characters", "Keep same font size for all mandatory text", "Leave no blank mandatory fields"]
+  },
+  allergenGuide: {
+    regulated: ["Milk", "Eggs", "Fish", "Crustacea", "Peanuts", "Soybeans", "Wheat", "Tree nuts"],
+    format: "Declare in ingredient list or separate 'Contains' statement",
+    note: "China's list differs from EU/US — verify all 8 categories"
+  },
+  labelReviewGuide: {
+    process: ["Submit artwork for pre-review", "Compliance audit against GB 7718/28050/2760", "Revise per feedback", "Final approval", "Print-ready file delivery"],
+    turnaround: "3-5 working days per review cycle",
+    tip: "Pre-submission review catches 80% of common errors before printing"
+  },
+};
 }

@@ -11,6 +11,11 @@ export interface GaccInput {
   originCountry: string;
   productName: string;
   hsCode?: string;
+  manufacturerName?: string;
+  exportVolume?: string;
+  packagingMaterial?: string;
+  hasLabelArtwork?: string;
+  productDescription?: string;
 }
 
 // ─── 品类配置 ───────────────────────────────────────────────────────────

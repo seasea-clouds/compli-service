@@ -11,6 +11,11 @@ export interface TrademarkInput {
   registeredInChina: boolean;
   productName: string;
   originCountry?: string;
+  hasChineseName?: string;
+  hasForeignRegistration?: string;
+  tmClassDescription?: string;
+  brandYearsInMarket?: string;
+  needsCustomsRecordal?: string;
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -95,5 +100,43 @@ export function checkTrademark(input: any): any {
     horizonScan: [
       { topic: "Trademark Law 5th Revision", impact: "high", timeframe: "2025-2026", description: "Stronger bad-faith filing penalties expected.", actionRequired: true },
     ],
-  };
+  
+  niceClasses: {
+    food: "Class 29 (Meat/Fish), 30 (Coffee/Cereal), 31 (Fresh), 32 (Beverages), 33 (Alcohol)",
+    cosmetics: "Class 3 (Cosmetics/Soap)",
+    electronics: "Class 9 (Electronics/Software), 11 (Appliances)",
+    apparel: "Class 25 (Clothing/Shoes)",
+    beverage: "Class 32 (Non-alcoholic), 33 (Alcoholic)",
+    health_supplement: "Class 5 (Pharmaceuticals/Supplements), 30 (Health foods)",
+    luxury: "Class 14 (Jewelry), 18 (Leather), 25 (Clothing)",
+    other: "Contact us for class recommendation"
+  },
+  registrationProcess: [
+    { step: "Trademark Search", duration: "1-2 weeks", detail: "CNIPA database + WIPO + common law search" },
+    { step: "Application Filing", duration: "1-3 days", detail: "Submit to CNIPA with classification" },
+    { step: "Formal Examination", duration: "1-2 months", detail: "CNIPA reviews formalities" },
+    { step: "Substantive Examination", duration: "6-9 months", detail: "Distinctiveness + similarity check" },
+    { step: "Publication (Opposition)", duration: "3 months", detail: "Third party opposition window" },
+    { step: "Registration Certificate", duration: "1-2 months", detail: "Certificate issued. Valid 10 years." },
+  ],
+  squattingGuide: {
+    risk: "China is first-to-file — anyone can register your brand before you do",
+    stats: "15-25% of foreign brands experience squatting in China",
+    prevention: ["File trademark in China BEFORE market entry", "File defensive classes", "Monitor CNIPA weekly", "File transliteration marks"],
+    remedy: ["File opposition within 3 months of publication", "Invalidation action (prove bad faith)", "Negotiate purchase from squatter"]
+  },
+  customsRecordalSteps: [
+    "Register trademark with CNIPA (8-14 months)",
+    "File Customs IP Recordal application online (GACC e-portal)",
+    "Submit: TM certificate + Power of Attorney + product photos",
+    "Customs reviews (1-2 months) — approval valid 10 years",
+    "Upon approval, customs can detain suspected counterfeits at all Chinese ports"
+  ],
+  watchServiceGuide: {
+    description: "Monthly monitoring of CNIPA trademark applications for conflicting marks",
+    includes: ["Monthly CNIPA database scan", "Conflict alert within 48 hours", "Opposition feasibility analysis", "Enforcement recommendation"],
+    frequency: "Monthly reports + real-time alerts for urgent conflicts",
+    cost: "$200-500/month depending on number of classes"
+  },
+};
 }

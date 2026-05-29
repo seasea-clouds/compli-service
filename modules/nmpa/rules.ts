@@ -12,6 +12,11 @@ export interface CosmeticsInput {
   brandCountry: string;
   hasNewIngredient: boolean;
   originCountry?: string;
+  hasAlcohol?: string;
+  hasSunscreenClaim?: string;
+  productFunction?: string;
+  packagingVolume?: string;
+  hasGMPCert?: string;
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -76,5 +81,36 @@ export function checkCosmetics(input: any): any {
     postApprovalObligations: [{"item": "Annual Production Report", "frequency": "Yearly", "description": "Submit production data to NMPA."}, {"item": "Formula Change Notification", "frequency": "When applicable", "description": "Any formula change requires re-filing or notification."}, {"item": "Label Update Compliance", "frequency": "Per regulation change", "description": "Monitor NMPA labeling guideline updates."}, {"item": "Registration Renewal", "frequency": "Every 5 years", "description": "Re-submit safety assessment for renewal."}],
     horizonScan: [{"topic": "GB 7718 Cosmetics Label Revision", "impact": "high", "timeframe": "2025-2026", "description": "Expected to align with international labeling standards.", "actionRequired": true}, {"topic": "Special Cosmetics List Expansion", "impact": "medium", "timeframe": "2025", "description": "More product categories may be reclassified as special.", "actionRequired": false}, {"topic": "Animal Testing Alternatives", "impact": "medium", "timeframe": "2025-2027", "description": "China expanding accepted non-animal test methods.", "actionRequired": false}],
     summary: requiresReg ? "Compliance action required." : "Standard process applies.",
-  };
+  
+  filingType: {
+    ordinary: "General cosmetics requiring notification filing (备案). Lower requirements, faster timeline.",
+    special: "Products needing full registration (注册) — sunscreen, whitening, hair dye, perm. Higher requirements.",
+    classificationBasis: "CSAR 2021 Article 3-5 — category determined by product function and ingredients",
+    timeline: { ordinary: "2-4 months", special: "6-12 months" }
+  },
+  nmpaTestingReqs: {
+    categories: ["Microbiological testing", "Heavy metals", "Stability testing", "Hygiene chemical analysis", "Safety assessment report"],
+    labRequirement: "Must use NMPA-designated testing laboratory",
+    exemption: "Products with valid EU/US GMP certificate may qualify for reduced testing"
+  },
+  gmpGuide: {
+    standard: "ISO 22716 (Cosmetics GMP) or equivalent",
+    accepted: ["EU Cosmetics GMP (ISO 22716)", "US FDA cGMP", "ASEAN Cosmetics GMP"],
+    notAccepted: "Generic ISO 9001 without cosmetics scope",
+    note: "GMP certificate from recognized body can reduce factory inspection requirements"
+  },
+  chineseRPActions: [
+    "Register as Chinese Responsible Person with NMPA",
+    "Maintain product safety information files",
+    "File adverse event reports within 15 days",
+    "Coordinate testing with NMPA-designated labs",
+    "Manage product recall if required by SAMR"
+  ],
+  animalTestingExempt: {
+    eligible: "Ordinary cosmetics with valid GMP certificate and established safety history",
+    ineligible: "Special cosmetics (sunscreen, whitening) always require animal testing",
+    alternative: "Accept in vitro / alternative methods for certain endpoints",
+    timeline: "Exemption review: 30-60 working days"
+  },
+};
 }

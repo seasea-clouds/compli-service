@@ -144,6 +144,71 @@ export default function CccCheckPage() {
               />
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Manufacturer Country</label>
+                <input
+                  type="text"
+                  value={input["manufacturerCountry"] || ""}
+                  onChange={e => setVal("manufacturerCountry", e.target.value)}
+                  placeholder={"e.g., China, Vietnam"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Annual Volume (units)</label>
+                <input
+                  type="text"
+                  value={input["annualVolume"] || ""}
+                  onChange={e => setVal("annualVolume", e.target.value)}
+                  placeholder={"e.g., 50,000 pcs/year"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Has CB Test Report?</label>
+                <select
+                  value={input["hasCBReport"] || ""}
+                  onChange={e => setVal("hasCBReport", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="in_progress">In Progress</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">CE / UL / Other Certified?</label>
+                <select
+                  value={input["hasCEorUL"] || ""}
+                  onChange={e => setVal("hasCEorUL", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="ce">CE</option>
+                  <option value="ul">UL</option>
+                  <option value="fcc">FCC</option>
+                  <option value="other">Other</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Voltage / Power Specs (optional)</label>
+              <input
+                type="text"
+                value={input["voltagePower"] || ""}
+                onChange={e => setVal("voltagePower", e.target.value)}
+                placeholder={"e.g., 100-240V, 50/60Hz, 50W"}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+              />
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-bold py-3 px-6 rounded-lg transition-all text-lg"

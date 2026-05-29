@@ -133,6 +133,69 @@ export default function LabelCheckPage() {
               />
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Country of Origin</label>
+                <input
+                  type="text"
+                  value={input["originCountry"] || ""}
+                  onChange={e => setVal("originCountry", e.target.value)}
+                  placeholder={"e.g., Italy"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Nutrition Data Available?</label>
+                <select
+                  value={input["hasNutritionData"] || ""}
+                  onChange={e => setVal("hasNutritionData", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes — full lab report</option>
+                  <option value="partial">Partial — known ingredient data</option>
+                  <option value="no">No — need testing</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Known Allergens</label>
+                <input
+                  type="text"
+                  value={input["allergenInfo"] || ""}
+                  onChange={e => setVal("allergenInfo", e.target.value)}
+                  placeholder={"e.g., Milk, Soy, Gluten"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Ingredients Declaration Ready?</label>
+                <select
+                  value={input["ingredientsDeclaration"] || ""}
+                  onChange={e => setVal("ingredientsDeclaration", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="partial">Partial</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Existing Label Artwork (optional)</label>
+              <input
+                type="text"
+                value={input["hasLabelArtwork"] || ""}
+                onChange={e => setVal("hasLabelArtwork", e.target.value)}
+                placeholder={"e.g., Current label design exists / No artwork yet"}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+              />
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-bold py-3 px-6 rounded-lg transition-all text-lg"

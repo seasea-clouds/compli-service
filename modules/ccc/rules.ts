@@ -12,6 +12,11 @@ export interface CccInput {
   hsCode?: string;
   intendedUse: string;
   originCountry?: string;
+  manufacturerCountry?: string;
+  hasCBReport?: string;
+  voltagePower?: string;
+  hasCEorUL?: string;
+  annualVolume?: string;
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -76,5 +81,39 @@ export function checkCcc(input: any): any {
     postApprovalObligations: [{"item": "Annual Factory Inspection", "frequency": "Yearly", "description": "CNCA inspector verifies production consistency."}, {"item": "Product Change Notice", "frequency": "When applicable", "description": "Design/component changes require re-evaluation."}, {"item": "CCC Certificate Renewal", "frequency": "Every 5 years", "description": "Full re-evaluation. Begin 6 months before expiry."}, {"item": "Market Surveillance", "frequency": "Ongoing", "description": "SAMR random product testing. Respond within 30 days."}],
     horizonScan: [{"topic": "CCC Catalog Expansion (IoT/Smart Home)", "impact": "high", "timeframe": "2025-2026", "description": "New products expected to enter CCC scope.", "actionRequired": true}, {"topic": "GB Standard Revisions", "impact": "high", "timeframe": "2025-2027", "description": "Multiple GB safety standards under revision — may require re-testing.", "actionRequired": true}, {"topic": "CB Report Digitalization", "impact": "medium", "timeframe": "2025+", "description": "IECEE digital CB reports may reduce paper handling.", "actionRequired": false}],
     summary: requiresReg ? "Compliance action required." : "Standard process applies.",
-  };
+  
+  cccStandards: {
+    electronics: "GB 4943.1-2022 (Safety), GB 9254-2021 (EMC), GB 17625.1-2022 (Harmonics)",
+    homeAppliance: "GB 4706.1-2005 + product-specific sub-standards",
+    itEquipment: "GB 4943.1-2022, GB 9254-2021, SRRC (wireless)",
+    lighting: "GB 7000.1-2015, GB 17743-2021, GB 17625.1-2022",
+    toy: "GB 6675.1-.4:2014 series",
+    default: "Contact us for applicable GB standards"
+  },
+  factoryAudit: {
+    requirement: "On-site QMS inspection by CNCA-accredited auditor",
+    scope: ["Production process review", "Incoming quality control", "Testing equipment calibration", "Non-conforming product handling", "Corrective action records"],
+    frequency: "Initial certification + annual surveillance",
+    travelNote: "Auditor travel costs extra if factory outside China"
+  },
+  testingProcess: [
+    { phase: "Sample Preparation", duration: "1-2 weeks", detail: "Send 5-10 samples per model to CNCA-accredited lab" },
+    { phase: "Safety Testing", duration: "4-8 weeks", detail: "Per applicable GB standard. CB report may reduce scope." },
+    { phase: "EMC Testing", duration: "2-4 weeks", detail: "EMC emission + immunity per GB standards" },
+    { phase: "Additional Testing", duration: "2-4 weeks", detail: "Energy efficiency, SRRC (wireless), RoHS as applicable" },
+    { phase: "Report Review", duration: "2-4 weeks", detail: "Lab issues test report. Review for completeness." }
+  ],
+  cccCatalog: {
+    productCategories: 17,
+    lastUpdate: "2023",
+    note: "Products not in CCC catalog may still require SRRC (wireless) or NMPA (medical) approval",
+    verificationTip: "Verify via CNCA official catalog or consult a certification body"
+  },
+  cbReportGuide: {
+    acceptance: "CB reports from IECEE member bodies are generally accepted for safety testing",
+    savings: "Can reduce testing cost by 30-50% and timeline by 4-8 weeks",
+    requirement: "Must be submitted with Chinese translation. CB report must cover China deviations.",
+    limitation: "CB report does NOT cover EMC, energy efficiency, or SRRC testing",
+  },
+};
 }

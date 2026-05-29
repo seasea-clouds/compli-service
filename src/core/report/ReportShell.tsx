@@ -1,13 +1,14 @@
 /**
  * ReportShell — 模块感知报告外壳
- * 组合：Header + 23 个区块 + CTA + Footer
+ * 组合：Header + 共享区块 + 模块专有区块 + CTA + Footer
  * 各区块按顺序渲染，无数据时自动隐藏
+ * 支持 6 模块：GACC / CCC / Label / NMPA / Cross-Border / Trademark
  */
 import type { ReportLabels } from './types';
 import { getGlossary } from './template';
 import SectionTitle from './components/SectionTitle';
 
-// Shared sections
+// ─── 共享区块 ─────────────────────────────────────────────────────
 import DecisionSummary from './sections/shared/DecisionSummary';
 import Regulations from './sections/shared/Regulations';
 import RequiredDocuments from './sections/shared/RequiredDocuments';
@@ -27,12 +28,87 @@ import HorizonScan from './sections/shared/HorizonScan';
 import Glossary from './sections/shared/Glossary';
 import NextSteps from './sections/shared/NextSteps';
 
-// GACC-only sections
+// ─── GACC 专有区块 ───────────────────────────────────────────────
 import TariffTax from './sections/gacc/TariffTax';
 import Classification from './sections/gacc/Classification';
 import LabTesting from './sections/gacc/LabTesting';
 import LabelCompliance from './sections/gacc/LabelCompliance';
 import CountryProfile from './sections/gacc/CountryProfile';
+
+// ─── CCC 专有区块 ────────────────────────────────────────────────
+import CccCatalog from './sections/ccc/CccCatalog';
+import CccStandards from './sections/ccc/CccStandards';
+import CBReportGuide from './sections/ccc/CBReportGuide';
+import FactoryAudit from './sections/ccc/FactoryAudit';
+import TestingProcess from './sections/ccc/TestingProcess';
+
+// ─── Label 专有区块 ──────────────────────────────────────────────
+import MandatoryElements from './sections/label/MandatoryElements';
+import NutritionLabeling from './sections/label/NutritionLabeling';
+import AllergenDeclaration from './sections/label/AllergenDeclaration';
+import TranslationGuide from './sections/label/TranslationGuide';
+import LabelReview from './sections/label/LabelReview';
+
+// ─── NMPA 专有区块 ───────────────────────────────────────────────
+import FilingType from './sections/nmpa/FilingType';
+import TestingReqs from './sections/nmpa/TestingReqs';
+import GMPGuide from './sections/nmpa/GMPGuide';
+import ChineseRPGuide from './sections/nmpa/ChineseRPGuide';
+import AnimalTestingExempt from './sections/nmpa/AnimalTestingExempt';
+
+// ─── Cross-Border 专有区块 ──────────────────────────────────────
+import PlatformGuide from './sections/crossborder/PlatformGuide';
+import LogisticsModel from './sections/crossborder/LogisticsModel';
+import CustomsDocs from './sections/crossborder/CustomsDocs';
+import PositiveList from './sections/crossborder/PositiveList';
+import CSTaxGuide from './sections/crossborder/CSTaxGuide';
+
+// ─── Trademark 专有区块 ──────────────────────────────────────────
+import NiceClassification from './sections/trademark/NiceClassification';
+import RegistrationProcess from './sections/trademark/RegistrationProcess';
+import SquattingRisk from './sections/trademark/SquattingRisk';
+import CustomsRecordal from './sections/trademark/CustomsRecordal';
+import WatchService from './sections/trademark/WatchService';
+
+// ─── 模块→专有区块映射 ──────────────────────────────────────────
+
+type SectionComponent = React.ComponentType<{ result: any }>;
+
+interface ModuleSectionGroup {
+  /** 插入在 Channels 和 RiskMatrix 之间的区块（位置 A） */
+  groupA: SectionComponent[];
+  /** 插入在 RiskMatrix 和 MarketIntel 之间的区块（位置 B） */
+  groupB: SectionComponent[];
+}
+
+const MODULE_SECTIONS: Record<string, ModuleSectionGroup> = {
+  'GACC Food Registration': {
+    groupA: [TariffTax, Classification],
+    groupB: [LabTesting, LabelCompliance, CountryProfile],
+  },
+  'CCC Certification': {
+    groupA: [CccCatalog, CccStandards],
+    groupB: [CBReportGuide, FactoryAudit, TestingProcess],
+  },
+  'Chinese Label Compliance': {
+    groupA: [MandatoryElements, NutritionLabeling],
+    groupB: [AllergenDeclaration, TranslationGuide, LabelReview],
+  },
+  'Cosmetics Filing (NMPA)': {
+    groupA: [FilingType, TestingReqs],
+    groupB: [GMPGuide, ChineseRPGuide, AnimalTestingExempt],
+  },
+  'Cross-Border E-commerce': {
+    groupA: [PlatformGuide, LogisticsModel],
+    groupB: [CustomsDocs, PositiveList, CSTaxGuide],
+  },
+  'Brand Protection': {
+    groupA: [NiceClassification, RegistrationProcess],
+    groupB: [SquattingRisk, CustomsRecordal, WatchService],
+  },
+};
+
+// ─── Props ───────────────────────────────────────────────────────
 
 interface ReportShellProps {
   reportId: string;
@@ -54,6 +130,22 @@ function Section({ children }: { children: React.ReactNode }) {
   return <div className="px-8 py-6 border-b border-gray-100 last:border-b-0">{children}</div>;
 }
 
+/** 预检组件是否渲染内容（无 hooks 的展示组件，直接调用安全） */
+function hasContent(S: SectionComponent, result: any): boolean {
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks — 纯展示组件无 hooks
+    return (S as any)({ result }) !== null;
+  } catch {
+    return true; // 出错时渲染，宁可多也不漏
+  }
+}
+
+function renderSection(S: SectionComponent, result: any) {
+  return <S result={result} />;
+}
+
+// ─── Main Component ─────────────────────────────────────────────
+
 export default function ReportShell(props: ReportShellProps) {
   const { reportId, module, locale, labels, productInfo, result, nextSteps, generatedAt } = props;
   const href = (path: string) => `/${locale || 'en'}${path}`;
@@ -61,6 +153,8 @@ export default function ReportShell(props: ReportShellProps) {
   const formattedDate = generatedAt ? new Date(generatedAt).toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric',
   }) : '—';
+
+  const mod = MODULE_SECTIONS[module] || MODULE_SECTIONS['GACC Food Registration'];
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden print:shadow-none print:border-none">
@@ -122,6 +216,7 @@ export default function ReportShell(props: ReportShellProps) {
 
       {/* ═══ BODY ═══ */}
       <div className="space-y-0">
+        {/* ── Shared: 策略层 ── */}
         <Section><DecisionSummary result={result} /></Section>
         <Section><Regulations result={result} /></Section>
         <Section><RequiredDocuments result={result} /></Section>
@@ -131,12 +226,20 @@ export default function ReportShell(props: ReportShellProps) {
         <Section><Timeline result={result} /></Section>
         <Section><CustomsClearance result={result} /></Section>
         <Section><Channels result={result} /></Section>
-        <Section><TariffTax result={result} /></Section>
-        <Section><Classification result={result} /></Section>
+
+        {/* ── 模块 Group A（分类/目录/标准方向） ── */}
+        {mod.groupA.map((S, i) => hasContent(S, result) && (
+          <Section key={`gA-${i}`}>{renderSection(S, result)}</Section>
+        ))}
+
         <Section><RiskMatrix result={result} /></Section>
-        <Section><LabTesting result={result} /></Section>
-        <Section><LabelCompliance result={result} /></Section>
-        <Section><CountryProfile result={result} /></Section>
+
+        {/* ── 模块 Group B（测试/流程/实践方向） ── */}
+        {mod.groupB.map((S, i) => hasContent(S, result) && (
+          <Section key={`gB-${i}`}>{renderSection(S, result)}</Section>
+        ))}
+
+        {/* ── Shared: 深度层 ── */}
         <Section><MarketIntel result={result} /></Section>
         <Section><IpBrandRisk result={result} /></Section>
         <Section><PostApproval result={result} /></Section>

@@ -43,6 +43,26 @@
 
 ---
 
+## ✅ 已完成
+
+### T-REPORT-ALL-MODULES. ReportShell 全模块支持
+- ReportShell 导入 6 模块全部 30 个专有区块（GACC/CCC/Label/NMPA/CB/TM）
+- 模块感知映射：根据 `module` prop 条件渲染对应 5 个专有区块
+- Group A（Channels 后 — 目录/标准方向）+ Group B（RiskMatrix 后 — 测试/流程方向）
+
+### T-CHECK-FIELDS. 各模块 check 表单新增 5 字段
+- **GACC:** manufacturerName, exportVolume, packagingMaterial, hasLabelArtwork, productDescription
+- **CCC:** manufacturerCountry, hasCBReport, voltagePower, hasCEorUL, annualVolume
+- **Label:** originCountry, hasNutritionData, allergenInfo, hasLabelArtwork, ingredientsDeclaration
+- **NMPA:** hasAlcohol, hasSunscreenClaim, productFunction, packagingVolume, hasGMPCert
+- **CB:** monthlyVolume, hasTMRegistration, hasChineseLabel, productWeight, shelfLifeMonths
+- **TM:** hasChineseName, hasForeignRegistration, tmClassDescription, brandYearsInMarket, needsCustomsRecordal
+- 对应输入接口均已添加可选字段
+
+### T-BUILD-VERIFY. 构建验证 ✅
+- ✅ 构建通过：18 pages, 0 error, 0 type error
+- 所有 6 模块 check 路由正常：/check/{gacc|ccc|label|nmpa|crossborder|trademark}
+
 ## 🟠 P1 — 核心功能
 
 ### T-PAYMENT. Creem 支付真实接入

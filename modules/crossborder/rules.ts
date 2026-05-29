@@ -11,6 +11,11 @@ export interface CrossborderInput {
   targetPlatform: string;
   hasBondedWarehouse: boolean;
   originCountry?: string;
+  monthlyVolume?: string;
+  hasTMRegistration?: string;
+  hasChineseLabel?: string;
+  productWeight?: string;
+  shelfLifeMonths?: string;
 }
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -104,5 +109,31 @@ export function checkCrossborder(input: any): any {
     horizonScan: [
       { topic: "Positive List Expansion", impact: "high", timeframe: "2025", description: "More food categories expected to be added.", actionRequired: true },
     ],
-  };
+  
+  platformGuide: [
+    { platform: "Tmall Global", fee: "Deposit $25,000 + 5% commission", req: "Overseas company + brand + TM registration", traffic: "Largest CBEC traffic (50%+ market share)", timeline: "2-4 months to onboard" },
+    { platform: "JD Worldwide", fee: "Deposit $20,000 + 5-8% commission", req: "Overseas company + brand registration", traffic: "Strong electronics/home categories", timeline: "2-3 months to onboard" },
+    { platform: "Douyin Global", fee: "Deposit $5,000 + 2-5% commission", req: "Overseas company + content capability", traffic: "Fastest growing — live-streaming focused", timeline: "1-2 months to onboard" },
+  ],
+  logisticsModels: {
+    bbc: { name: "1210 Bonded Warehouse", process: "Bulk shipment -> Bonded warehouse -> Customs clearance -> Door-to-door", advantage: "Faster delivery (2-5 days), lower per-unit cost", requirement: "CBEC positive list product" },
+    direct: { name: "9610 Direct Shipping", process: "Order placed -> Overseas warehouse -> Courier -> Customs clearance -> Delivery", advantage: "No bonded warehouse needed, wider product range", requirement: "Higher per-shipment cost" },
+  },
+  customsDocGuide: [
+    "Order document (订单) — from platform", "Payment document (支付) — from payment gateway",
+    "Logistics document (物流) — from carrier" , "Commercial invoice", "Packing list", "Certificate of Origin (if FTA)"
+  ],
+  positiveList: {
+    note: "Only products on CBEC positive list can use 1210 bonded warehouse model",
+    checkMethod: "Verify via MOFCOM CBEC positive list catalog or consult compliance specialist",
+    typicalIncluded: ["Food supplements", "Cosmetics", "Baby formula", "Small appliances", "Apparel"],
+    typicalExcluded: ["Fresh food", "Live animals", "Large medical devices"]
+  },
+  cbTaxInfo: {
+    calculation: "Comprehensive tax = (price + shipping) x 70% x (tariff rate + VAT rate)",
+    threshold: "Personal use limit: RMB 5,000/transaction, RMB 26,000/year",
+    note: "Tax exemption for purchases under RMB 1,000 (certain categories)",
+    example: "Product $100 + shipping $20 -> Dutiable value = $84 -> Approx tax = $84 x 13% = $10.92"
+  },
+};
 }

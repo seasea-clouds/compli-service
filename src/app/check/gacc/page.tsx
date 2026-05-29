@@ -157,6 +157,72 @@ export default function GaccCheckPage() {
               </div>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Manufacturer / Exporter</label>
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
+                  placeholder="e.g., Bordeaux Wine Co."
+                  value={input.manufacturerName ?? ""}
+                  onChange={(e) => setInput({ ...input, manufacturerName: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Annual Export Volume</label>
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
+                  placeholder="e.g., 10,000 bottles"
+                  value={input.exportVolume ?? ""}
+                  onChange={(e) => setInput({ ...input, exportVolume: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Packaging Material</label>
+                <select
+                  className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
+                  value={input.packagingMaterial ?? ""}
+                  onChange={(e) => setInput({ ...input, packagingMaterial: e.target.value })}
+                >
+                  <option value="">Select packaging type</option>
+                  <option value="glass">Glass Bottle</option>
+                  <option value="plastic">Plastic / PET</option>
+                  <option value="can">Can / Tin</option>
+                  <option value="pouch">Pouch / Bag</option>
+                  <option value="box">Box / Carton</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Chinese Label Artwork Ready?</label>
+                <select
+                  className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
+                  value={input.hasLabelArtwork ?? ""}
+                  onChange={(e) => setInput({ ...input, hasLabelArtwork: e.target.value })}
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="in_progress">In Progress</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Product Description (optional)</label>
+              <textarea
+                className="w-full border border-gray-300 rounded-md p-2.5 text-sm"
+                rows={2}
+                placeholder="e.g., Red wine, 13.5% ABV, Cabernet Sauvignon, aged in oak barrels"
+                value={input.productDescription ?? ""}
+                onChange={(e) => setInput({ ...input, productDescription: e.target.value })}
+              />
+            </div>
+
             <button
               type="submit"
               className="w-full bg-gold hover:bg-gold/90 text-primary-navy font-semibold py-3 px-6 rounded-md transition-all"

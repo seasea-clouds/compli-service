@@ -145,6 +145,69 @@ export default function CrossborderCheckPage() {
               </select>
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Est. Monthly Volume</label>
+                <input
+                  type="text"
+                  value={input["monthlyVolume"] || ""}
+                  onChange={e => setVal("monthlyVolume", e.target.value)}
+                  placeholder={"e.g., 5,000 units"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Shelf Life</label>
+                <input
+                  type="text"
+                  value={input["shelfLifeMonths"] || ""}
+                  onChange={e => setVal("shelfLifeMonths", e.target.value)}
+                  placeholder={"e.g., 12 months"}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Trademark Registered in China?</label>
+                <select
+                  value={input["hasTMRegistration"] || ""}
+                  onChange={e => setVal("hasTMRegistration", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="pending">Filing in progress</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Chinese Label Ready?</label>
+                <select
+                  value={input["hasChineseLabel"] || ""}
+                  onChange={e => setVal("hasChineseLabel", e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                >
+                  <option value="">Select...</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No — need to create</option>
+                  <option value="in_progress">In Progress</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Product Weight (per unit, optional)</label>
+              <input
+                type="text"
+                value={input["productWeight"] || ""}
+                onChange={e => setVal("productWeight", e.target.value)}
+                placeholder={"e.g., 0.5 kg, 200g"}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+              />
+            </div>
+
             <button
               type="submit"
               className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-[#1B365D] font-bold py-3 px-6 rounded-lg transition-all text-lg"
