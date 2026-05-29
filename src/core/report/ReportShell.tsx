@@ -126,8 +126,10 @@ interface ReportShellProps {
   generatedAt: string;
 }
 
-function Section({ children }: { children: React.ReactNode }) {
-  return <div className="px-8 py-6 border-b border-gray-100 last:border-b-0">{children}</div>;
+function Section({ children, gold = false }: { children: React.ReactNode; gold?: boolean }) {
+  return gold
+    ? <div className="px-8 py-6 border-b border-gold/20 bg-gradient-to-r from-gold/[0.03] to-transparent last:border-b-0">{children}</div>
+    : <div className="px-8 py-6 border-b border-gray-100 bg-white last:border-b-0 odd:bg-bg-ice/40">{children}</div>;
 }
 
 /** 预检组件是否渲染内容（无 hooks 的展示组件，直接调用安全） */
@@ -185,32 +187,57 @@ export default function ReportShell(props: ReportShellProps) {
             {productInfo.hsCode && <span>HS Code: <strong className="text-white">{productInfo.hsCode}</strong></span>}
           </div>
           <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10 group hover:bg-white/15 transition-all">
               <p className={`text-4xl font-bold mb-1 ${
                 (result.riskScore || 0) >= 7 ? 'text-red-400' : (result.riskScore || 0) >= 4 ? 'text-amber-400' : 'text-green-400'
               }`}>{result.riskScore || 0}</p>
               <p className="text-[10px] text-white/50 uppercase tracking-wider">Risk Score</p>
               <div className="mt-2 w-full bg-white/10 rounded-full h-1.5">
-                <div className={`h-1.5 rounded-full ${
+                <div className={`h-1.5 rounded-full transition-all ${
                   (result.riskScore || 0) >= 7 ? 'bg-red-400 w-3/4' : (result.riskScore || 0) >= 4 ? 'bg-amber-400 w-1/2' : 'bg-green-400 w-1/4'
                 }`}></div>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10 group hover:bg-white/15 transition-all">
               <p className={`text-lg font-bold mb-1 ${
                 (result.riskScore || 0) >= 7 ? 'text-red-400' : (result.riskScore || 0) >= 4 ? 'text-amber-400' : 'text-green-400'
               }`}>{(result.riskScore || 0) >= 7 ? '🔴' : (result.riskScore || 0) >= 4 ? '🟡' : '🟢'}</p>
               <p className="text-[10px] text-white/50 uppercase tracking-wider">Verdict</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10 group hover:bg-white/15 transition-all">
               <p className="text-lg font-bold text-white mb-1">{result.estimatedTimeline || '—'}</p>
               <p className="text-[10px] text-white/50 uppercase tracking-wider">Timeline</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/10 group hover:bg-white/15 transition-all">
               <p className="text-lg font-bold text-white mb-1">{result.totalCostRange || '—'}</p>
               <p className="text-[10px] text-white/50 uppercase tracking-wider">Total Cost</p>
             </div>
           </div>
+
+          {/* ── 风险维度条 ── */}
+          {result.riskDimensions?.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2">
+              {result.riskDimensions.slice(0, 5).map((d: any, i: number) => {
+                const pct = Math.min(d.score * 10, 100);
+                return (
+                  <div key={i} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[9px] text-white/60 truncate">{d.dimension}</span>
+                      <span className={`text-[10px] font-bold ${
+                        d.score >= 7 ? 'text-red-400' : d.score >= 4 ? 'text-amber-400' : 'text-green-400'
+                      }`}>{d.score}/10</span>
+                    </div>
+                    <div className="w-full bg-white/10 rounded-full h-1">
+                      <div className={`h-1 rounded-full transition-all ${
+                        d.score >= 7 ? 'bg-red-400' : d.score >= 4 ? 'bg-amber-400' : 'bg-green-400'
+                      }`} style={{width: pct + '%'}}></div>
+                    </div>
+                    <p className="text-[8px] text-white/40 mt-1 truncate">{d.note}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 

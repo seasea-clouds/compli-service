@@ -5,7 +5,7 @@ export default function Classification({ result }: { result: any }) {
   if (!c?.assignedHsChapter) return null
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <SectionTitle icon={'🔖'} label="Product Classification" />
+      <SectionTitle icon={'🔖'} label="Product Classification" tooltip="HS 编码决定关税税率和监管条件，错编可能导致多缴税或被扣货。" />
       <div className="grid grid-cols-2 gap-3">
         <ValueCard label="HS Chapter" value={c.assignedHsChapter} />
         <ValueCard label="CIQ Code" value={c.ciqCode || '—'} />

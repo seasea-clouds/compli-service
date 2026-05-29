@@ -3,7 +3,7 @@ import RiskBadge from '../../components/RiskBadge'
 export default function DecisionSummary({ result }: { result: any }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <SectionTitle icon="📋" label="Assessment Result" />
+      <SectionTitle icon="📋" label="Assessment Result" tooltip="综合评估您的产品在中国进口合规方面的风险等级和可行性。" />
       <div className="flex flex-wrap gap-4 mb-4">
         <RiskBadge level={result.isHighRisk ? 'high' : 'low'} />
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">🎯 Risk Score: {result.riskScore}/10</span>
