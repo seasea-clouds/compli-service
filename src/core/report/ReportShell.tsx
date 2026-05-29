@@ -217,22 +217,22 @@ export default function ReportShell(props: ReportShellProps) {
       {/* ═══ BODY ═══ */}
       <div className="space-y-0">
         {/* ── Shared: 策略层 ── */}
-        <Section><DecisionSummary result={result} /></Section>
-        <Section><Regulations result={result} /></Section>
-        <Section><RequiredDocuments result={result} /></Section>
-        <Section><DocumentGuide result={result} /></Section>
-        <Section><CommonPitfalls result={result} /></Section>
-        <Section><ComplianceChecklist result={result} /></Section>
-        <Section><Timeline result={result} /></Section>
-        <Section><CustomsClearance result={result} /></Section>
-        <Section><Channels result={result} /></Section>
+        {hasContent(DecisionSummary, result) && <Section><DecisionSummary result={result} /></Section>}
+        {hasContent(Regulations, result) && <Section><Regulations result={result} /></Section>}
+        {hasContent(RequiredDocuments, result) && <Section><RequiredDocuments result={result} /></Section>}
+        {hasContent(DocumentGuide, result) && <Section><DocumentGuide result={result} /></Section>}
+        {hasContent(CommonPitfalls, result) && <Section><CommonPitfalls result={result} /></Section>}
+        {hasContent(ComplianceChecklist, result) && <Section><ComplianceChecklist result={result} /></Section>}
+        {hasContent(Timeline, result) && <Section><Timeline result={result} /></Section>}
+        {hasContent(CustomsClearance, result) && <Section><CustomsClearance result={result} /></Section>}
+        {hasContent(Channels, result) && <Section><Channels result={result} /></Section>}
 
         {/* ── 模块 Group A（分类/目录/标准方向） ── */}
         {mod.groupA.map((S, i) => hasContent(S, result) && (
           <Section key={`gA-${i}`}>{renderSection(S, result)}</Section>
         ))}
 
-        <Section><RiskMatrix result={result} /></Section>
+        {hasContent(RiskMatrix, result) && <Section><RiskMatrix result={result} /></Section>}
 
         {/* ── 模块 Group B（测试/流程/实践方向） ── */}
         {mod.groupB.map((S, i) => hasContent(S, result) && (
@@ -240,12 +240,12 @@ export default function ReportShell(props: ReportShellProps) {
         ))}
 
         {/* ── Shared: 深度层 ── */}
-        <Section><MarketIntel result={result} /></Section>
-        <Section><IpBrandRisk result={result} /></Section>
-        <Section><PostApproval result={result} /></Section>
-        <Section><EmergencyResponse result={result} /></Section>
-        <Section><CostEstimation result={result} /></Section>
-        <Section><HorizonScan result={result} /></Section>
+        {hasContent(MarketIntel, result) && <Section><MarketIntel result={result} /></Section>}
+        {hasContent(IpBrandRisk, result) && <Section><IpBrandRisk result={result} /></Section>}
+        {hasContent(PostApproval, result) && <Section><PostApproval result={result} /></Section>}
+        {hasContent(EmergencyResponse, result) && <Section><EmergencyResponse result={result} /></Section>}
+        {hasContent(CostEstimation, result) && <Section><CostEstimation result={result} /></Section>}
+        {hasContent(HorizonScan, result) && <Section><HorizonScan result={result} /></Section>}
         <Section><Glossary glossary={glossary} /></Section>
         <Section><NextSteps steps={nextSteps || []} /></Section>
       </div>
